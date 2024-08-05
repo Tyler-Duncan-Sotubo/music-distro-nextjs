@@ -1,7 +1,6 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import {
   getServerSession,
-  type Session,
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";

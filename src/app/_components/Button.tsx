@@ -17,7 +17,7 @@ export const Button = ({
 }: ButtonProps) => (
   <button
     type={type}
-    className={`${className} ${color} bg-primary hover:bg-primaryHover active:bg-primaryHover ring-primaryHover inline-flex items-center rounded-lg px-10 py-3 text-[.8rem] font-semibold uppercase tracking-widest transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white focus:outline-none focus:ring disabled:opacity-25`}
+    className={`${className} ${color} hover:bg-blue-500 inline-flex items-center rounded-lg bg-primary px-10 py-3 text-[.9rem] font-bold tracking-widest ring-primaryHover transition duration-300 ease-in-out hover:bg-primaryHover hover:text-white focus:outline-none focus:ring active:bg-primaryHover disabled:opacity-25`}
     {...props}
     onClick={onClick}
   >

@@ -1,5 +1,6 @@
 "use client";
 
+import { useLayoutEffect } from "react";
 import { Button } from "@/app/_components/Button";
 import Label from "@/app/_components/Label";
 import Link from "next/link";
@@ -16,6 +17,7 @@ import { type LoginInput } from "../types";
 import { LoginSchema } from "../schemas";
 import TextInput from "@/app/_components/TextInput";
 import { signIn } from "next-auth/react";
+import { ButtonWithIcon } from "@/app/_components/ButtonWithIcon";
 
 const Login = () => {
   const router = useRouter();
@@ -41,8 +43,14 @@ const Login = () => {
     }
   };
 
+  const googleSignIn = async () => {
+    await signIn("google", {
+      callbackUrl: "/dashboard",
+    });
+  };
+
   return (
-    <>
+    <section className="py-6">
       <form onSubmit={handleSubmit(onSubmit)} data-testid="login-form">
         <FormDescription
           header="Welcome Back!"
@@ -64,7 +72,7 @@ const Login = () => {
         </div>
 
         {/* Password */}
-        <div className="mt-4">
+        <div>
           <Label htmlFor="password">Password</Label>
           <TextInput
             register={register as unknown as UseFormRegister<FieldValues>}
@@ -76,7 +84,7 @@ const Login = () => {
         </div>
 
         {/* Remember Me */}
-        <div className="mt-6 flex items-center justify-between">
+        <div className="mt-4 flex items-center justify-between">
           <label
             htmlFor="remember_me"
             className="inline-flex items-center"
@@ -88,21 +96,35 @@ const Login = () => {
               {...register("shouldRemember")}
               className="border-gray-300 text-indigo-600 focus:border-indigo-300 focus:ring-indigo-200 rounded shadow-sm focus:ring focus:ring-opacity-50"
             />
-            <span className="text-gray-600 ml-2 text-lg">Remember me</span>
+            <span className="text-gray-600 ml-2 text-sm">Remember me</span>
           </label>
           <Link
             href="/forgot-password"
-            className="text-blue-800 hover:text-gray-900 text-lg hover:underline"
+            className="text-blue-800 hover:text-gray-900 text-sm hover:underline"
           >
             Forgot password?
           </Link>
         </div>
 
-        <div className="mt-10 flex items-center justify-end">
+        <div className="mt-6 flex items-center justify-end">
           <Button className="ml-3 px-8">Login</Button>
         </div>
       </form>
-    </>
+
+      {/* Divider */}
+      <div className="my-6 flex items-center justify-center space-x-4">
+        <p className="h-[2px] w-1/2 bg-gray"></p>
+        <p>or</p>
+        <p className="h-[2px] w-1/2 bg-gray"></p>
+      </div>
+
+      {/* Login With Google*/}
+      <div className="mt-6 w-full">
+        <ButtonWithIcon onClick={() => googleSignIn()} iconName="google">
+          Login in With Google
+        </ButtonWithIcon>
+      </div>
+    </section>
   );
 };
 

@@ -17,7 +17,7 @@ const TextInput = ({
   error,
   ...rest
 }: InputProps) => (
-  <div className="relative mb-6">
+  <div className="relative mb-3">
     <input
       className={`${className} border-gray-300 focus:border-indigo-300 focus:ring-indigo-200 w-full rounded-md bg-secondary py-2 shadow-sm focus:ring focus:ring-opacity-50`}
       {...register(name)}
@@ -26,7 +26,7 @@ const TextInput = ({
     {error && (
       <span
         role="alert"
-        className="text-bold my-2 text-sm text-error"
+        className="text-bold my-3 text-sm text-error"
         aria-label="error-message"
       >
         {error}
