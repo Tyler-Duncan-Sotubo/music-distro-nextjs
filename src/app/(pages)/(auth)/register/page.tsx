@@ -1,5 +1,6 @@
 "use client";
 
+import { api } from "@/trpc/react";
 import { Button } from "@/app/_components/Button";
 import SubmitErrorComponent from "@/app/_components/SubmitErrorComponent";
 import Label from "@/app/_components/Label";
@@ -36,6 +37,16 @@ const Page = () => {
     resolver: yupResolver(registerSchema) as Resolver<IFormInput>,
   });
 
+  const registerUser = api.register.registerUser.useMutation({
+    onSuccess: (data) => {
+      if (!data) return;
+      router.push("/login");
+    },
+    onError: (error) => {
+      setSubmitError([error.message]);
+    },
+  });
+
   const onSubmit = async (data: IFormInput) => {
     // Check if the user has agreed to the terms of service
     if (!agreeToTerms) {
@@ -45,24 +56,11 @@ const Page = () => {
       setErrors("");
     }
 
-    // Make the API request
-
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    // Handle the response
-    if (res.ok) {
-      router.push("/login");
-    } else {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const { message } = await res.json();
-      setSubmitError(message as Array<string | undefined>);
+    if (registerUser.isPending) {
+      setSubmitError([]);
     }
+    // Make the API request
+    registerUser.mutate(data);
   };
 
   const googleSignIn = async () => {

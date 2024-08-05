@@ -1,8 +1,8 @@
-import { getServerAuthSession } from "@/server/auth";
+// import { getServerAuthSession } from "@/server/auth";
 
 const DashBoard = async () => {
-  const session = await getServerAuthSession();
-  console.log(session?.user.name);
+  // const session = await getServerAuthSession();
+  // console.log(session?.user.name);
   return <div>Admin</div>;
 };
 
