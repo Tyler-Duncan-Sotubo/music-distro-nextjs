@@ -1,9 +1,13 @@
 import "@/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
+import { Inter } from "next/font/google";
 import { type Metadata } from "next";
-
 import { TRPCReactProvider } from "@/trpc/react";
+import { NextAuthProvider } from "@/server/provider/nextAuthProvider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -15,9 +19,12 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+    <html lang="en">
+      <body className={inter.className}>
+        <NextAuthProvider>
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+        </NextAuthProvider>
+        <ToastContainer autoClose={3000} />
       </body>
     </html>
   );

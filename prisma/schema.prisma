@@ -7,18 +7,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
-}
-
 // Necessary for Next auth
 model Account {
     id                       String  @id @default(cuid())
@@ -51,11 +39,13 @@ model User {
     id            String    @id @default(cuid())
     name          String?
     email         String?   @unique
+    password      String?
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
+    streams       Stream[] // Add the opposite relation field for the 'User' field in the 'streams' model
+    audio         Audio[]
 }
 
 model VerificationToken {
@@ -64,4 +54,56 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Audio {
+    id               String   @id @default(cuid())
+    userId           String
+    title            String
+    artist           String
+    releaseDate      DateTime
+    primaryGenre     String
+    secondaryGenre   String
+    language         String
+    label            String
+    copyrightHolder  String
+    copyrightYear    String
+    productionHolder String
+    productionYear   String
+    releaseCover     String
+    releaseAudio     String?
+    releaseAudioLink String?
+    lyrics           String?
+    releaseType      String
+    status           String
+    UPC              String   @default("")
+    ISRC             String   @default("")
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+    smartLink        String   @default("")
+    streams          Stream[]
+
+    User User @relation(fields: [userId], references: [id])
+}
+
+model Stream {
+    id            String   @id @default(cuid())
+    userId        String
+    audioId       String
+    total_streams Int
+    week_start    String
+    week_end      String
+    apple         Json?    @default("{}")
+    spotify       Json?    @default("{}")
+    youtube       Json?    @default("{}")
+    amazon        Json?    @default("{}")
+    tidal         Json?    @default("{}")
+    deezer        Json?    @default("{}")
+    boomPlay      Json?    @default("{}")
+    tiktok        Json?    @default("{}")
+    facebook      Json?    @default("{}")
+    createdAt     DateTime @default(now())
+
+    User  User  @relation(fields: [userId], references: [id])
+    audio Audio @relation(fields: [audioId], references: [id])
 }
