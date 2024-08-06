@@ -1,9 +1,20 @@
-// import { getServerAuthSession } from "@/server/auth";
+import RenderDashboard from "./RenderDashboard";
+import { api } from "@/trpc/server";
 
-const DashBoard = async () => {
-  // const session = await getServerAuthSession();
-  // console.log(session?.user.name);
-  return <div>Admin</div>;
+const Dashboard = async () => {
+  // get user subscription
+
+  const userSubscription = await api.subscriptions.getSubscription();
+  const userAudioReleases = await api.audio.getReleases();
+
+  return (
+    <>
+      <RenderDashboard
+        userSubscription={userSubscription}
+        userAudioReleases={userAudioReleases}
+      />
+    </>
+  );
 };
 
-export default DashBoard;
+export default Dashboard;

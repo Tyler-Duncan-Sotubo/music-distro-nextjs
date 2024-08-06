@@ -2,8 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
-import { distros } from "@/app/_data/data";
-import { Button } from "@/app/_components/Button";
+import { distros } from "@/data/data";
+import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
 const page = () => {

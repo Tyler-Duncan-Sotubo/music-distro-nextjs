@@ -25,6 +25,11 @@ export const env = createEnv({
 
     GOOGLE_CLIENT_SECRET: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
+    SEND_GRID_API_KEY: z.string(),
+    PASSWORD_RESET_TEMPLATE_ID: z.string(),
+    VERIFY_EMAIL_TEMPLATE_ID: z.string(),
+    MUSIC_RELEASE_TEMPLATE_ID: z.string(),
+    RELEASE_NOTIFICATION_TEMPLATE_ID: z.string(),
   },
 
   /**
@@ -35,6 +40,8 @@ export const env = createEnv({
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
     NEXT_PUBLIC_EXCHANGE_RATE_API_KEY: z.string(),
+    NEXT_PUBLIC_HOME_URL: z.string(),
+    NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY: z.string(),
   },
 
   /**
@@ -50,6 +57,15 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_EXCHANGE_RATE_API_KEY,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    SEND_GRID_API_KEY: process.env.SEND_GRID_API_KEY,
+    PASSWORD_RESET_TEMPLATE_ID: process.env.PASSWORD_RESET_TEMPLATE_ID,
+    VERIFY_EMAIL_TEMPLATE_ID: process.env.VERIFY_EMAIL_TEMPLATE_ID,
+    MUSIC_RELEASE_TEMPLATE_ID: process.env.MUSIC_RELEASE_TEMPLATE_ID,
+    RELEASE_NOTIFICATION_TEMPLATE_ID:
+      process.env.RELEASE_NOTIFICATION_TEMPLATE_ID,
+    NEXT_PUBLIC_HOME_URL: process.env.NEXT_PUBLIC_HOME_URL,
+    NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY:
+      process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/app/_components/Button";
+import { Button } from "@/components/ui/Button";
 import { toast } from "react-toastify";
-import Label from "@/app/_components/Label";
+import Label from "@/components/ui/Label";
 import {
   type FieldValues,
   type Resolver,
@@ -13,7 +13,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { type ContactInput } from "./types/contactInput.type";
 import { ContactSchema } from "./schema/contactInput.schema";
-import TextInput from "@/app/_components/TextInput";
+import TextInput from "@/components/ui/TextInput";
 import emailjs from "@emailjs/browser";
 import SocialIcons from "./SocialIcons";
 

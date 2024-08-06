@@ -1,10 +1,10 @@
 import React from "react";
-import Navigation from "./_components/Navigation";
+import Navigation from "@/components/navigation/Navigation";
 import Image from "next/image";
-import { distros } from "./_data/data";
-import { TestimonialSlider } from "./_components/TestimonialSlider";
-import Footer from "./_components/Footer";
-import SubscriptionPlan from "./_components/SubscriptionPlan";
+import { distros } from "../data/data";
+import { TestimonialSlider } from "@/components/common/TestimonialSlider";
+import Footer from "@/components/layout/Footer";
+import SubscriptionPlan from "@/components/common/SubscriptionPlan";
 
 type DistroType = {
   name: string;

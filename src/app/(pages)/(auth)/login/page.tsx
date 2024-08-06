@@ -1,11 +1,10 @@
 "use client";
 
-import { useLayoutEffect } from "react";
-import { Button } from "@/app/_components/Button";
-import Label from "@/app/_components/Label";
+import { Button } from "@/components/ui/Button";
+import Label from "@/components/ui/Label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import FormDescription from "@/app/_components/FormDescription";
+import FormDescription from "@/components/forms/FormDescription";
 import {
   type FieldValues,
   type Resolver,
@@ -15,9 +14,9 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { type LoginInput } from "../types";
 import { LoginSchema } from "../schemas";
-import TextInput from "@/app/_components/TextInput";
+import TextInput from "@/components/ui/TextInput";
 import { signIn } from "next-auth/react";
-import { ButtonWithIcon } from "@/app/_components/ButtonWithIcon";
+import { ButtonWithIcon } from "@/components/ui/ButtonWithIcon";
 
 const Login = () => {
   const router = useRouter();

@@ -1,7 +1,7 @@
-import ApplicationLogo from "@/app/_components/ApplicationLogo";
+import ApplicationLogo from "@/components/ui/ApplicationLogo";
 import Link from "next/link";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
-import Navigation from "@/app/_components/Navigation";
+import Navigation from "@/components/navigation/Navigation";
 
 type SupportLayoutProps = {
   children: React.ReactNode;

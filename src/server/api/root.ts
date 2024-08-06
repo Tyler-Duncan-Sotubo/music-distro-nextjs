@@ -1,5 +1,8 @@
-import { registerRouter } from "./routers/auth/register";
+import { registerRouter, passwordRouter, verifyRouter } from "./routers/auth/";
+import { subscriptionRouter } from "./routers/subscriptions/subscriptions";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
+import { streamRouter, audioRouter } from "./routers/music";
+import { userRouter } from "./routers/user/user";
 
 /**
  * This is the primary router for your server.
@@ -8,6 +11,12 @@ import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   register: registerRouter,
+  password: passwordRouter,
+  verify: verifyRouter,
+  subscriptions: subscriptionRouter,
+  audio: audioRouter,
+  user: userRouter,
+  streams: streamRouter,
 });
 
 // export type definition of API

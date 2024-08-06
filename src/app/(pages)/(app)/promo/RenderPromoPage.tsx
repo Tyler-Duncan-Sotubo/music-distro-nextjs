@@ -1,10 +1,10 @@
 "use client";
 
-import FrequentlyAskedQuestions from "@/app/_components/FrequentlyAskedQuestions";
+import FrequentlyAskedQuestions from "@/components/common/FrequentlyAskedQuestions";
 import Image from "next/image";
 import React from "react";
 import { Link as Scroll } from "react-scroll";
-import { promo, whyPromoteWithUs, promoFAQ } from "@/app/_data/promo";
+import { promo, whyPromoteWithUs, promoFAQ } from "@/data/promo";
 
 const RenderPromoPage = () => {
   return (

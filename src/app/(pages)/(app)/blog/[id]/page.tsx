@@ -3,7 +3,7 @@
 import { FaArrowLeft } from "react-icons/fa";
 import React from "react";
 import { useParams } from "next/navigation";
-import { blogPost } from "@/app/_data/blog";
+import { blogPost } from "@/data/blog";
 import Image from "next/image";
 import parse from "html-react-parser";
 import RenderBanner from "./RenderBanner";

@@ -1,20 +1,24 @@
 "use client";
 
-import { Button } from "@/app/_components/Button";
-import { useState, useEffect } from "react";
+import { api } from "@/trpc/react";
+import { Button } from "@/components/ui/Button";
+import { useState } from "react";
 
 const Page = () => {
-  const [status, setStatus] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
-  const user = true;
-  const emailVerificationStatus = "successful";
+  const resendVerificationEmail = api.verify.verifyUser.useMutation({
+    onError: (error) => {
+      setError(error.message);
+    },
+    onSuccess: () => {
+      setSuccess(true);
+    },
+  });
 
-  const handleResendVerificationEmail = async () => {
-    if (!user) {
-      setError("You need to login to resend verification email");
-    } else {
-    }
+  const handleResendVerificationEmail = () => {
+    resendVerificationEmail.mutate();
   };
 
   return (
@@ -27,19 +31,20 @@ const Page = () => {
         </p>
       </div>
 
-      {emailVerificationStatus === "successful" && (
-        <div className="my-6 text-sm font-medium text-green-600">
+      {error === "UNAUTHORIZED" && (
+        <div className="bg-red-100 mt-4 rounded text-error">
           <p>
-            A new verification link has been sent to the email address you
-            provided during registration.
+            Your session has expired. Please log in again to resend the
+            verification email.
           </p>
         </div>
       )}
 
-      {/* Display Resend Error If Any  */}
-      {error && (
-        <div className="mb-4 text-lg font-medium tracking-wide text-error">
-          {error}
+      {success && (
+        <div className="bg-red-100 mt-4 rounded text-green-600">
+          <p>
+            Verification email sent. Please check your inbox and spam folder.
+          </p>
         </div>
       )}
 

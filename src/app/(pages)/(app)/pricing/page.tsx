@@ -1,8 +1,8 @@
-import FrequentlyAskedQuestions from "@/app/_components/FrequentlyAskedQuestions";
-import SubscriptionPlan from "@/app/_components/SubscriptionPlan";
-import { subscriptionPlanToChoose, pricingFAQ } from "@/app/_data/data";
+import FrequentlyAskedQuestions from "@/components/common/FrequentlyAskedQuestions";
+import SubscriptionPlan from "@/components/common/SubscriptionPlan";
+import { subscriptionPlanToChoose, pricingFAQ } from "@/data/data";
 import { FaCircleCheck } from "react-icons/fa6";
-import exchangeRateAPI from "@/app/_hooks/exchangeRateAPI";
+import exchangeRateAPI from "@/libs/exchangeRateAPI";
 
 const GetStartedButton = () => (
   <button className="mt-4 rounded-3xl border-2 px-2 py-2 text-xs capitalize text-black md:px-6 md:text-2xl">

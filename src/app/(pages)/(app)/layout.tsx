@@ -1,7 +1,7 @@
 "use client";
 
-import Footer from "@/app/_components/Footer";
-import Navigation from "@/app/_components/Navigation";
+import Footer from "@/components/layout/Footer";
+import Navigation from "@/components/navigation/Navigation";
 
 type AppLayoutProps = {
   children: React.ReactNode;

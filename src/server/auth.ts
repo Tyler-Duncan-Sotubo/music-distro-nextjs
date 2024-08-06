@@ -11,6 +11,7 @@ import bcrypt from "bcrypt";
 
 import { env } from "@/env";
 import { db } from "@/server/db";
+import { User } from "@prisma/client";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -46,6 +47,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+
   secret: env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
@@ -97,6 +99,29 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          emailVerified: token.emailVerified,
+        },
+      };
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        const u = user as User;
+        return {
+          ...token,
+          id: u.id,
+          emailVerified: u.emailVerified,
+        };
+      }
+      return token;
+    },
+  },
 };
 
 /**

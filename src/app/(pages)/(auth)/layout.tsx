@@ -1,4 +1,4 @@
-import AuthCard from "@/app/_components/AuthCard";
+import AuthCard from "./_components/AuthCard";
 
 export const metadata = {
   title: "WePlugMusic",

@@ -1,5 +1,5 @@
 import React from "react";
-import terms from "@/app/_data/terms.json";
+import terms from "@/data/terms.json";
 
 const page = () => {
   return (

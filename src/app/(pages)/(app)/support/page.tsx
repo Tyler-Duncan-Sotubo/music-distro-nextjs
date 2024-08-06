@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import FrequentlyAskedQuestions from "@/app/_components/FrequentlyAskedQuestions";
+import FrequentlyAskedQuestions from "@/components/common/FrequentlyAskedQuestions";
 import React from "react";
-import { supportFAQ } from "@/app/_data/data";
+import { supportFAQ } from "@/data/data";
 import { FaChevronCircleDown, FaChevronCircleUp } from "react-icons/fa";
 import SearchBar from "./SearchBar";
 

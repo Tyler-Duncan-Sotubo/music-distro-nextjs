@@ -1,12 +1,12 @@
 "use client";
 
 import { api } from "@/trpc/react";
-import { Button } from "@/app/_components/Button";
-import SubmitErrorComponent from "@/app/_components/SubmitErrorComponent";
-import Label from "@/app/_components/Label";
+import { Button } from "@/components/ui/Button";
+import SubmitErrorComponent from "@/components/forms/SubmitErrorComponent";
+import Label from "@/components/ui/Label";
 import Link from "next/link";
 import { useState } from "react";
-import FormDescription from "@/app/_components/FormDescription";
+import FormDescription from "@/components/forms/FormDescription";
 import { useRouter } from "next/navigation";
 import {
   type FieldValues,
@@ -15,10 +15,10 @@ import {
   type UseFormRegister,
 } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import TextInput from "@/app/_components/TextInput";
+import TextInput from "@/components/ui/TextInput";
 import { type IFormInput } from "../types";
 import { registerSchema } from "../schemas";
-import { ButtonWithIcon } from "@/app/_components/ButtonWithIcon";
+import { ButtonWithIcon } from "@/components/ui/ButtonWithIcon";
 import { signIn } from "next-auth/react";
 
 const Page = () => {
@@ -37,8 +37,9 @@ const Page = () => {
     resolver: yupResolver(registerSchema) as Resolver<IFormInput>,
   });
 
+  // Register
   const registerUser = api.register.registerUser.useMutation({
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (!data) return;
       router.push("/login");
     },

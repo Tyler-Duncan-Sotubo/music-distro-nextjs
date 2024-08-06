@@ -5,6 +5,13 @@
 await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  images: {
+    domains: [
+      "lh3.googleusercontent.com",
+      "tooxclusive-artist-profile.s3.amazonaws.com",
+    ],
+  },
+};
 
 export default config;

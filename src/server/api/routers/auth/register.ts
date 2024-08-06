@@ -2,6 +2,8 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import bcrypt from "bcrypt";
+import { verifyEMail } from "@/server/services/mail";
+import { generateEmailVerificationToken } from "@/server/services/token/generateToken";
 
 export const registerRouter = createTRPCRouter({
   registerUser: publicProcedure
@@ -36,8 +38,17 @@ export const registerRouter = createTRPCRouter({
         },
       });
 
+      // Generate email verification token
+      const token = await generateEmailVerificationToken(email);
+
+      // Send verification email
+      await verifyEMail(email, name, token);
+
+      // Omit password from response
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password: _, ...rest } = newUser;
 
+      // Return user data
       return rest;
     }),
 });

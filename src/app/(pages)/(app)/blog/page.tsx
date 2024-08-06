@@ -1,4 +1,4 @@
-import { blogPost } from "@/app/_data/blog";
+import { blogPost } from "@/data/blog";
 import Image from "next/image";
 import Link from "next/link";
 

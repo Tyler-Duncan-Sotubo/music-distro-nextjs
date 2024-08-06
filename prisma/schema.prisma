@@ -36,16 +36,33 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    password      String?
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    streams       Stream[] // Add the opposite relation field for the 'User' field in the 'streams' model
-    audio         Audio[]
+    id                               String    @id @default(cuid())
+    name                             String?
+    email                            String?   @unique
+    password                         String?
+    emailVerified                    DateTime?
+    emailVerificationToken           String?
+    emailVerificationTokenExpiration DateTime?
+    image                            String?
+    accounts                         Account[]
+    sessions                         Session[]
+    streams                          Stream[] // Add the opposite relation field for the 'User' field in the 'streams' model
+    audio                            Audio[]
+
+    PasswordResetToken PasswordResetToken[]
+    UserInformation    UserInformation[]
+    Videos             Videos[]
+    Subscriptions      Subscriptions[]
+    Cart               Cart[]
+}
+
+model PasswordResetToken {
+    id      String   @id @default(cuid())
+    userId  String
+    token   String   @unique
+    expires DateTime
+
+    user User @relation(fields: [userId], references: [id])
 }
 
 model VerificationToken {
@@ -106,4 +123,65 @@ model Stream {
 
     User  User  @relation(fields: [userId], references: [id])
     audio Audio @relation(fields: [audioId], references: [id])
+}
+
+model UserInformation {
+    id                   String   @id @default(cuid())
+    userId               String   @unique
+    firstName            String
+    lastName             String
+    artistName           String
+    label                String
+    phone                String
+    country              String
+    howDidYouHearAboutUs String?
+    youtube              String?
+    instagram            String?
+    twitter              String?
+    facebook             String?
+    vevo                 String?
+    createdAt            DateTime @default(now())
+    updatedAt            DateTime @updatedAt
+
+    User User @relation(fields: [userId], references: [id])
+}
+
+model Videos {
+    id          String   @id @default(cuid())
+    userId      String
+    title       String
+    releaseDate DateTime
+    link        String
+    keywords    String
+    description String
+    status      String
+    releaseType String
+    createdAt   DateTime @default(now())
+
+    User User @relation(fields: [userId], references: [id])
+}
+
+model Subscriptions {
+    id        String   @id @default(cuid())
+    userId    String   @unique
+    plan      String
+    status    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    expiresAt DateTime
+
+    User User @relation(fields: [userId], references: [id])
+}
+
+model Cart {
+    id          String   @id @default(cuid())
+    userId      String
+    product     String
+    description String
+    price       Int
+    quantity    Int
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    User User @relation(fields: [userId], references: [id])
 }

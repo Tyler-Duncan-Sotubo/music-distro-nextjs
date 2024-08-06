@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/app/_components/Button";
-import FrequentlyAskedQuestions from "@/app/_components/FrequentlyAskedQuestions";
-import { vevoFAQ } from "@/app/_data/data";
+import { Button } from "@/components/ui/Button";
+import FrequentlyAskedQuestions from "@/components/common/FrequentlyAskedQuestions";
+import { vevoFAQ } from "@/data/data";
 
 const page = () => {
   const user = true;
