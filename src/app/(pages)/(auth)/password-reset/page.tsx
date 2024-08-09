@@ -17,6 +17,7 @@ import { type ResetPasswordInput } from "../types";
 import { resetPasswordSchema } from "../schemas";
 import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
+import { Suspense } from "react";
 
 const PasswordReset = () => {
   const searchParams = useSearchParams();
@@ -53,53 +54,55 @@ const PasswordReset = () => {
   };
 
   return (
-    <section className="py-6">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Email Address */}
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <TextInput
-            register={register as unknown as UseFormRegister<FieldValues>}
-            name="email"
-            error={errors.email?.message}
-            id="name"
-            type="email"
-          />
-        </div>
+    <Suspense fallback={<div>Loading search results...</div>}>
+      <section className="py-6">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* Email Address */}
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <TextInput
+              register={register as unknown as UseFormRegister<FieldValues>}
+              name="email"
+              error={errors.email?.message}
+              id="name"
+              type="email"
+            />
+          </div>
 
-        {/* Password */}
-        <div className="mt-4">
-          <Label htmlFor="password">Password</Label>
-          <TextInput
-            register={register as unknown as UseFormRegister<FieldValues>}
-            name="password"
-            error={errors.password?.message}
-            id="password"
-            type="password"
-          />
-        </div>
+          {/* Password */}
+          <div className="mt-4">
+            <Label htmlFor="password">Password</Label>
+            <TextInput
+              register={register as unknown as UseFormRegister<FieldValues>}
+              name="password"
+              error={errors.password?.message}
+              id="password"
+              type="password"
+            />
+          </div>
 
-        {/* Confirm Password */}
-        <div className="mt-4">
-          <Label htmlFor="passwordConfirmation">Confirm Password</Label>
-          <TextInput
-            register={register as unknown as UseFormRegister<FieldValues>}
-            name="password_confirmation"
-            error={errors.password_confirmation?.message}
-            id="password_confirmation"
-            type="password"
-          />
-        </div>
+          {/* Confirm Password */}
+          <div className="mt-4">
+            <Label htmlFor="passwordConfirmation">Confirm Password</Label>
+            <TextInput
+              register={register as unknown as UseFormRegister<FieldValues>}
+              name="password_confirmation"
+              error={errors.password_confirmation?.message}
+              id="password_confirmation"
+              type="password"
+            />
+          </div>
 
-        {/* Error */}
-        {error && <div className="mt-4 text-error">{error}</div>}
+          {/* Error */}
+          {error && <div className="mt-4 text-error">{error}</div>}
 
-        {/* Reset Password Button */}
-        <div className="my-8 flex items-center justify-end">
-          <Button className="px-8">Reset Password</Button>
-        </div>
-      </form>
-    </section>
+          {/* Reset Password Button */}
+          <div className="my-8 flex items-center justify-end">
+            <Button className="px-8">Reset Password</Button>
+          </div>
+        </form>
+      </section>
+    </Suspense>
   );
 };
 
