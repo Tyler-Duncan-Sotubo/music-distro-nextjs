@@ -26,9 +26,9 @@ const schema = z.object({
   language: z.string().min(1, "Language is required"),
   releaseAudioLink: z.string().optional(),
   imageFileName: z.string().min(1, "Image is required"),
-  audioFileName: z.string().min(1, "Audio is required"),
+  audioFileName: z.string().nullable(),
   releaseCover: z.string(),
-  releaseAudio: z.string(),
+  releaseAudio: z.string().optional().nullable(),
 });
 
 export const audioRouter = createTRPCRouter({
@@ -76,7 +76,9 @@ export const audioRouter = createTRPCRouter({
       const { db, session } = ctx;
 
       const imageFileName = input.imageFileName.split(" ").join("");
-      const audioFileName = input.audioFileName.split(" ").join("");
+      const audioFileName = input.audioFileName
+        ? input.audioFileName.split(" ").join("")
+        : "";
 
       const imageLink = await uploadImage(
         session.user,
@@ -84,11 +86,15 @@ export const audioRouter = createTRPCRouter({
         input.releaseCover,
       );
 
-      const audioLink = await uploadAudio(
-        session.user,
-        audioFileName,
-        input.releaseAudio,
-      );
+      let audioLink;
+
+      if (input.releaseAudio !== "") {
+        audioLink = await uploadAudio(
+          session.user,
+          audioFileName,
+          input.releaseAudio,
+        );
+      }
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { audioFileName: _, imageFileName: __, ...rest } = input;

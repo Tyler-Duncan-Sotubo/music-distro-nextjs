@@ -29,7 +29,9 @@ const MusicReleaseComponent = ({ releases }: { releases: Audio[] | null }) => {
 
   const filteredReleases = releases?.filter(
     (release) =>
-      (release.status.toLowerCase() === "pending" &&
+      (["pending", "under review", "submitted"].includes(
+        release.status.toLowerCase(),
+      ) &&
         (filterStatus === "pending" || filterStatus === "all")) ||
       (release.status.toLowerCase() === "live" &&
         (filterStatus === "live" || filterStatus === "all")),
@@ -44,7 +46,7 @@ const MusicReleaseComponent = ({ releases }: { releases: Audio[] | null }) => {
       </div>
       <div className="border-t-2 border-secondary">
         <ul
-          className={`${(filteredReleases?.length ?? 0 > 0) ? "grid" : "block"} grid-cols-1 gap-3 md:grid-cols-2 md:gap-10 lg:grid-cols-3`}
+          className={`${(filteredReleases?.length ?? 0 > 0) ? "grid" : "block"} grid-cols-1 gap-3 md:grid-cols-3 md:gap-6 lg:grid-cols-4`}
         >
           {(filteredReleases?.length ?? 0 > 0) ? (
             filteredReleases?.map((release, index) => (

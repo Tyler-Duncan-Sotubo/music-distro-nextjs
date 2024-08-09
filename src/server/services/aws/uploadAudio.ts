@@ -10,10 +10,10 @@ const s3 = new S3Client({
 export const uploadAudio = async (
   user: User,
   fileName: string,
-  audio: string,
+  audio: string | undefined | null,
 ) => {
   const base64Data = Buffer.from(
-    audio.replace(/^data:audio\/\w+;base64,/, ""),
+    audio?.replace(/^data:audio\/\w+;base64,/, "") ?? "",
     "base64",
   );
 
