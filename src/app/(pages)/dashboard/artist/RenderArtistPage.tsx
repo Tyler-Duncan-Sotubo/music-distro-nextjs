@@ -19,7 +19,7 @@ const RenderArtistPage = ({
   userSocialUrls,
 }: {
   userInfo: UserInformation | null;
-  userSocialUrls: Social | undefined;
+  userSocialUrls: Social | null;
 }) => {
   const { data: session } = useSession();
   const loggedInUser = session?.user;
