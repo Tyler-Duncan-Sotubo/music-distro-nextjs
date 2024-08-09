@@ -1,4 +1,8 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { uploadAudio, uploadImage } from "@/server/services/aws";
@@ -34,6 +38,30 @@ export const audioRouter = createTRPCRouter({
       where: {
         userId: session.user.id,
       },
+    });
+
+    if (!audioReleases) {
+      return null;
+    }
+
+    return audioReleases;
+  }),
+  getAllReleases: publicProcedure.query(async ({ ctx }) => {
+    const { db } = ctx;
+    const audioReleases = await db.audio.findMany({
+      where: {
+        status: "Live",
+      },
+      orderBy: {
+        releaseDate: "desc",
+      },
+      select: {
+        title: true,
+        artist: true,
+        releaseCover: true,
+        smartLink: true,
+      },
+      take: 8,
     });
 
     if (!audioReleases) {

@@ -138,6 +138,11 @@ const Login = () => {
         <p className="h-[2px] w-1/2 bg-gray"></p>
       </div>
 
+      {/* Warning */}
+      <p className="text-center text-sm text-error">
+        if you signed up with your email and password, please use that to login
+      </p>
+
       {/* Login With Google*/}
       <div className="mt-6 w-full">
         <ButtonWithIcon onClick={() => googleSignIn()} iconName="google">
