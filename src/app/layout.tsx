@@ -6,6 +6,7 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { NextAuthProvider } from "@/server/provider/nextAuthProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +21,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <NextAuthProvider>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-        </NextAuthProvider>
-        <ToastContainer autoClose={3000} />
-      </body>
+      <Suspense fallback={<div>Loading search results...</div>}>
+        <body className={inter.className}>
+          <NextAuthProvider>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+          </NextAuthProvider>
+          <ToastContainer autoClose={3000} />
+        </body>
+      </Suspense>
     </html>
   );
 }

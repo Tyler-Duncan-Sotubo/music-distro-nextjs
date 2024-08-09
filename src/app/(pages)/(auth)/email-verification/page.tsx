@@ -3,14 +3,13 @@
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
 
 const EmailVerified = () => {
   const searchParams = useSearchParams();
   const success = searchParams.get("success");
 
   return (
-    <Suspense fallback={<div>Loading search results...</div>}>
+    <div>
       {success === "token-expired" ? (
         <div className="mx-auto my-10 flex w-[90%] flex-col items-center justify-center gap-6 text-center">
           <h1 className="text-center text-2xl font-bold">Token Expired</h1>
@@ -46,7 +45,7 @@ const EmailVerified = () => {
           </div>
         </div>
       )}
-    </Suspense>
+    </div>
   );
 };
 
