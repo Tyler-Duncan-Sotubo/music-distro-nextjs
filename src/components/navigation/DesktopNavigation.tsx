@@ -26,7 +26,7 @@ export const DesktopNavigation = () => {
     >
       <div className="flex gap-20">
         <Link href="/">
-          <ApplicationLogo className={"fill-current h-14 w-14 text-black"} />
+          <ApplicationLogo />
         </Link>
         <ul className="flex items-center gap-6">
           {navData.map((item: navDataType, index: number) => (

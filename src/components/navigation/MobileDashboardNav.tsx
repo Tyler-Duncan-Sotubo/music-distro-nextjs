@@ -32,7 +32,7 @@ const MobileDashboardNav = ({ RenderCartButton }: MobileDashboardNavProps) => {
         <RenderCartButton />
         {/* Logo */}
         <Link href="/dashboard">
-          <ApplicationLogo className={"fill-current h-10 w-10 text-black"} />
+          <ApplicationLogo />
         </Link>
         <div className="flex items-center gap-10">
           <button

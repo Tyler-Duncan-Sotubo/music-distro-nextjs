@@ -16,7 +16,7 @@ import ProfilePhoto from "@/components/common/ProfilePhoto";
 
 type Props = {
   userInfo: UserInformation | null;
-  userSocialUrls: Social;
+  userSocialUrls: Social | null;
 };
 
 const RenderUserAccount = ({ userInfo, userSocialUrls }: Props) => {

@@ -22,7 +22,7 @@ export const MobileNavigation = () => {
     <nav className="relative w-full text-primary shadow-xl lg:hidden" id="nav">
       <section className="flex justify-between px-5 py-3">
         <Link href="/">
-          <ApplicationLogo className={"fill-current h-10 w-10 text-black"} />
+          <ApplicationLogo />
         </Link>
         <div className="flex items-center gap-10">
           <button

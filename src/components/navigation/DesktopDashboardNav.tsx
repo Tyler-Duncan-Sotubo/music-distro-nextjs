@@ -37,7 +37,7 @@ const DesktopDashboardNav = ({
     >
       <div className="flex items-center justify-between gap-10">
         <Link href="/dashboard">
-          <ApplicationLogo className={"fill-current h-14 w-14 text-black"} />
+          <ApplicationLogo />
         </Link>
         <ul className="flex justify-center gap-6">
           {dashboardNav.map((item, index) => (
