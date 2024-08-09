@@ -1,6 +1,6 @@
 import { BiSolidVideos } from "react-icons/bi";
 import { FaMusic } from "react-icons/fa";
-import { MdAccountTree, MdLock } from "react-icons/md";
+import {  MdLock } from "react-icons/md";
 
 export const distros = [
   { image: "/img/distros/spotify-auth.svg", name: "Deezer" },
