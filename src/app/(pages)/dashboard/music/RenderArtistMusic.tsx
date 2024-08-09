@@ -1,7 +1,5 @@
 import { FaMusic } from "react-icons/fa";
-import { IoAlbumsOutline } from "react-icons/io5";
-import { IoIosAlbums } from "react-icons/io";
-import { Audio } from "@prisma/client";
+import { type Audio } from "@prisma/client";
 import MusicReleaseComponent from "./_components/MusicReleaseComponent";
 import Link from "next/link";
 

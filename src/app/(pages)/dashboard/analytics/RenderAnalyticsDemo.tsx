@@ -2,7 +2,6 @@
 
 import { TbTriangleInvertedFilled } from "react-icons/tb";
 import { StreamsGraph } from "../graphs/StreamsGraph";
-import { useState } from "react";
 import Link from "next/link";
 
 const RenderAnalyticsDemo = () => {

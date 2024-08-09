@@ -1,5 +1,4 @@
 import { type FieldValues, type UseFormRegister } from "react-hook-form";
-import Label from "@/components/ui/Label";
 import { type ArtistDetailsInput } from "../../types/artist.type";
 import { type UserSocialErrorObject } from "./errorObject.type";
 import TextInput from "@/components/ui/TextInput";

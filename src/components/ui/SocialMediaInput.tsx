@@ -11,7 +11,6 @@ type InputProps = {
 };
 
 const SocialInput = ({
-  disabled = false,
   className,
   register,
   name,

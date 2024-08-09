@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useLayoutEffect } from "react";
+// import { useState, useLayoutEffect } from "react";
 import {
   type FieldValues,
   type Resolver,
@@ -17,8 +17,8 @@ import { VideoReleaseSchema } from "../schema/videoRelease.schema";
 import DatePickerForm from "@/components/forms/DatePickerForm";
 
 const RenderVideoReleasePage = () => {
-  const [showModal, setShowModal] = useState(true);
-  const [submitError, setSubmitError] = useState<string | null>("");
+  const showModal = true;
+  // const [submitError, setSubmitError] = useState<string | null>("");
   const vevoPackage = false;
 
   const {
@@ -146,7 +146,7 @@ const RenderVideoReleasePage = () => {
         </section>
 
         {/* Submission Error */}
-        {submitError && <p className="text-error">{submitError}</p>}
+        {/* {submitError && <p className="text-error">{submitError}</p>} */}
 
         {/* Submit Button */}
         <div className="flex justify-start">

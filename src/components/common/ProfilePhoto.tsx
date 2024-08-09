@@ -52,7 +52,7 @@ const ProfilePhoto = () => {
     if (image) {
       await uploadImageToServer.mutateAsync({
         image: image as string,
-        imageFileName: imageFileName as string,
+        imageFileName: imageFileName!,
       });
     }
   };
@@ -140,8 +140,8 @@ const ProfilePhoto = () => {
               {/* Submit Button */}
               <div className="self-end md:mt-16">
                 <Button
-                  onClick={() => {
-                    onSubmit();
+                  onClick={async () => {
+                    await onSubmit();
                   }}
                 >
                   Submit

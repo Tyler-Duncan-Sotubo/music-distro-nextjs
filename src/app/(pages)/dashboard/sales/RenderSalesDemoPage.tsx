@@ -1,25 +1,24 @@
 "use client";
 
-import { useState } from "react";
 import { EarningsGraph } from "../graphs/EarningsGraph";
 import Link from "next/link";
 
 const RenderSalesDemoPage = () => {
   // Check if user is subscribed
-  const [salesWarningModal, setSalesWarningModal] = useState(true);
+  const salesWarningModal = true;
 
   return (
     <>
       {/* Sales Warning Modal */}
       {salesWarningModal && (
-        <section className="fixed inset-0 bg-black bg-opacity-70 z-50 flex justify-center items-center ">
-          <div className="bg-white px-10 flex flex-col gap-6 justify-center items-center py-6 w-[80%] h-[30%] md:w-[40%] md:h-[30%] rounded-2xl">
-            <h3 className="text-lg text-center">
+        <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+          <div className="flex h-[30%] w-[80%] flex-col items-center justify-center gap-6 rounded-2xl bg-white px-10 py-6 md:h-[30%] md:w-[40%]">
+            <h3 className="text-center text-lg">
               You are currently on a demo account. To view your sales and
               analytics data, please subscribe to a plan.
             </h3>
             <Link href="/dashboard/subscription">
-              <button className="px-3 py-4 w-full text-center text-white bg-primary">
+              <button className="w-full bg-primary px-3 py-4 text-center text-white">
                 Subscribe To A Plan
               </button>
             </Link>
@@ -27,10 +26,10 @@ const RenderSalesDemoPage = () => {
         </section>
       )}
       {/* Sales Notice */}
-      <h1 className="text-center text-3xl md:text-5xl font-bold md:mt-32">
+      <h1 className="text-center text-3xl font-bold md:mt-32 md:text-5xl">
         Sales and Streaming Reports
       </h1>
-      <h3 className="text-center mb-14 mt-8">
+      <h3 className="mb-14 mt-8 text-center">
         Here you&apos;ll find detailed reports on the royalties your music has
         earned. Some stores report sales to us with up to a 3 month delay, so
         you might not see recent earnings reflected in these reports straight
@@ -38,53 +37,54 @@ const RenderSalesDemoPage = () => {
       </h3>
 
       {/* Total Earnings Graph */}
-      <div className="md:h-[400px] md:flex">
+      <div className="md:flex md:h-[400px]">
         <div className="md:w-[75%]">
           <EarningsGraph />
         </div>
-        <div className="md:w-[25%] text-center flex flex-col gap-3 capitalize">
-          <h1 className="text-3xl font-bold text-center mt-20">
+        <div className="flex flex-col gap-3 text-center capitalize md:w-[25%]">
+          <h1 className="mt-20 text-center text-3xl font-bold">
             Monthly Report
           </h1>
           <p className="text-xl">Last reporting months</p>
-          <p className="text-2xl font-bold text-center ">total earnings</p>
-          <p className="text-2xl font-bold text-center "> $0.00</p>
+          <p className="text-center text-2xl font-bold">total earnings</p>
+          <p className="text-center text-2xl font-bold"> $0.00</p>
         </div>
       </div>
 
       <section className="my-28">
         <h1>Overview</h1>
         {/*  Sales Table */}
-        <table className="min-w-full divide-y divide-gray-200 text-[14px] capitalize my-16">
-          <thead className="font-regular bg-white uppercase text-purple ">
+        <table className="divide-gray-200 my-16 min-w-full divide-y text-[14px] capitalize">
+          <thead className="font-regular text-purple bg-white uppercase">
             <tr>
-              <th className="text-left p-4">Category</th>
-              <th className="text-left p-4">Total Sales</th>
-              <th className="text-left p-4">Total Earnings</th>
+              <th className="p-4 text-left">Category</th>
+              <th className="p-4 text-left">Total Sales</th>
+              <th className="p-4 text-left">Total Earnings</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200 capitalize">
+          <tbody className="divide-gray-200 divide-y bg-white capitalize">
             {Array.isArray(salesOverview) ? (
               salesOverview.map((release, index) => (
                 <tr
                   key={index}
                   className={`${
                     index === salesOverview.length - 1 && "font-bold"
-                  }`}>
-                  <td className="px-4 py-5 whitespace-nowrap">
+                  }`}
+                >
+                  <td className="whitespace-nowrap px-4 py-5">
                     <p>{release.title}</p>
                   </td>
-                  <td className="px-10 py-4 whitespace-nowrap">
+                  <td className="whitespace-nowrap px-10 py-4">
                     <p>{release.totalEarnings}</p>
                   </td>
-                  <td className="px-10 py-4 whitespace-nowrap">
+                  <td className="whitespace-nowrap px-10 py-4">
                     <p>{release.totalEarnings}</p>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td className="px-4 py-4 text-xl whitespace-nowrap font-bold text-center">
+                <td className="whitespace-nowrap px-4 py-4 text-center text-xl font-bold">
                   <p>No Release yet</p>
                 </td>
               </tr>

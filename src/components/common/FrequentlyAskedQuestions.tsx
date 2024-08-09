@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronDown } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
 
 type faq = {
@@ -53,7 +53,7 @@ const FrequentlyAskedQuestions = ({
                 </div>
                 <div
                   className={
-                    activeIndex === index ? "animate-slideIn mt-2" : "hidden"
+                    activeIndex === index ? "mt-2 animate-slideIn" : "hidden"
                   }
                 >
                   <div className="text-xl tracking-wide md:text-2xl">

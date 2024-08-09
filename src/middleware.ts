@@ -10,7 +10,8 @@ type isAuthenticated = {
 const protectedRoutes = ["/dashboard"];
 
 async function getCookies(
-  cookieModule: typeof cookies,
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  cookies: typeof import("next/headers").cookies,
 ): Promise<isAuthenticated> {
   const token = cookies().get("next-auth.session-token") as isAuthenticated;
   return token;

@@ -1,7 +1,5 @@
 "use client";
 
-import { FaUserCircle, FaRegEdit } from "react-icons/fa";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/Button";
 import {
@@ -13,7 +11,7 @@ import {
   ArtistDetailsCardContainer,
 } from "./_components/ArtistDetailsCard";
 import Link from "next/link";
-import { type UserInformation } from "@prisma/client";
+import { type Social, type UserInformation } from "@prisma/client";
 import ProfilePhoto from "@/components/common/ProfilePhoto";
 
 const RenderArtistPage = ({
@@ -21,7 +19,7 @@ const RenderArtistPage = ({
   userSocialUrls,
 }: {
   userInfo: UserInformation | null;
-  userSocialUrls: any;
+  userSocialUrls: Social | undefined;
 }) => {
   const { data: session } = useSession();
   const loggedInUser = session?.user;

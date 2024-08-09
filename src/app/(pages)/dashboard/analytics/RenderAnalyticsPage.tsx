@@ -1,4 +1,3 @@
-import { TbTriangleInvertedFilled } from "react-icons/tb";
 import { StreamsGraph } from "../graphs/StreamsGraph";
 // import { type Stream } from "@prisma/client";
 import { type Stream } from "../types/stream.type";

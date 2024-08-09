@@ -5,7 +5,7 @@ import { type Resolver, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ArtistDetailsSchema } from "../schema/artist.schema";
 import { useState, useEffect } from "react";
-import { Social, type UserInformation } from "@prisma/client";
+import { type Social, type UserInformation } from "@prisma/client";
 import { api } from "@/trpc/react";
 import { toast } from "react-toastify";
 import { Spinner } from "@/components/common/Spinner";
@@ -16,7 +16,7 @@ import ProfilePhoto from "@/components/common/ProfilePhoto";
 
 type Props = {
   userInfo: UserInformation | null;
-  userSocialUrls: any;
+  userSocialUrls: Social;
 };
 
 const RenderUserAccount = ({ userInfo, userSocialUrls }: Props) => {

@@ -1,8 +1,6 @@
-import { Audio } from "@prisma/client";
+import { type Audio } from "@prisma/client";
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/Button";
 
 type ReleaseMobileView = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

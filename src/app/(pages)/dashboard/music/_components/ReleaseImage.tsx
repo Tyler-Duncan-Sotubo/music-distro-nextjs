@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaImage } from "react-icons/fa";
 
 type ReleaseImageProps = {

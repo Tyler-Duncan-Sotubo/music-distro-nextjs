@@ -10,7 +10,6 @@ import {
   Title,
   Tooltip,
   Legend,
-  plugins,
 } from "chart.js";
 
 ChartJS.register(
@@ -20,7 +19,7 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 const EarningsData = {
