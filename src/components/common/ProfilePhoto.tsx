@@ -61,13 +61,15 @@ const ProfilePhoto = () => {
     <>
       <section className="mx-auto mb-6 mt-10 flex flex-col items-center md:w-1/4">
         {photo?.data?.image ? (
-          <Image
-            src={photo?.data?.image || ""}
-            width={320}
-            height={320}
-            className="rounded-full"
-            alt="user profile image"
-          />
+          <div className="relative h-72 w-72 rounded-full">
+            <Image
+              fill
+              src={photo?.data?.image || ""}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              alt="user profile image"
+              className="rounded-full"
+            />
+          </div>
         ) : (
           <FaUserCircle size={280} color="#1e40af" />
         )}

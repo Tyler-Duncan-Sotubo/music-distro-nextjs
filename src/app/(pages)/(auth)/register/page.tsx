@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 import SubmitErrorComponent from "@/components/forms/SubmitErrorComponent";
 import Label from "@/components/ui/Label";
 import Link from "next/link";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import FormDescription from "@/components/forms/FormDescription";
 import { useRouter } from "next/navigation";
 import {
@@ -19,7 +19,7 @@ import TextInput from "@/components/ui/TextInput";
 import { type IFormInput } from "../types";
 import { registerSchema } from "../schemas";
 import { ButtonWithIcon } from "@/components/ui/ButtonWithIcon";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 const Page = () => {
   const [agreeToTerms, setAgreeToTerms] = useState<boolean>(false);
@@ -69,6 +69,14 @@ const Page = () => {
       callbackUrl: "/dashboard",
     });
   };
+
+  // Redirect to dashboard if user is already logged in
+  const { data: session } = useSession();
+  useLayoutEffect(() => {
+    if (session) {
+      router.push("/dashboard");
+    }
+  }, [router, session]);
 
   return (
     <>

@@ -36,13 +36,15 @@ const DropDown = ({
       {includesUserDetails && (
         <div className="mb-6 flex items-center gap-2">
           {photo?.data?.image ? (
-            <Image
-              src={photo?.data?.image || ""}
-              width={50}
-              height={50}
-              className="rounded-full"
-              alt="user profile image"
-            />
+            <div className="relative h-12 w-12 rounded-full">
+              <Image
+                fill
+                src={photo?.data?.image || ""}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                alt="user profile image"
+                className="rounded-full"
+              />
+            </div>
           ) : (
             <FaUserCircle size={50} color="#1e40af" />
           )}

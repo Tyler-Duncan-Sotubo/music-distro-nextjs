@@ -1,5 +1,6 @@
 "use client";
 
+import { useLayoutEffect } from "react";
 import { Button } from "@/components/ui/Button";
 import Label from "@/components/ui/Label";
 import Link from "next/link";
@@ -15,14 +16,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { type LoginInput } from "../types";
 import { LoginSchema } from "../schemas";
 import TextInput from "@/components/ui/TextInput";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { ButtonWithIcon } from "@/components/ui/ButtonWithIcon";
 import { useState } from "react";
 
 const Login = () => {
   const router = useRouter();
   // Login State Management with Redux
-
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
@@ -52,6 +52,14 @@ const Login = () => {
       callbackUrl: "/dashboard",
     });
   };
+
+  // Redirect to dashboard if user is already logged in
+  const { data: session } = useSession();
+  useLayoutEffect(() => {
+    if (session) {
+      router.push("/dashboard");
+    }
+  }, [router, session]);
 
   return (
     <section className="py-6">
