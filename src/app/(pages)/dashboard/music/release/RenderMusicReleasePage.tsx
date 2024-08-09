@@ -103,7 +103,7 @@ const RenderMusicReleasePage = ({
       router.push("/dashboard");
     }
 
-    if (res.status === 400) {
+    if (res.status >= 400) {
       setIsLoading(false);
       setSubmitError("An error occurred while submitting your release");
     }
