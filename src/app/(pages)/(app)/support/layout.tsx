@@ -18,7 +18,7 @@ const SupportLayout = ({ children }: SupportLayoutProps) => {
       <main>{children}</main>
       <footer className="mb-20 mt-44 flex flex-col items-center justify-center">
         <Link href="/">
-          <ApplicationLogo className="h-16 w-16" />
+          <ApplicationLogo />
         </Link>
         <p className="mt-10 text-center">
           &copy; {new Date().getFullYear()} All Rights Reserved
