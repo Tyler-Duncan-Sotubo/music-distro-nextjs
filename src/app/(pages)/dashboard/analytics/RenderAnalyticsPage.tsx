@@ -47,14 +47,22 @@ const RenderAnalyticsPage = ({
   return (
     <>
       {/* Streams and Downloads */}
-      <section className="my-20 text-center md:mt-44">
-        <h1 className="my-20">My Streams and Downloads</h1>
+      <section className="my-20 text-center md:mt-36">
+        <div className="my-16">
+          <h1 className="">My Streams and Downloads</h1>
+          <h3 className="my-4">
+            Some stores don’t provide live sales & streaming data, so these
+            reports may not reflect your exact final sales figures.
+          </h3>
+        </div>
+
         <div className="md:flex md:h-[400px]">
-          <div className="md:w-[80%]">
+          <div className="md:w-[70%]">
             {Object.keys(data ?? {}).length === 0 ? (
-              <section className="relative inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
-                <div className="flex h-[30%] w-[80%] flex-col items-center justify-center gap-6 bg-white px-10 py-6 opacity-70 md:h-[400px] md:w-full">
-                  <h3 className="text-center text-lg">
+              <section className="relative inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+                <div className="flex h-[30%] w-full flex-col items-center justify-center gap-6 bg-white px-10 py-6 opacity-70 md:h-[400px]">
+                  <StreamsGraph data={data} />
+                  <h3 className="absolute w-2/3 font-bold lg:w-1/2">
                     No downloads reported yet for the last 7 days. Come back
                     later to check again.
                   </h3>
@@ -94,18 +102,23 @@ const RenderAnalyticsPage = ({
 
       {/* Streaming Platforms */}
       <table className="my-10 table-auto md:w-[60%]">
-        <thead>
-          <tr>
-            {headers.map((header, index) => (
-              <th
-                key={index}
-                className="border-gray-400 bg-gray-200 text-gray-800 w-[45%] py-4 text-left"
-              >
-                {header}
-              </th>
-            ))}
-          </tr>
-        </thead>
+        {Object.keys(data ?? {}).length === 0 ? (
+          ""
+        ) : (
+          <thead>
+            <tr>
+              {headers.map((header, index) => (
+                <th
+                  key={index}
+                  className="border-gray-400 bg-gray-200 text-gray-800 w-[45%] py-4 text-left"
+                >
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+        )}
+
         <tbody>
           {data?.apple && (
             <tr className="mb-4 text-lg">

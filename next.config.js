@@ -6,6 +6,8 @@ await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
 const config = {
+  reactStrictMode: true,
+  output: "standalone",
   images: {
     domains: [
       "lh3.googleusercontent.com",

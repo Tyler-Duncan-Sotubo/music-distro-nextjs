@@ -3,6 +3,8 @@ import { subscriptionRouter } from "./routers/subscriptions/subscriptions";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { streamRouter, audioRouter } from "./routers/music";
 import { userRouter } from "./routers/user/user";
+import { cartRouter } from "./routers/cart/cart";
+import { photoRouter } from "./routers/user";
 
 /**
  * This is the primary router for your server.
@@ -17,6 +19,8 @@ export const appRouter = createTRPCRouter({
   audio: audioRouter,
   user: userRouter,
   streams: streamRouter,
+  cart: cartRouter,
+  photo: photoRouter,
 });
 
 // export type definition of API

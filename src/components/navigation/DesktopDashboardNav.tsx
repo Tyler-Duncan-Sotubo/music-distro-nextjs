@@ -1,13 +1,14 @@
 import Link from "next/link";
 import React from "react";
-import ApplicationLogo from "./ApplicationLogo";
+import ApplicationLogo from "@/components/ui/ApplicationLogo";
 import { dashboardNav, profileData, uploadData } from "@/data/data";
 import { NavLink } from "./NavLinks";
 import { usePathname } from "next/navigation";
 import { FaChevronDown, FaUserCircle } from "react-icons/fa";
-import DropDown from "./DropDown";
+import DropDown from "@/components/common/DropDown";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { api } from "@/trpc/react";
 
 type DesktopDashboardNavProps = {
   RenderCartButton: () => JSX.Element;
@@ -27,13 +28,15 @@ const DesktopDashboardNav = ({
   const { data: session } = useSession();
   const loggedInUser = session?.user;
 
+  const photo = api.photo.getProfilePhoto.useQuery();
+
   return (
     <nav
       className="absolute top-0 mx-auto hidden w-full bg-white px-10 py-4 md:flex md:items-center md:justify-between md:gap-10 md:px-20 md:py-5"
       id="nav"
     >
-      <div className="flex justify-between gap-10">
-        <Link href="/">
+      <div className="flex items-center justify-between gap-10">
+        <Link href="/dashboard">
           <ApplicationLogo className={"fill-current h-14 w-14 text-black"} />
         </Link>
         <ul className="flex justify-center gap-6">
@@ -56,7 +59,6 @@ const DesktopDashboardNav = ({
         <div className="group relative z-50 cursor-pointer">
           <div className="flex items-center gap-1">
             <h4 className="font-bold">Upload</h4>
-            <FaChevronDown size={20} color="#1e40af" />
           </div>
           {/* Upload Dropdown */}
           <DropDown data={uploadData} loggedInUser={loggedInUser as User} />
@@ -65,12 +67,12 @@ const DesktopDashboardNav = ({
         {/* User Profile */}
         <div className="group relative z-50 cursor-pointer">
           <div className="flex items-center">
-            {loggedInUser?.image ? (
+            {photo?.data?.image ? (
               <Image
-                src={loggedInUser.image}
+                src={photo?.data?.image || ""}
                 width={50}
                 height={50}
-                className="rounded-full"
+                className="mr-1 rounded-full"
                 alt="user profile image"
               />
             ) : (

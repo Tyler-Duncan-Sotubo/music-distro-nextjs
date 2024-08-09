@@ -1,21 +1,15 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
-import ApplicationLogo from "./ApplicationLogo";
+import ApplicationLogo from "@/components/ui/ApplicationLogo";
 import { MdClose } from "react-icons/md";
-import { dashboardNav, profileData, uploadData } from "../_data/data";
+import { dashboardNav, profileData, uploadData } from "@/data/data";
 import { NavLink } from "./NavLinks";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useSession, signOut } from "next-auth/react";
 
 type MobileDashboardNavProps = {
   RenderCartButton: () => JSX.Element;
-};
-
-type User = {
-  name: string;
-  email: string;
-  image: string;
 };
 
 const MobileDashboardNav = ({ RenderCartButton }: MobileDashboardNavProps) => {
@@ -37,7 +31,7 @@ const MobileDashboardNav = ({ RenderCartButton }: MobileDashboardNavProps) => {
         {/* Cart */}
         <RenderCartButton />
         {/* Logo */}
-        <Link href="/">
+        <Link href="/dashboard">
           <ApplicationLogo className={"fill-current h-10 w-10 text-black"} />
         </Link>
         <div className="flex items-center gap-10">

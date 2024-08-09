@@ -24,6 +24,15 @@ export default {
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
       },
+      keyframes: {
+        slideIn: {
+          "0%": { transform: "translateY(-10%)", opacity: "0.3" },
+          "100%": { transform: "translateY(0%)", opacity: "1" },
+        },
+      },
+      animation: {
+        slideIn: "slideIn 500ms ease-in-out",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],

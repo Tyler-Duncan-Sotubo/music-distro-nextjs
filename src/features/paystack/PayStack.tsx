@@ -3,48 +3,59 @@
 import { PaystackButton } from "react-paystack";
 import { useRouter } from "next/navigation";
 import { type User } from "next-auth";
-import { api } from "@/trpc/react";
 import { env } from "@/env";
+import { type CartItem } from "@prisma/client";
+import { useState, useEffect } from "react";
+import { api } from "@/trpc/react";
 
-type CartItem = {
-  cartItem: cartItem | undefined;
+type cartItem = {
+  cartItem: CartItem | undefined;
   user: User | undefined;
 };
 
-type cartItem = {
-  product: string;
-  description: string;
-  price: number;
-  price_in_naira: number;
-  cartQuantity: number;
-};
+const PayStack = ({ cartItem, user }: cartItem) => {
+  const [isMounted, setIsMounted] = useState(false);
 
-const PayStack = ({ cartItem, user }: CartItem) => {
+  const createSubscription = api.subscriptions.createSubscription.useMutation({
+    onSuccess: () => {
+      router.push("/dashboard/success");
+    },
+  });
+
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
   const publicKey = env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY;
-  const amount = 100000;
+  const amount = (cartItem?.price ?? 0) * 100;
   const router = useRouter();
 
   const componentProps = {
     email: user?.email ?? "",
-    amount,
+    amount: amount ?? 0,
     metadata: {
       name: user?.name ?? "",
-      custom_fields: [], // Add the missing custom_fields property
+      custom_fields: [],
     },
     publicKey,
     text: `Pay with Paystack`,
     onSuccess: () => {
-      // Call the API to create the user's subscription
-
-      // Redirect the user to the success page
-      router.push("/dashboard/success");
+      createSubscription.mutate({
+        plan: cartItem?.product ?? "",
+        productId: cartItem?.productId ?? "",
+      });
     },
   };
 
   return (
-    <button className="w-full rounded-md bg-primary px-2 py-3 text-center font-bold text-white hover:bg-primaryHover">
-      <PaystackButton {...componentProps} publicKey={publicKey ?? ""} />
-    </button>
+    <>
+      {isMounted && (
+        <button className="w-full rounded-md bg-primary px-2 py-3 text-center font-bold text-white hover:bg-primaryHover">
+          <PaystackButton {...componentProps} publicKey={publicKey ?? ""} />
+        </button>
+      )}
+    </>
   );
 };
 

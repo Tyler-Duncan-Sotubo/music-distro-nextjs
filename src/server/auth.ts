@@ -8,10 +8,10 @@ import { type Adapter } from "next-auth/adapters";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcrypt";
-
 import { env } from "@/env";
 import { db } from "@/server/db";
 import { User } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -76,7 +76,10 @@ export const authOptions: NextAuthOptions = {
 
         // Return null if user does not exist
         if (!existingUser) {
-          return null;
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Invalid email or password",
+          });
         }
 
         // Check if password is correct
@@ -87,12 +90,15 @@ export const authOptions: NextAuthOptions = {
 
         // Return null if password is incorrect
         if (!isValidPassword) {
-          return null;
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Invalid email or password",
+          });
         }
 
         // Return user data if password is correct
         return {
-          id: "1",
+          id: existingUser.id,
           email: existingUser.email,
           name: existingUser.name,
         };

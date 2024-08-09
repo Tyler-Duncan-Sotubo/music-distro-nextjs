@@ -6,6 +6,7 @@ import Link from "next/link";
 import CurrencySelectorComponent from "./CurrencySelector";
 import React from "react";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 type SubscriptionPlanProps = {
   header?: string;
@@ -16,7 +17,8 @@ const SubscriptionPlan = ({
   header = "",
   nairaToDollarsRateToday = 0,
 }: SubscriptionPlanProps) => {
-  const user = true;
+  const { data: session } = useSession();
+  const user = session?.user;
   const [currency, setCurrency] = useState<string | null>("NGN");
 
   return (
@@ -50,7 +52,7 @@ const SubscriptionPlan = ({
               ) : (
                 <div className="py-3" />
               )}
-              <h3 className="capitalize">{feature.plan}</h3>
+              <h3 className="capitalize">{feature.product}</h3>
               <div className="my-2 flex items-center gap-2">
                 {currency === "NGN" ? (
                   <h1>₦{feature.price}</h1>

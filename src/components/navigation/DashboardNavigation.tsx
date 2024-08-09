@@ -1,29 +1,34 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { FaBasketShopping } from "react-icons/fa6";
 import DesktopDashboardNav from "./DesktopDashboardNav";
 import MobileDashboardNav from "./MobileDashboardNav";
+import { api } from "@/trpc/react";
 
 export default function DashboardNavigation() {
-  const cartTotalQuantity = 0;
-
+  const cartItems = api.cart.getCartItem.useQuery().data;
   const RenderCartButton = () => (
-    <Link href="/dashboard/cart">
-      <button className="relative">
-        <FaBasketShopping size={25} />
-        <span className="absolute -right-5 -top-4">
-          {cartTotalQuantity > 0 ? (
-            <span className="rounded-full bg-primary px-2.5 py-1.5 text-xs text-white">
-              {cartTotalQuantity}
+    <>
+      {(cartItems?.length ?? 0 > 0) ? (
+        <Link href="/dashboard/cart">
+          <button className="relative">
+            <FaBasketShopping size={25} />
+            <span className="absolute -right-5 -top-4">
+              {(cartItems?.length ?? 0 > 0) ? (
+                <span className="rounded-full bg-primary px-2.5 py-1.5 text-xs text-white">
+                  {cartItems?.length}
+                </span>
+              ) : (
+                ""
+              )}
             </span>
-          ) : (
-            ""
-          )}
-        </span>
-      </button>
-    </Link>
+          </button>
+        </Link>
+      ) : (
+        ""
+      )}
+    </>
   );
 
   return (

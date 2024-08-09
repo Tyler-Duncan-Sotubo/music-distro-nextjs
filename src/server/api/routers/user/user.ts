@@ -15,6 +15,12 @@ const schema = z.object({
   twitter: z.string().optional(),
   facebook: z.string().optional(),
   vevo: z.string().optional(),
+  tiktok: z.string().optional(),
+  soundcloud: z.string().optional(),
+  website: z.string().optional(),
+  spotify: z.string().optional(),
+  apple: z.string().optional(),
+  artistBio: z.string().optional(),
 });
 
 export const userRouter = createTRPCRouter({
@@ -32,13 +38,47 @@ export const userRouter = createTRPCRouter({
 
     return user;
   }),
+  getUserSocial: protectedProcedure.query(async ({ ctx }) => {
+    const { db, session } = ctx;
+    const existingUserSocial = await db.social.findUnique({
+      where: {
+        userId: session.user.id,
+      },
+    });
+
+    if (!existingUserSocial) {
+      return null;
+    }
+
+    return existingUserSocial;
+  }),
   createUserInfo: protectedProcedure
     .input(schema)
     .mutation(async ({ input, ctx }) => {
       const { db, session } = ctx;
+
+      const {
+        firstName,
+        artistBio,
+        lastName,
+        artistName,
+        label,
+        phone,
+        country,
+        howDidYouHearAboutUs,
+        ...rest
+      } = input;
+      // Create user information
       const userInformation = await db.userInformation.create({
         data: {
-          ...input,
+          firstName,
+          artistBio,
+          lastName,
+          artistName,
+          label,
+          phone,
+          country,
+          howDidYouHearAboutUs,
           userId: session.user.id,
         },
       });
@@ -50,26 +90,82 @@ export const userRouter = createTRPCRouter({
         });
       }
 
-      return userInformation;
+      // create user social media links
+      const socialLinks = await db.social.create({
+        data: {
+          ...rest,
+          userId: session.user.id,
+        },
+      });
+
+      if (!socialLinks) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to create socialLinks information",
+        });
+      }
+
+      return {
+        message: "User information created successfully",
+      };
     }),
   updateUserInfo: protectedProcedure
     .input(schema)
     .mutation(async ({ input, ctx }) => {
       const { db, session } = ctx;
+      const {
+        firstName,
+        artistBio,
+        lastName,
+        artistName,
+        label,
+        phone,
+        country,
+        howDidYouHearAboutUs,
+        ...rest
+      } = input;
+
       const userInformation = await db.userInformation.update({
         where: {
           userId: session.user.id,
         },
-        data: input,
+        data: {
+          firstName,
+          artistBio,
+          lastName,
+          artistName,
+          label,
+          phone,
+          country,
+          howDidYouHearAboutUs,
+        },
       });
 
       if (!userInformation) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to create user information",
+          message: "Failed to update user information",
         });
       }
 
-      return userInformation;
+      const socialLinks = await db.social.update({
+        where: {
+          userId: session.user.id,
+        },
+        data: {
+          ...rest,
+        },
+      });
+
+      if (!socialLinks) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to update socialLinks information",
+        });
+      }
+
+      return {
+        message: "User information updated successfully",
+      };
     }),
 });

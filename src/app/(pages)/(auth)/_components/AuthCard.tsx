@@ -2,7 +2,7 @@
 
 import { distros } from "@/data/data";
 import Image from "next/image";
-import Navigation from "./navigation/Navigation";
+import Navigation from "@/components/navigation/Navigation";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

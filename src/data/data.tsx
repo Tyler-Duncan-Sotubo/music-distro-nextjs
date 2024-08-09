@@ -38,7 +38,7 @@ export const mobileLoginNavData = [
 ];
 
 export const dashboardNav = [
-  { name: "Dashboard", href: "/dashboard" },
+  { name: "Artist", href: "/dashboard/artist" },
   { name: "Music", href: "/dashboard/music" },
   { name: "Videos", href: "/dashboard/videos" },
   { name: "Royalties", href: "/dashboard/sales" },
@@ -47,19 +47,19 @@ export const dashboardNav = [
 ];
 
 export const userNavData = [
-  { name: "My Dashboard", href: "/dashboard" },
   { name: "Music", href: "/dashboard/music" },
   { name: "Videos", href: "/dashboard/videos" },
   { name: "Royalties & Analytics", href: "/dashboard/sales" },
   { name: "Promotion", href: "/promo" },
   { name: "Support", href: "/support" },
 ];
+import { MdSettingsInputComposite } from "react-icons/md";
 
 export const profileData = [
   {
     name: "Update Account",
     href: "/dashboard/account",
-    icon: <MdAccountTree size={20} />,
+    icon: <MdSettingsInputComposite size={20} />,
   },
   {
     name: "Change Password",
@@ -71,7 +71,7 @@ export const profileData = [
 export const uploadData = [
   {
     name: "Upload Music",
-    href: "/dashboard/music",
+    href: "/dashboard/music/release",
     icon: <FaMusic size={20} />,
   },
   {
@@ -84,7 +84,7 @@ export const uploadData = [
 export const features = [
   {
     id: 1,
-    plan: "Bronze",
+    product: "Bronze",
     description: "Basic Distribution to top digital music services",
     price: "60,000",
     features: [
@@ -99,7 +99,7 @@ export const features = [
   },
   {
     id: 2,
-    plan: "Gold",
+    product: "Gold",
     description: "Basic Distribution to top digital music services",
     price: "80,000",
     features: [
@@ -113,7 +113,7 @@ export const features = [
   },
   {
     id: 3,
-    plan: "Platinum",
+    product: "Platinum",
     description: "Basic Distribution to top digital music services",
     price: "100,000",
     features: [

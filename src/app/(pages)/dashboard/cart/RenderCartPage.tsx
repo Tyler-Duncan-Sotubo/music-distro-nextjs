@@ -5,28 +5,52 @@ import { MdCancel } from "react-icons/md";
 import PayStack from "@/features/paystack/PayStack";
 import { Button } from "@/components/ui/Button";
 import { type User } from "next-auth";
+import { type CartItem } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { useLayoutEffect } from "react";
+import { api } from "@/trpc/react";
+import { toast } from "react-toastify";
+import { formatNumberWithCommas } from "./utils/formatNumber";
 
-const CartPage = ({ user }: { user: User | undefined }) => {
-  const cartItem = [
-    {
-      product: "Music",
-      description: "Music Subscription",
-      price: 10,
-      price_in_naira: 5000,
-      cartQuantity: 1,
+type Props = {
+  user: User | undefined;
+  cartItem: CartItem[] | null;
+};
+
+const CartPage = ({ user, cartItem }: Props) => {
+  const router = useRouter();
+
+  useLayoutEffect(() => {
+    if (!cartItem) {
+      router.refresh();
+    }
+  }, [cartItem, router]);
+
+  // Query cart items
+  const cartItems = api.cart.getCartItem.useQuery();
+
+  // Mutation to delete cart item
+  const deleteCartItem = api.cart.deleteCartItem.useMutation({
+    onSuccess: async () => {
+      // Revalidate the cart items
+      await cartItems.refetch();
+      // Redirect to dashboard
+      router.push("/dashboard");
     },
-  ];
-  const getPrice = () => {
-    return currency === "NGN"
-      ? `₦ ${cartItem[0]?.price_in_naira}`
-      : `$${cartItem[0]?.price}`;
-  };
+    onError: () => {
+      toast.error("An error occurred while deleting cart item", {
+        position: "top-center",
+      });
+    },
+  });
 
-  const currency = "NGN";
+  function handleDeleteCartItem(productId: string) {
+    deleteCartItem.mutate({ productId: productId });
+  }
 
   return (
     <>
-      {cartItem.length > 0 ? (
+      {(cartItem?.length ?? 0 > 0) ? (
         <section className="md:my-16">
           <h1 className="mb-4 mt-16 md:mt-32">Your Cart</h1>
           <h3>Review your order & subscription details</h3>
@@ -47,28 +71,32 @@ const CartPage = ({ user }: { user: User | undefined }) => {
                   <tbody className="divide-gray-200 divide-y bg-white capitalize">
                     <tr className="text-xl">
                       <td className="whitespace-nowrap px-4 py-6 font-bold">
-                        <p>{cartItem[0]?.product}</p>
+                        <p>{cartItem?.[0]?.product}</p>
                       </td>
                       <td className="whitespace-nowrap px-4 py-4 font-bold">
-                        <p>{cartItem[0]?.description}</p>
+                        <p>{cartItem?.[0]?.description}</p>
                       </td>
                       <td className="whitespace-nowrap px-4 py-4 font-bold">
                         <button
                           className="flex items-center gap-2 rounded-xl bg-error p-2 text-sm text-white"
-                          onClick={() => console.log("Hello")}
+                          onClick={() =>
+                            deleteCartItem.mutate({
+                              productId: cartItem?.[0]?.productId ?? "",
+                            })
+                          }
                         >
                           <MdCancel size={25} />
                           <p>Remove Item</p>
                         </button>
                       </td>
                       <td className="whitespace-nowrap px-4 py-4 font-bold">
-                        <p>{getPrice()}</p>
+                        <p>{formatNumberWithCommas(cartItem?.[0]?.price)}</p>
                       </td>
                       <td className="whitespace-nowrap px-8 py-4 font-bold">
-                        <p>{cartItem[0]?.cartQuantity}</p>
+                        <p>{cartItem?.[0]?.quantity}</p>
                       </td>
                       <td className="whitespace-nowrap py-4 text-right font-bold">
-                        <p>{getPrice()}</p>
+                        <p>{formatNumberWithCommas(cartItem?.[0]?.price)}</p>
                       </td>
                     </tr>
                   </tbody>
@@ -79,19 +107,25 @@ const CartPage = ({ user }: { user: User | undefined }) => {
                   <div key={index} className="my-6 flex justify-between">
                     <div className="font-bold">{item.name}</div>
                     <div className="font-bold">
-                      {item.name === "product" && cartItem[0]?.product}
+                      {item.name === "product" && cartItem?.[0]?.product}
                       {item.name === "actions" && (
                         <button
                           className="flex items-center gap-2 rounded-xl bg-error p-2 text-sm text-white"
-                          onClick={() => console.log("Hello")}
+                          onClick={() =>
+                            handleDeleteCartItem(cartItem?.[0]?.productId ?? "")
+                          }
                         >
                           <MdCancel size={25} />
                           <p>Remove Item</p>
                         </button>
                       )}
-                      {item.name === "price" && <p>{getPrice()}</p>}
-                      {item.name === "quantity" && cartItem[0]?.cartQuantity}
-                      {item.name === "item total" && <p>{getPrice()}</p>}
+                      {item.name === "price" && (
+                        <p>{formatNumberWithCommas(cartItem?.[0]?.price)}</p>
+                      )}
+                      {item.name === "quantity" && cartItem?.[0]?.quantity}
+                      {item.name === "item total" && (
+                        <p>{formatNumberWithCommas(cartItem?.[0]?.price)}</p>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -99,11 +133,11 @@ const CartPage = ({ user }: { user: User | undefined }) => {
               <div className="text-xl">
                 <div className="my-4 flex justify-end gap-20 font-bold">
                   <p>Subtotal</p>
-                  <p>{getPrice()}</p>
+                  <p>{formatNumberWithCommas(cartItem?.[0]?.price)}</p>
                 </div>
                 <div className="my-4 flex justify-end gap-20 font-bold">
                   <p>Total</p>
-                  <p>{getPrice()}</p>
+                  <p>{formatNumberWithCommas(cartItem?.[0]?.price)}</p>
                 </div>
               </div>
 
@@ -112,12 +146,12 @@ const CartPage = ({ user }: { user: User | undefined }) => {
               <div className="mt-24 justify-end gap-10 md:flex">
                 {/* PayStack */}
                 <div className="my-10 w-full md:my-0 md:w-1/4">
-                  <PayStack cartItem={cartItem[0]} user={user} />
+                  <PayStack cartItem={cartItem?.[0]} user={user} />
                 </div>
 
                 {/* Paypal */}
                 {/* <div className="w-full md:w-1/4">
-                  <PaypalPayment cartItem={cartItem[0]} user={user} />
+                  <PaypalPayment cartItem={cartItem?.[0]} user={user} />
                 </div> */}
               </div>
               <h5 className="my-6 text-center md:text-right">

@@ -1,4 +1,5 @@
 export type ArtistDetailsInput = {
+  artistBio: string;
   firstName: string;
   lastName: string;
   artistName: string;
@@ -6,9 +7,13 @@ export type ArtistDetailsInput = {
   phone: string;
   country: string;
   howDidYouHearAboutUs: string;
-  youtube: string;
+  apple: string;
+  spotify: string;
   instagram: string;
-  twitter: string;
+  youtube: string;
   facebook: string;
-  vevo: string;
+  tiktok: string;
+  twitter: string;
+  soundcloud: string;
+  website: string;
 };

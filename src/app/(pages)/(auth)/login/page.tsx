@@ -17,10 +17,14 @@ import { LoginSchema } from "../schemas";
 import TextInput from "@/components/ui/TextInput";
 import { signIn } from "next-auth/react";
 import { ButtonWithIcon } from "@/components/ui/ButtonWithIcon";
+import { useState } from "react";
 
 const Login = () => {
   const router = useRouter();
   // Login State Management with Redux
+
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -36,8 +40,9 @@ const Login = () => {
       redirect: false,
     });
     if (signInResponse?.error) {
-      console.error(signInResponse.error);
+      setSubmitError(signInResponse.error);
     } else {
+      setSubmitError("");
       router.push("/dashboard");
     }
   };
@@ -105,6 +110,14 @@ const Login = () => {
           </Link>
         </div>
 
+        {/* Submit Error */}
+        {submitError && (
+          <p className="mt-7 text-center text-[.9rem] text-error">
+            {submitError}
+          </p>
+        )}
+
+        {/* Submit Button */}
         <div className="mt-6 flex items-center justify-end">
           <Button className="ml-3 px-8">Login</Button>
         </div>

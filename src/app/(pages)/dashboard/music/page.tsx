@@ -1,20 +1,16 @@
-import RenderMusicReleasePage from "./RenderMusicReleasePage";
-import { useFetch } from "@/hooks/fetch";
-import { Metadata } from "next";
+import { type Metadata } from "next";
+import { api } from "@/trpc/server";
+import RenderArtistMusic from "./RenderArtistMusic";
 
 export const metadata: Metadata = {
-  title: "My Music Upload | We Plug Music - Dashboard",
+  title: "My Music | We Plug Music - Dashboard",
   description:
     "My music upload page where I can upload my music and view my music releases.",
 };
 
 const MusicRelease = async () => {
-  const { fetchUserSubscription, fetchUser } = useFetch();
-  const userSubscription = await fetchUserSubscription();
-  const user = await fetchUser();
-  return (
-    <RenderMusicReleasePage userSubscription={userSubscription} user={user} />
-  );
+  const musicReleases = await api.audio.getReleases();
+  return <RenderArtistMusic musicReleases={musicReleases} />;
 };
 
 export default MusicRelease;

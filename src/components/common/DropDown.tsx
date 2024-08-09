@@ -5,6 +5,7 @@ import { MdLogout } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
+import { api } from "@/trpc/react";
 
 type User = {
   name: string;
@@ -29,13 +30,14 @@ const DropDown = ({
   includesUserDetails = false,
   loggedInUser,
 }: DropDownProps) => {
+  const photo = api.photo.getProfilePhoto.useQuery();
   return (
     <div className="absolute right-0 top-3/4 hidden w-[250px] rounded-2xl bg-white p-3 shadow-md group-hover:block">
       {includesUserDetails && (
         <div className="mb-6 flex items-center gap-2">
-          {loggedInUser?.image ? (
+          {photo?.data?.image ? (
             <Image
-              src={loggedInUser.image}
+              src={photo?.data?.image || ""}
               width={50}
               height={50}
               className="rounded-full"

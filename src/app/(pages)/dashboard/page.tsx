@@ -3,7 +3,6 @@ import { api } from "@/trpc/server";
 
 const Dashboard = async () => {
   // get user subscription
-
   const userSubscription = await api.subscriptions.getSubscription();
   const userAudioReleases = await api.audio.getReleases();
 

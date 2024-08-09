@@ -1,8 +1,7 @@
 import RenderSalesPage from "./RenderSalesPage";
 import RenderSalesDemoPage from "./RenderSalesDemoPage";
-import { useFetch } from "@/hooks/fetch";
-
-import { Metadata } from "next";
+import { api } from "@/trpc/server";
+import { type Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Sales and Analytics | We Plug Music - Dashboard",
@@ -11,9 +10,7 @@ export const metadata: Metadata = {
 };
 
 const page = async () => {
-  const { fetchUserSubscription } = useFetch();
-  const userSubscription = await fetchUserSubscription();
-
+  const userSubscription = await api.subscriptions.getSubscription();
   if (userSubscription?.status === "active") {
     return <RenderSalesPage />;
   } else {

@@ -53,7 +53,8 @@ model User {
     UserInformation    UserInformation[]
     Videos             Videos[]
     Subscriptions      Subscriptions[]
-    Cart               Cart[]
+    CartItem           CartItem[]
+    Social             Social[]
 }
 
 model PasswordResetToken {
@@ -128,6 +129,7 @@ model Stream {
 model UserInformation {
     id                   String   @id @default(cuid())
     userId               String   @unique
+    artistBio            String?
     firstName            String
     lastName             String
     artistName           String
@@ -135,11 +137,6 @@ model UserInformation {
     phone                String
     country              String
     howDidYouHearAboutUs String?
-    youtube              String?
-    instagram            String?
-    twitter              String?
-    facebook             String?
-    vevo                 String?
     createdAt            DateTime @default(now())
     updatedAt            DateTime @updatedAt
 
@@ -165,23 +162,61 @@ model Subscriptions {
     id        String   @id @default(cuid())
     userId    String   @unique
     plan      String
-    status    String
+    status    String   @default("active")
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    updatedAt DateTime @default(now())
     expiresAt DateTime
 
     User User @relation(fields: [userId], references: [id])
 }
 
-model Cart {
+model CartItem {
     id          String   @id @default(cuid())
     userId      String
+    productId   String   @unique
     product     String
     description String
     price       Int
     quantity    Int
+    status      String   @default("active")
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
     User User @relation(fields: [userId], references: [id])
+}
+
+model Social {
+    id         String   @id @default(cuid())
+    userId     String   @unique
+    apple      String?
+    spotify    String?
+    instagram  String?
+    youtube    String?
+    facebook   String?
+    tiktok     String?
+    twitter    String?
+    soundcloud String?
+    website    String?
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    User User @relation(fields: [userId], references: [id])
+}
+
+model StreamLinks {
+    id         String  @id @default(cuid())
+    url        String  @unique
+    artist     String
+    title      String
+    image      String
+    itunes     String?
+    spotify    String?
+    apple      String?
+    amazon     String?
+    deezer     String?
+    tidal      String?
+    youtube    String?
+    audioMack  String?
+    boomPlay   String?
+    soundcloud String?
 }

@@ -3,6 +3,7 @@ export type IMusicRelease = {
   artist: string;
   releaseDate: string;
   copyrightYear: string;
+  copyrightHolder: string;
   secondaryGenre: string;
   lyrics: string;
   label: string;

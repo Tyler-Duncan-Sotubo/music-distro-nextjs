@@ -1,7 +1,7 @@
 "use client";
 
-import DashboardNavigation from "../../_components/DashboardNavigation";
-import Footer from "@/app/_components/Footer";
+import DashboardNavigation from "@/components/navigation/DashboardNavigation";
+import Footer from "@/components/layout/Footer";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;

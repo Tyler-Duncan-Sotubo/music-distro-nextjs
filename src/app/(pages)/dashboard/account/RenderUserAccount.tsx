@@ -1,30 +1,32 @@
 "use client";
 
-import SocialInput from "@/app/_components/SocialMediaInput";
-import Label from "@/app/_components/Label";
-import TextInput from "@/app/_components/TextInput";
 import { type ArtistDetailsInput } from "../types/artist.type";
-import {
-  type FieldValues,
-  type Resolver,
-  useForm,
-  type UseFormRegister,
-} from "react-hook-form";
+import { type Resolver, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ArtistDetailsSchema } from "../schema/artist.schema";
-import countries from "@/data/countries.json";
-import { useState } from "react";
-import { type UserInformation } from "@prisma/client";
+import { useState, useEffect } from "react";
+import { Social, type UserInformation } from "@prisma/client";
 import { api } from "@/trpc/react";
 import { toast } from "react-toastify";
+import { Spinner } from "@/components/common/Spinner";
+import UserInfoForm from "./_components/UserInfoForm";
+import UserSocialForm from "./_components/UserSocialForm";
+import { useRouter } from "next/navigation";
+import ProfilePhoto from "@/components/common/ProfilePhoto";
 
 type Props = {
   userInfo: UserInformation | null;
+  userSocialUrls: any;
 };
 
-const RenderUserAccount = ({ userInfo }: Props) => {
+const RenderUserAccount = ({ userInfo, userSocialUrls }: Props) => {
+  // Router
+  const router = useRouter();
+
   // State to handle submit error
   const [submitError, setSubmitError] = useState<string>("");
+  // loading state
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Form Hook
   const {
@@ -40,11 +42,17 @@ const RenderUserAccount = ({ userInfo }: Props) => {
       label: userInfo?.label ?? "",
       phone: userInfo?.phone ?? "",
       howDidYouHearAboutUs: userInfo?.howDidYouHearAboutUs ?? "",
-      twitter: userInfo?.twitter ?? "",
-      vevo: userInfo?.vevo ?? "",
-      facebook: userInfo?.facebook ?? "",
-      instagram: userInfo?.instagram ?? "",
-      youtube: userInfo?.youtube ?? "",
+      country: userInfo?.country ?? "",
+      artistBio: userInfo?.artistBio ?? "",
+      apple: userSocialUrls?.apple ?? "",
+      spotify: userSocialUrls?.spotify ?? "",
+      youtube: userSocialUrls?.youtube ?? "",
+      instagram: userSocialUrls?.instagram ?? "",
+      twitter: userSocialUrls?.twitter ?? "",
+      facebook: userSocialUrls?.facebook ?? "",
+      tiktok: userSocialUrls?.tiktok ?? "",
+      soundcloud: userSocialUrls?.soundcloud ?? "",
+      website: userSocialUrls?.website ?? "",
     },
   });
 
@@ -54,6 +62,7 @@ const RenderUserAccount = ({ userInfo }: Props) => {
         position: "top-center",
       });
       setSubmitError("");
+      router.push("/dashboard/artist");
     },
     onError: (error) => {
       setSubmitError(error.message);
@@ -66,6 +75,7 @@ const RenderUserAccount = ({ userInfo }: Props) => {
         position: "top-center",
       });
       setSubmitError("");
+      router.push("/dashboard/artist");
     },
     onError: (error) => {
       setSubmitError(error.message);
@@ -81,183 +91,51 @@ const RenderUserAccount = ({ userInfo }: Props) => {
     }
   };
 
+  // Set loading state
+  useEffect(() => {
+    if (createUserInfo.isPending || updateUserInfo.isPending) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [createUserInfo.isPending, updateUserInfo.isPending]);
+
   return (
     <>
-      <h1 className="text-center text-5xl md:mt-32">My Account</h1>
+      <h1 className="text-center text-5xl lg:mt-32">My Account</h1>
       <h3 className="mt-5 text-center">
         Update Your profile with artist information and all social media handles
       </h3>
-      {/* Artist information form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="mx-auto my-10">
-        <h2 className="mb-10 border-b border-dashed py-10 text-4xl">
-          1. Personal Information
-        </h2>
-        <article className="grid grid-cols-1 gap-2 md:w-[60%] md:grid-cols-2 md:gap-4">
-          {/* First Name */}
-          <div className="relative w-full">
-            <Label htmlFor="firstName">First Name</Label>
-            <TextInput
-              register={register as unknown as UseFormRegister<FieldValues>}
-              name="firstName"
-              error={errors.firstName?.message}
-              id="firstName"
-              type="text"
-            />
-          </div>
+      <section className="my-8 lg:px-10">
+        <section className="mb-6 flex w-full flex-col gap-12 lg:flex-row">
+          {/* artist Image */}
+          <ProfilePhoto />
+          {/* Artist information form */}
+          <form onSubmit={handleSubmit(onSubmit)} className="lg:w-3/4">
+            {/* // UserInfoForm component */}
+            <h2 className="mb-6 border-b border-dashed py-6 text-4xl">
+              1. Personal Information
+            </h2>
+            <UserInfoForm errors={errors} register={register} />
 
-          {/* Last Name */}
-          <div className="relative w-full">
-            <Label htmlFor="lastName">Last Name</Label>
-            <TextInput
-              register={register as unknown as UseFormRegister<FieldValues>}
-              name="lastName"
-              error={errors.lastName?.message}
-              id="lastName"
-              type="text"
-            />
-          </div>
-          {/* Artist Name */}
-          <div className="relative w-full">
-            <Label htmlFor="artistName">Artist Name</Label>
-            <TextInput
-              register={register as unknown as UseFormRegister<FieldValues>}
-              name="artistName"
-              error={errors.artistName?.message}
-              id="artistName"
-              type="text"
-            />
-          </div>
+            {/* Social Media  component */}
+            <h2 className="mb-10 border-b border-dashed py-6 text-4xl">
+              2. Social Media
+            </h2>
+            <UserSocialForm errors={errors} register={register} />
 
-          {/* Label */}
-          <div className="relative w-full">
-            <Label htmlFor="label">Label</Label>
-            <TextInput
-              register={register as unknown as UseFormRegister<FieldValues>}
-              name="label"
-              error={errors.label?.message}
-              id="label"
-              type="text"
-            />
-          </div>
-
-          {/* Phone Number */}
-          <div className="relative w-full">
-            <Label htmlFor="phone">Phone Number</Label>
-            <TextInput
-              register={register as unknown as UseFormRegister<FieldValues>}
-              name="phone"
-              error={errors.phone?.message}
-              id="phone"
-              type="text"
-            />
-          </div>
-          {/* Country */}
-          <div className="relative w-full">
-            <Label htmlFor="country">Country</Label>
-            <select
-              {...register("country")}
-              id="country"
-              className="w-full rounded-md shadow-sm"
-            >
-              {countries.map((country, index) => (
-                <option key={index} value={country}>
-                  {country}
-                </option>
-              ))}
-            </select>
-            {errors.country && (
-              <p style={{ color: "red" }}> {errors.country.message}</p>
-            )}
-          </div>
-
-          {/* How did you hear about us */}
-          <div className="relative mt-6 w-full md:mt-0">
-            <Label htmlFor="howDidYouHearAboutUs">
-              How did you hear about us
-            </Label>
-            <TextInput
-              register={register as unknown as UseFormRegister<FieldValues>}
-              name="howDidYouHearAboutUs"
-              error={errors.howDidYouHearAboutUs?.message}
-              id="howDidYouHearAboutUs"
-              type="text"
-            />
-          </div>
-        </article>
-
-        {/* Social Media */}
-        <h2 className="mb-10 border-b border-dashed py-10 text-4xl">
-          2. Social Media
-        </h2>
-
-        <article className="grid grid-cols-1 gap-2 md:grid-cols-5 md:gap-4">
-          {/* Twitter */}
-          <div className="relative w-full">
-            <Label htmlFor="twitter">Twitter</Label>
-            <SocialInput
-              register={register as unknown as UseFormRegister<FieldValues>}
-              name="twitter"
-              error={errors.twitter?.message}
-              id="twitter"
-              type="text"
-            />
-          </div>
-
-          {/* Vevo */}
-          <div className="relative w-full">
-            <Label htmlFor="vevo">Vevo</Label>
-            <SocialInput
-              register={register as unknown as UseFormRegister<FieldValues>}
-              name="vevo"
-              error={errors.vevo?.message}
-              id="vevo"
-              type="text"
-            />
-          </div>
-
-          {/* Facebook */}
-          <div className="relative w-full">
-            <Label htmlFor="facebook">Facebook</Label>
-            <SocialInput
-              register={register as unknown as UseFormRegister<FieldValues>}
-              name="facebook"
-              error={errors.facebook?.message}
-              id="facebook"
-              type="text"
-            />
-          </div>
-          {/* Instagram */}
-          <div className="relative w-full">
-            <Label htmlFor="instagram">Instagram</Label>
-            <SocialInput
-              register={register as unknown as UseFormRegister<FieldValues>}
-              name="instagram"
-              error={errors.instagram?.message}
-              id="instagram"
-              type="text"
-            />
-          </div>
-          {/* Youtube */}
-          <div className="relative w-full">
-            <Label htmlFor="youtube">Youtube</Label>
-            <TextInput
-              register={register as unknown as UseFormRegister<FieldValues>}
-              name="youtube"
-              error={errors.youtube?.message}
-              id="howDidYouHearAboutUs"
-              type="text"
-            />
-          </div>
-        </article>
-        {/* submit error */}
-        {submitError && <p className="my-5 text-error">{submitError}</p>}
-        {/* Save Changes */}
-        <div className="my-10">
-          <button className="w-1/4 rounded-md bg-primary py-2 text-white">
-            Save Details
-          </button>
-        </div>
-      </form>
+            {/* submit error */}
+            {submitError && <p className="my-5 text-error">{submitError}</p>}
+            {/* Save Changes */}
+            <div className="my-10">
+              <button className="w-1/4 rounded-md bg-primary py-2 text-white">
+                Save
+              </button>
+            </div>
+          </form>
+        </section>
+      </section>
+      {isLoading && <Spinner />}
     </>
   );
 };

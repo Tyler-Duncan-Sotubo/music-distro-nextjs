@@ -10,7 +10,10 @@ export const metadata: Metadata = {
 
 const page = async () => {
   const userInfo = await api.user.getUserInfo();
-  return <RenderUserAccount userInfo={userInfo} />;
+  const userSocialUrls = await api.user.getUserSocial();
+  return (
+    <RenderUserAccount userInfo={userInfo} userSocialUrls={userSocialUrls} />
+  );
 };
 
 export default page;
