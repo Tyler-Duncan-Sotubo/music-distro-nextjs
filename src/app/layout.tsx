@@ -21,14 +21,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <Suspense fallback={<div>Loading search results...</div>}>
-        <body className={inter.className}>
-          <NextAuthProvider>
+      <body className={inter.className}>
+        <NextAuthProvider>
+          <Suspense fallback={<div></div>}>
             <TRPCReactProvider>{children}</TRPCReactProvider>
-          </NextAuthProvider>
-          <ToastContainer autoClose={3000} />
-        </body>
-      </Suspense>
+          </Suspense>
+        </NextAuthProvider>
+        <ToastContainer autoClose={3000} />
+      </body>
     </html>
   );
 }

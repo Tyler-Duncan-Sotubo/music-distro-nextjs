@@ -13,8 +13,15 @@ async function getCookies(
   // eslint-disable-next-line @typescript-eslint/consistent-type-imports
   cookies: typeof import("next/headers").cookies,
 ): Promise<isAuthenticated> {
-  const token = cookies().get("next-auth.session-token") as isAuthenticated;
-  return token;
+  const environment = process.env.NODE_ENV; // 'development' or 'production'
+  let token;
+
+  if (environment === "development") {
+    token = cookies().get("next-auth.session-token");
+  } else if (environment === "production") {
+    token = cookies().get("next-auth.state");
+  }
+  return token as isAuthenticated;
 }
 
 export default async function middleware(req: NextRequest) {
