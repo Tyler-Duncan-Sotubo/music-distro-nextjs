@@ -10,7 +10,7 @@ import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcrypt";
 import { env } from "@/env";
 import { db } from "@/server/db";
-import { User } from "@prisma/client";
+import { type User } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
 /**

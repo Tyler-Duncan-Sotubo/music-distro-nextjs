@@ -1,5 +1,4 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { z } from "zod";
 import { type Stream } from "@/app/(pages)/dashboard/types/stream.type";
 
 export const streamRouter = createTRPCRouter({
