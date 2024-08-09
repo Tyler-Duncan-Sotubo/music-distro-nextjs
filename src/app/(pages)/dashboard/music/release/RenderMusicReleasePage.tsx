@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useState, useEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import TextInput from "@/components/ui/TextInput";
 import Label from "@/components/ui/Label";
 import {
@@ -21,10 +21,11 @@ import DatePickerForm from "@/components/forms/DatePickerForm";
 import ReleaseImage from "./../_components/ReleaseImage";
 import ReleaseTrack from "./../_components/ReleaseTrack";
 import { type Subscriptions } from "@prisma/client";
-import { api } from "@/trpc/react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/common/Spinner";
+import axios from "@/libs/axios";
+import { useSession } from "next-auth/react";
 
 const RenderMusicReleasePage = ({
   userSubscription,
@@ -66,19 +67,10 @@ const RenderMusicReleasePage = ({
   });
 
   const router = useRouter();
-  const submitMusicRelease = api.audio.createAudioRelease.useMutation({
-    onError: (error) => {
-      setSubmitError(error.message);
-    },
-    onSuccess: () => {
-      toast.success("Music release submitted successfully", {
-        position: "top-center",
-      });
-      router.push("/dashboard");
-    },
-  });
 
-  const onSubmit = (data: IMusicRelease) => {
+  const user = useSession().data?.user;
+
+  const onSubmit = async (data: IMusicRelease) => {
     if (!releaseCover) {
       setImageSubmitError("An image is required for release");
       return;
@@ -93,14 +85,28 @@ const RenderMusicReleasePage = ({
       setAudioSubmitError("");
     }
 
-    // Submit to server
-    submitMusicRelease.mutate({
+    setIsLoading(true);
+    const res = await axios.post("/api/audio-upload", {
       ...data,
       releaseCover: releaseCover as string,
       releaseAudio: releaseAudio as string,
       imageFileName,
       audioFileName,
+      user: user,
     });
+
+    if (res.status === 201) {
+      setIsLoading(false);
+      toast.success("Music release submitted successfully", {
+        position: "top-center",
+      });
+      router.push("/dashboard");
+    }
+
+    if (res.status === 400) {
+      setIsLoading(false);
+      setSubmitError("An error occurred while submitting your release");
+    }
   };
 
   // Check if user is subscribed
@@ -113,10 +119,6 @@ const RenderMusicReleasePage = ({
       setShowModal(true);
     }
   }, [userSubscription]);
-
-  useEffect(() => {
-    if (submitMusicRelease.isPending) setIsLoading(true);
-  }, [submitMusicRelease.isPending]);
 
   return (
     <>

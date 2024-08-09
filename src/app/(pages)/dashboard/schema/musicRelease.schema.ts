@@ -13,5 +13,5 @@ export const AudioReleaseSchema = yup.object().shape({
   copyrightHolder: yup.string().required("copyright Holder is required"),
   copyrightYear: yup.string().required("copyright Year is required"),
   language: yup.string().required("Language is required"),
-  releaseAudioLink: yup.string(),
+  releaseAudioLink: yup.string().url(),
 });

@@ -46,6 +46,7 @@ export const env = createEnv({
     NEXT_PUBLIC_EXCHANGE_RATE_API_KEY: z.string(),
     NEXT_PUBLIC_HOME_URL: z.string(),
     NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY: z.string(),
+    NEXT_PUBLIC_BACKEND_URL: z.string(),
   },
 
   /**
@@ -74,6 +75,7 @@ export const env = createEnv({
     BUCKET_SECRET_ACCESS_KEY: process.env.BUCKET_SECRET_ACCESS_KEY,
     BUCKET_NAME: process.env.BUCKET_NAME,
     ORDER_CONFIRMATION_TEMPLATE_ID: process.env.ORDER_CONFIRMATION_TEMPLATE_ID,
+    NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

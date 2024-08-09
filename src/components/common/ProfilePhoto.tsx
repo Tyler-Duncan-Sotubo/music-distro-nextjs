@@ -10,6 +10,7 @@ const ProfilePhoto = () => {
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
   const [imageFileName, setImageFileName] = useState<string | null>(null);
   const [isModelOpen, setIsModelOpen] = useState(false);
+  const [error, setError] = useState("");
 
   const handleImage = (file: File | undefined) => {
     if (file) {
@@ -28,6 +29,14 @@ const ProfilePhoto = () => {
     if (file) {
       setImageFileName(file.name);
       handleImage(file);
+
+      const maxSizeInBytes = 4 * 1024 * 1024;
+      if (file.size > maxSizeInBytes) {
+        setError("Maximum Image Size is 4MB Please Upload a Smaller Image");
+        return;
+      } else {
+        setError("");
+      }
     }
   };
 
@@ -83,7 +92,7 @@ const ProfilePhoto = () => {
       </section>
       {isModelOpen && (
         <section className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-70">
-          <div className="flex min-h-[30%] w-[90%] flex-col gap-6 bg-white px-10 py-10 md:h-[70%] md:w-[60%]">
+          <div className="flex min-h-[30%] w-[90%] flex-col gap-6 bg-white px-10 py-10 md:h-[55%] md:w-[60%]">
             <div className="flex items-center justify-between border-b-2 border-secondary pb-6">
               <h3 className="text-xl md:text-4xl">Add Profile Photo</h3>
               <Button
@@ -99,8 +108,14 @@ const ProfilePhoto = () => {
             <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="relative hidden w-2/3 items-center justify-center bg-gray text-4xl uppercase shadow-2xl md:flex">
                 {image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={String(image)} alt="Release Cover" />
+                  <div className="relative h-full w-full">
+                    <Image
+                      fill
+                      src={String(image)}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      alt="user profile image"
+                    />
+                  </div>
                 ) : (
                   <p>No Image</p>
                 )}
@@ -114,8 +129,14 @@ const ProfilePhoto = () => {
                   <label className="flex w-64 cursor-pointer flex-col items-center px-4 py-6 tracking-wide text-primary">
                     <div className="md:hidden">
                       {image ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={String(image)} alt="Release Cover" />
+                        <div className="relative h-44 w-44">
+                          <Image
+                            fill
+                            src={String(image)}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            alt="user profile image"
+                          />
+                        </div>
                       ) : (
                         <FaImage size={50} />
                       )}
@@ -139,15 +160,24 @@ const ProfilePhoto = () => {
                 </div>
               </div>
 
+              {/* Error Message */}
+              {error && (
+                <div className="col-span-2">
+                  <p className="text-error">{error}</p>
+                </div>
+              )}
+
               {/* Submit Button */}
-              <div className="self-end md:mt-16">
-                <Button
-                  onClick={async () => {
-                    await onSubmit();
-                  }}
-                >
-                  Submit
-                </Button>
+              <div className="self-end md:mt-10">
+                {!error && image && (
+                  <Button
+                    onClick={async () => {
+                      await onSubmit();
+                    }}
+                  >
+                    Submit
+                  </Button>
+                )}
               </div>
             </section>
           </div>
