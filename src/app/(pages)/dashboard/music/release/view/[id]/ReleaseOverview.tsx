@@ -36,12 +36,12 @@ const ReleaseOverview = ({ release }: ReleaseOverviewProps) => {
       <section className="mb-10">
         <h1 className="my-10 text-3xl font-bold">Release Overview</h1>
         <div className="py-10 shadow-2xl">
-          <div className="flex flex-row-reverse items-center justify-center gap-10">
-            <div className="w-2/3">
+          <div className="flex flex-col-reverse items-center justify-center gap-10 md:flex-row-reverse">
+            <div className="md:w-2/3">
               <h1 className="text-2xl font-bold capitalize">
                 {release?.title}
               </h1>
-              <div className="my-10 grid grid-cols-2 grid-rows-2 gap-2">
+              <div className="my-10 grid grid-rows-2 gap-2 lg:grid-cols-2">
                 <RenderReleaseDetailsText
                   title="Primary Genre"
                   value={release?.primaryGenre}
@@ -90,7 +90,7 @@ const ReleaseOverview = ({ release }: ReleaseOverviewProps) => {
                 />
               </div>
             </div>
-            <div className="relative mb-10 h-80 w-1/4">
+            <div className="relative mb-10 h-80 w-[85%] lg:w-1/4">
               <Image
                 src={release?.releaseCover ?? ""}
                 alt="cover art"
