@@ -47,7 +47,6 @@ model User {
     image                            String?
     accounts                         Account[]
     sessions                         Session[]
-    streams                          Stream[] // Add the opposite relation field for the 'User' field in the 'streams' model
     audio                            Audio[]
 
     PasswordResetToken PasswordResetToken[]
@@ -56,6 +55,7 @@ model User {
     Subscriptions      Subscriptions[]
     CartItem           CartItem[]
     Social             Social[]
+    Stream             Stream[]
 }
 
 model PasswordResetToken {
@@ -73,58 +73,6 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
-}
-
-model Audio {
-    id               String   @id @default(cuid())
-    userId           String
-    title            String
-    artist           String
-    releaseDate      DateTime
-    primaryGenre     String
-    secondaryGenre   String
-    language         String
-    label            String
-    copyrightHolder  String
-    copyrightYear    String
-    productionHolder String
-    productionYear   String
-    releaseCover     String
-    releaseAudio     String?
-    releaseAudioLink String?
-    lyrics           String?
-    releaseType      String
-    status           String
-    UPC              String   @default("")
-    ISRC             String   @default("")
-    createdAt        DateTime @default(now())
-    updatedAt        DateTime @updatedAt
-    smartLink        String   @default("")
-    streams          Stream[]
-
-    User User @relation(fields: [userId], references: [id])
-}
-
-model Stream {
-    id            String   @id @default(cuid())
-    userId        String
-    audioId       String
-    total_streams Int
-    week_start    String
-    week_end      String
-    apple         Json?    @default("{}")
-    spotify       Json?    @default("{}")
-    youtube       Json?    @default("{}")
-    amazon        Json?    @default("{}")
-    tidal         Json?    @default("{}")
-    deezer        Json?    @default("{}")
-    boomPlay      Json?    @default("{}")
-    tiktok        Json?    @default("{}")
-    facebook      Json?    @default("{}")
-    createdAt     DateTime @default(now())
-
-    User  User  @relation(fields: [userId], references: [id])
-    audio Audio @relation(fields: [audioId], references: [id])
 }
 
 model UserInformation {
@@ -204,20 +152,104 @@ model Social {
     User User @relation(fields: [userId], references: [id])
 }
 
-model StreamLinks {
-    id         String  @id @default(cuid())
-    url        String  @unique
-    artist     String
-    title      String
-    image      String
-    itunes     String?
-    spotify    String?
-    apple      String?
-    amazon     String?
-    deezer     String?
-    tidal      String?
-    youtube    String?
-    audioMack  String?
-    boomPlay   String?
-    soundcloud String?
+// Old Stream model to delete soon
+model Stream {
+    id            String   @id @default(cuid())
+    userId        String
+    audioId       String
+    total_streams Int
+    week_start    String
+    week_end      String
+    apple         Json?    @default("{}")
+    spotify       Json?    @default("{}")
+    youtube       Json?    @default("{}")
+    amazon        Json?    @default("{}")
+    tidal         Json?    @default("{}")
+    deezer        Json?    @default("{}")
+    boomPlay      Json?    @default("{}")
+    tiktok        Json?    @default("{}")
+    facebook      Json?    @default("{}")
+    createdAt     DateTime @default(now())
+
+    User  User  @relation(fields: [userId], references: [id])
+    audio Audio @relation(fields: [audioId], references: [id])
+}
+
+// All models below are for audio and streaming data
+model Audio {
+    id               String   @id @default(cuid())
+    userId           String
+    title            String
+    artist           String
+    releaseDate      DateTime
+    primaryGenre     String
+    secondaryGenre   String
+    language         String
+    label            String
+    copyrightHolder  String
+    copyrightYear    String
+    productionHolder String
+    productionYear   String
+    releaseCover     String
+    releaseAudio     String?
+    releaseAudioLink String?
+    lyrics           String?
+    releaseType      String
+    status           String
+    UPC              String   @default("")
+    ISRC             String   @default("")
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+    smartLink        String   @default("")
+
+    User         User          @relation(fields: [userId], references: [id])
+    dailyStreams DailyStream[] @relation("AudioDailyStreams")
+    Metric       Metric[]
+    Stream       Stream[]
+    Track        Track[]
+}
+
+model Track {
+    id               String  @id @default(cuid())
+    audioId          String
+    title            String
+    lyrics           String?
+    productionCredit String?
+    ISRC             String?
+    trackNumber      Int // Track number in the album
+    audioLink        String // URL or path to track audio file
+
+    Audio Audio @relation(fields: [audioId], references: [id])
+}
+
+model Platform {
+    id           String        @id @default(cuid())
+    name         String        @unique
+    dailyStreams DailyStream[] @relation("PlatformDailyStreams")
+}
+
+model DailyStream {
+    id            String   @id @default(cuid())
+    date          DateTime // Specific date of the stream data
+    streamCount   Int // Number of streams for the specific date
+    downloadCount Int // Number of downloads for the specific date
+    platformId    String
+    platform      Platform @relation("PlatformDailyStreams", fields: [platformId], references: [id])
+    audioId       String
+    Audio         Audio    @relation("AudioDailyStreams", fields: [audioId], references: [id])
+
+    @@unique([date, audioId, platformId])
+}
+
+model Metric {
+    id          String   @id @default(cuid())
+    metricType  String // Type of the metric (e.g., 'totalStreams', 'totalDownloads')
+    value       Float // Value of the metric
+    periodStart DateTime // Start of the period for the metric (e.g., '2024-08-01')
+    periodEnd   DateTime // End of the period for the metric (e.g., '2024-08-07')
+    audioId     String
+
+    Audio Audio @relation(fields: [audioId], references: [id])
+
+    @@unique([metricType, periodStart, periodEnd, audioId])
 }

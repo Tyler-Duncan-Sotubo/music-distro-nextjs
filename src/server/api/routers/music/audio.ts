@@ -3,13 +3,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { uploadAudio, uploadImage } from "@/server/services/aws";
-import {
-  sendMusicReleaseAlertToAdmin,
-  sendMusicReleaseEmail,
-} from "@/server/services/mail";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -70,57 +64,34 @@ export const audioRouter = createTRPCRouter({
 
     return audioReleases;
   }),
-  createAudioRelease: protectedProcedure
-    .input(schema)
-    .mutation(async ({ input, ctx }) => {
+  getReleaseById: protectedProcedure
+    .input(
+      z.object({
+        releaseId: z.string().min(1, "Product is required"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
       const { db, session } = ctx;
-
-      const imageFileName = input.imageFileName.split(" ").join("");
-      const audioFileName = input.audioFileName
-        ? input.audioFileName.split(" ").join("")
-        : "";
-
-      const imageLink = await uploadImage(
-        session.user,
-        imageFileName,
-        input.releaseCover,
-      );
-
-      let audioLink;
-
-      if (input.releaseAudio !== "") {
-        audioLink = await uploadAudio(
-          session.user,
-          audioFileName,
-          input.releaseAudio,
-        );
-      }
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { audioFileName: _, imageFileName: __, ...rest } = input;
-
-      const audioRelease = await db.audio.create({
-        data: {
-          ...rest,
-          releaseDate: new Date(rest.releaseDate),
+      const audioRelease = await db.audio.findUnique({
+        where: {
+          id: input.releaseId,
           userId: session.user.id,
-          releaseAudio: audioLink,
-          releaseCover: imageLink,
-          releaseType: "audio",
-          status: "pending",
         },
       });
 
       if (!audioRelease) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to create audio release",
-        });
+        return null;
       }
 
-      await sendMusicReleaseEmail(session.user.email, input.artist);
-      await sendMusicReleaseAlertToAdmin();
+      const track = await db.track.findMany({
+        where: {
+          audioId: audioRelease.id,
+        },
+      });
 
-      return audioRelease;
+      return {
+        ...audioRelease,
+        track,
+      };
     }),
 });

@@ -1,6 +1,8 @@
 import { type Audio } from "@prisma/client";
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { ButtonWithIcon } from "@/components/ui/ButtonWithIcon";
 
 type ReleaseMobileView = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,6 +41,14 @@ const MusicReleaseCard = ({ release }: { release: Audio }) => {
           release={release?.releaseDate?.getFullYear()}
           description="Release Year"
         />
+        <Link
+          href={`/dashboard/music/release/view/${release?.id}`}
+          className="p-3"
+        >
+          <ButtonWithIcon className="mt-5" iconName="view">
+            View
+          </ButtonWithIcon>
+        </Link>
       </div>
     </div>
   );

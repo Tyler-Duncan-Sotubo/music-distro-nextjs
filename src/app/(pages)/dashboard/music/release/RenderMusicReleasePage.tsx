@@ -6,12 +6,13 @@ import Label from "@/components/ui/Label";
 import {
   type Resolver,
   useForm,
+  useFieldArray,
   type UseFormRegister,
   type FieldValues,
 } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { type IMusicRelease } from "../../types/musicRelease.type";
-import { AudioReleaseSchema } from "../../schema/musicRelease.schema";
+import { type IMusicRelease } from "../types/musicRelease.type";
+import { AudioReleaseSchema } from "../schema/musicRelease.schema";
 import genres from "@/data/genres.json";
 import languages from "@/data/languages.json";
 import { Button } from "@/components/ui/Button";
@@ -67,7 +68,6 @@ const RenderMusicReleasePage = ({
   });
 
   const router = useRouter();
-
   const user = useSession().data?.user;
 
   const onSubmit = async (data: IMusicRelease) => {

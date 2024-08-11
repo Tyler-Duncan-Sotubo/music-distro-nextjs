@@ -94,3 +94,13 @@
     box-shadow: inset 0px 0px 0px 30px #fff;
   }
 }
+
+.dotted-line {
+  background-image: linear-gradient(
+    to right,
+    currentColor 6px,
+    transparent 1px
+  );
+  background-size: 10px 16px; /* Adjust as needed */
+  background-repeat: repeat-x;
+}

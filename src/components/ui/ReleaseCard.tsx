@@ -2,6 +2,8 @@ import { type Audio } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./Button";
+import { ButtonWithIcon } from "./ButtonWithIcon";
+import { FaChevronRight } from "react-icons/fa";
 
 type ReleaseMobileView = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,6 +34,7 @@ const ReleaseCard = ({ releases }: { releases: Audio[] | null }) => {
               <th className="p-4 text-left capitalize">Release Date</th>
               <th className="p-4 text-left capitalize">UPC</th>
               <th className="p-4 text-left capitalize">SmartLink</th>
+              <th></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray capitalize">
@@ -58,12 +61,16 @@ const ReleaseCard = ({ releases }: { releases: Audio[] | null }) => {
                       <Image
                         src={release?.releaseCover ?? ""}
                         alt="cover art"
-                        className="h-20 w-20 object-cover"
-                        width={80}
-                        height={80}
+                        className="h-16 w-16 object-cover"
+                        width={60}
+                        height={60}
                       />
                     )}
-                    <p className="w-1/2">{release?.title}</p>
+                    <p className="w-1/2">
+                      {(release?.title?.length ?? 0) > 30
+                        ? `${release?.title.slice(0, 30)}...`
+                        : release?.title}
+                    </p>
                   </td>
                   <td className="whitespace-nowrap border-b border-gray px-4 py-4">
                     <p>{release?.artist}</p>
@@ -87,6 +94,11 @@ const ReleaseCard = ({ releases }: { releases: Audio[] | null }) => {
                         </Button>
                       </Link>
                     )}
+                  </td>
+                  <td className="whitespace-nowrap border-b border-gray px-4 py-4">
+                    <Link href={`/dashboard/music/release/view/${release?.id}`}>
+                      <FaChevronRight size={30} />
+                    </Link>
                   </td>
                 </tr>
               ))
@@ -158,6 +170,11 @@ const ReleaseCard = ({ releases }: { releases: Audio[] | null }) => {
                     </Link>
                   )}
                 </div>
+                <Link href={`/dashboard/music/release/view/${release?.id}`}>
+                  <ButtonWithIcon className="mt-5" iconName="view">
+                    View
+                  </ButtonWithIcon>
+                </Link>
               </div>
             </div>
           ))

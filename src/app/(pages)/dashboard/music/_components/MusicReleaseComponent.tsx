@@ -29,9 +29,13 @@ const MusicReleaseComponent = ({ releases }: { releases: Audio[] | null }) => {
 
   const filteredReleases = releases?.filter(
     (release) =>
-      (["pending", "under review", "submitted"].includes(
-        release.status.toLowerCase(),
-      ) &&
+      ([
+        "pending",
+        "in review",
+        "submitted",
+        "sent to stores",
+        "approved",
+      ].includes(release.status.toLowerCase()) &&
         (filterStatus === "pending" || filterStatus === "all")) ||
       (release.status.toLowerCase() === "live" &&
         (filterStatus === "live" || filterStatus === "all")),

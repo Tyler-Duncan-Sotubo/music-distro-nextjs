@@ -1,5 +1,5 @@
 import React from "react";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaRegArrowAltCircleRight } from "react-icons/fa";
 
 type ButtonProps = {
   type?: "submit" | "reset" | "button";
@@ -25,6 +25,9 @@ export const ButtonWithIcon = ({
     onClick={onClick}
   >
     {iconName === "google" && <FaGoogle className="mr-2" size={25} />}
+    {iconName === "view" && (
+      <FaRegArrowAltCircleRight className="mr-2" size={25} />
+    )}
     {props.children}
   </button>
 );
