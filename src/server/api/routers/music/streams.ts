@@ -24,7 +24,7 @@ export const streamRouter = createTRPCRouter({
     const tenDaysAgo = new Date(today);
     tenDaysAgo.setDate(today.getDate() - 10);
     const threeDaysAgo = new Date(today);
-    threeDaysAgo.setDate(today.getDate() - 4);
+    threeDaysAgo.setDate(today.getDate() - 3);
 
     const streams = await db.dailyStream.findMany({
       where: {
