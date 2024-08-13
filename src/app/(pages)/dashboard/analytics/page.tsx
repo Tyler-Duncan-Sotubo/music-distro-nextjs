@@ -2,7 +2,6 @@ import RenderAnalyticsPage from "./RenderAnalyticsPage";
 import { type Metadata } from "next";
 import RenderAnalyticsDemo from "./RenderAnalyticsDemo";
 import { api } from "@/trpc/server";
-import { type Stream } from "../types/stream.type";
 
 export const metadata: Metadata = {
   title: "Analytics | We Plug Music - Dashboard",
@@ -12,7 +11,7 @@ export const metadata: Metadata = {
 
 const page = async () => {
   const userSubscription = await api.subscriptions.getSubscription();
-  const streams: Stream | undefined | null = await api.streams.getStreams();
+  const streams = await api.streams.getStreams();
 
   if (userSubscription?.status === "active") {
     return <RenderAnalyticsPage streams={streams} />;

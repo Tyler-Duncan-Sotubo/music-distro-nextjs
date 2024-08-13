@@ -1,229 +1,119 @@
-import { StreamsGraph } from "../graphs/StreamsGraph";
-// import { type Stream } from "@prisma/client";
-import { type Stream } from "../types/stream.type";
+"use client";
 
+import React from "react";
+import WeeklyStreamChart from "./components/LineChart";
+
+// Render component
 const RenderAnalyticsPage = ({
   streams,
 }: {
-  streams: Stream | undefined | null;
+  streams: never[] | Record<string, { date: string; streamCount: number }[]>; // Update the type of the streams parameter
 }) => {
-  const data = streams;
-
-  function formatNumber(number: number) {
-    if (number < 1000) {
-      return number?.toString();
-    } else {
-      return number?.toLocaleString();
-    }
-  }
-
-  // Function to calculate total streams
-  const calculateTotalStreams = (data: Stream | undefined | null) => {
-    if (!data) return 0;
-    const platforms = [
-      "apple",
-      "spotify",
-      "youtube",
-      "amazon",
-      "tidal",
-      "deezer",
-      "boomPlay",
-      "tiktok",
-      "facebook",
-    ] as const;
-
-    let total = 0;
-    platforms.forEach((platform) => {
-      const platformData = data[platform];
-      total += parseInt(String(platformData.total), 10) || 0;
-    });
-    return total;
+  // Calculate totals for each platform
+  const calculateTotals = (
+    data: Record<string, { date: string; streamCount: number }[]>,
+  ) => {
+    return Object.keys(data).reduce(
+      (totals, platform) => {
+        const total = (data[platform] ?? []).reduce(
+          (sum, record) => sum + record.streamCount,
+          0,
+        );
+        totals[platform] = total;
+        return totals;
+      },
+      {} as Record<string, number>,
+    );
   };
 
-  // Calculate total streams
-  const totalStreams = calculateTotalStreams(data);
+  const streamsCopy = streams as Record<
+    string,
+    { date: string; streamCount: number }[]
+  >;
+
+  const calculateGrandTotal = (totals: Record<string, number>) => {
+    return Object.values(totals).reduce(
+      (grandTotal, total) => grandTotal + total,
+      0,
+    );
+  };
+
+  // Calculate totals
+  const totals = calculateTotals(streamsCopy);
+  const grandTotal = calculateGrandTotal(totals);
 
   return (
-    <>
-      {/* Streams and Downloads */}
-      <section className="my-20 text-center md:mt-36">
-        <div className="my-16">
-          <h1 className="">My Streams and Downloads</h1>
-          <h3 className="my-4">
-            Some stores don’t provide live sales & streaming data, so these
-            reports may not reflect your exact final sales figures.
-          </h3>
-        </div>
-
-        <div className="md:flex md:h-[400px]">
-          <div className="md:w-[70%]">
-            {Object.keys(data ?? {}).length === 0 ? (
-              <section className="relative inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-                <div className="flex h-[30%] w-full flex-col items-center justify-center gap-6 bg-white px-10 py-6 opacity-70 md:h-[400px]">
-                  <StreamsGraph data={data} />
-                  <h3 className="absolute w-2/3 font-bold lg:w-1/2">
-                    No downloads reported yet for the last 7 days. Come back
-                    later to check again.
-                  </h3>
-                </div>
-              </section>
-            ) : (
-              <StreamsGraph data={data} />
-            )}
+    <div>
+      <>
+        {/* Streams and Downloads */}
+        <section className="my-20 text-center md:mt-36">
+          <div className="my-16">
+            <h1 className="">My Streams and Downloads</h1>
+            <h3 className="my-4">
+              Some stores don’t provide live sales & streaming data, so these
+              reports may not reflect your exact final sales figures.
+            </h3>
           </div>
 
-          <div className="flex flex-col gap-3 text-center capitalize md:w-[25%]">
-            <h1 className="my-6 text-center text-2xl font-bold">
-              Weekly Report
-            </h1>
-            <div>
-              {data?.week_start && (
-                <p className="text-center text-sm">
-                  {data?.week_start} - {data?.week_end}
-                </p>
+          <div className="mb-32 md:flex md:h-[350px]">
+            <div className="md:w-[65%]">
+              {Object.keys(streams ?? {}).length === 0 ? (
+                <section className="relative inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+                  <div className="flex h-[30%] w-full flex-col items-center justify-center gap-6 bg-white px-10 py-6 opacity-70 md:h-[400px]">
+                    <WeeklyStreamChart platformData={streamsCopy} />
+                    <h3 className="absolute w-2/3 font-bold lg:w-1/2">
+                      No downloads reported yet for the last 7 days. Come back
+                      later to check again.
+                    </h3>
+                  </div>
+                </section>
+              ) : (
+                <WeeklyStreamChart platformData={streamsCopy} />
               )}
             </div>
-            <div className="mb-4 text-center text-3xl">
-              <p className="text-lg">Total Streams</p>
-              <h4 className="text-center text-2xl font-bold">
-                {formatNumber(data?.total_streams ?? 0)}
-              </h4>
-            </div>
-            <div className="mb-4 text-center text-3xl">
-              <p className="text-lg">This Week</p>
-              <h4 className="my-2 text-center text-2xl font-bold">
-                {totalStreams}
-              </h4>
+
+            <div className="flex flex-col gap-3 text-center capitalize md:w-[25%]">
+              <h1 className="my-6 text-center text-2xl font-bold">
+                Weekly Report
+              </h1>
+              <div className="mb-4 text-center text-3xl">
+                <p className="text-lg">Total Streams</p>
+              </div>
+              <div className="mb-4 text-center text-3xl">
+                <p className="text-lg">This Week</p>
+                <h4 className="my-2 text-center text-2xl font-bold">
+                  {grandTotal}
+                </h4>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Streaming Platforms */}
-      <table className="my-10 table-auto md:w-[60%]">
-        {Object.keys(data ?? {}).length === 0 ? (
-          ""
-        ) : (
-          <thead>
-            <tr>
-              {headers.map((header, index) => (
-                <th
-                  key={index}
-                  className="border-gray-400 bg-gray-200 text-gray-800 w-[45%] py-4 text-left"
-                >
-                  {header}
-                </th>
+        </section>
+        {/* Streaming Platforms */}
+        {Object.keys(streams ?? {}).length > 0 && (
+          <table className="mb-32 w-[60%] min-w-full divide-y divide-gray text-[14px] capitalize">
+            <thead className="bg-black font-medium uppercase text-white">
+              <tr>
+                <th className="p-4 text-left capitalize">Store</th>
+                <th className="p-4 text-left capitalize">Streams</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray capitalize">
+              {Object.entries(totals).map(([platform, total]) => (
+                <tr key={platform}>
+                  <td className="whitespace-nowrap px-4 py-4 font-medium">
+                    <p>{platform}</p>
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-4 font-medium">
+                    <p>{total}</p>
+                  </td>
+                </tr>
               ))}
-            </tr>
-          </thead>
+            </tbody>
+          </table>
         )}
-
-        <tbody>
-          {data?.apple && (
-            <tr className="mb-4 text-lg">
-              <td className="flex items-center gap-2 py-4">
-                <div
-                  style={{ backgroundColor: "black" }}
-                  className="h-1 w-6"
-                ></div>
-                <p>Apple Music</p>
-              </td>
-              <td className="py-4 text-xl">
-                {formatNumber(
-                  (data?.apple as { total?: number | undefined })?.total ?? 0,
-                )}
-              </td>
-            </tr>
-          )}
-          {data?.spotify && (
-            <tr className="mb-4 text-lg">
-              <td className="flex items-center gap-2 py-4">
-                <div
-                  style={{ backgroundColor: "green" }}
-                  className="h-1 w-6"
-                ></div>
-                <p>Spotify</p>
-              </td>
-              <td className="py-4 text-xl">
-                {formatNumber(
-                  (data?.spotify as { total?: number | undefined })?.total ?? 0,
-                )}
-              </td>
-            </tr>
-          )}
-          {data?.youtube && (
-            <tr className="mb-4 text-lg">
-              <td className="flex items-center gap-2 py-4">
-                <div
-                  style={{ backgroundColor: "red" }}
-                  className="h-1 w-6"
-                ></div>
-                <p>Youtube Music</p>
-              </td>
-              <td className="py-4 text-xl">
-                {formatNumber(
-                  (data?.youtube as { total?: number | undefined })?.total ?? 0,
-                )}
-              </td>
-            </tr>
-          )}
-          {data?.facebook && (
-            <tr className="mb-4 text-lg">
-              <td className="flex items-center gap-2 py-4">
-                <div
-                  style={{ backgroundColor: "yellow" }}
-                  className="h-1 w-6"
-                ></div>
-                <p>facebook</p>
-              </td>
-              <td className="py-4 text-xl">
-                {formatNumber(
-                  (data?.facebook as { total?: number | undefined })?.total ??
-                    0,
-                )}
-              </td>
-            </tr>
-          )}
-          {data?.tiktok && (
-            <tr className="mb-4 text-lg">
-              <td className="flex items-center gap-2 py-4">
-                <div
-                  style={{ backgroundColor: "orange" }}
-                  className="h-1 w-6"
-                ></div>
-                <p>Tiktok</p>
-              </td>
-              <td className="py-4 text-xl">
-                {" "}
-                {formatNumber(
-                  (data?.tiktok as { total?: number | undefined })?.total ?? 0,
-                )}
-              </td>
-            </tr>
-          )}
-          {data?.amazon && (
-            <tr className="mb-4 text-lg">
-              <td className="flex items-center gap-2 py-4">
-                <div
-                  style={{ backgroundColor: "purple" }}
-                  className="h-1 w-6"
-                ></div>
-                <p>Amazon</p>
-              </td>
-              <td className="py-4 text-xl">
-                {" "}
-                {formatNumber(
-                  (data?.amazon as { total?: number | undefined })?.total ?? 0,
-                )}
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </>
+      </>
+    </div>
   );
 };
 
 export default RenderAnalyticsPage;
-
-const headers = ["Store", "Streams"];
