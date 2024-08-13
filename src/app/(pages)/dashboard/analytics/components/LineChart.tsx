@@ -32,9 +32,29 @@ const WeeklyStreamChart: React.FC<{ platformData: PlatformData }> = ({
     datasets: graphData.datasets,
   };
 
+  const options = {
+    responsive: true,
+    // maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        position: "bottom" as const,
+      },
+    },
+  };
+
   return (
     <div>
-      <Line data={chartData} />
+      <Line data={chartData} options={options} />
     </div>
   );
 };

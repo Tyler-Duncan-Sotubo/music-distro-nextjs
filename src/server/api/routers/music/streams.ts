@@ -1,5 +1,4 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { type Stream } from "@/app/(pages)/dashboard/types/stream.type";
 
 export const streamRouter = createTRPCRouter({
   getStreams: protectedProcedure.query(async ({ ctx }) => {
@@ -66,5 +65,44 @@ export const streamRouter = createTRPCRouter({
     });
 
     return formattedData;
+  }),
+  getStreamsTotal: protectedProcedure.query(async ({ ctx }) => {
+    const { db, session } = ctx;
+    const audios = await db.audio.findMany({
+      where: {
+        userId: session.user.id,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    // Extract audio IDs
+    const audioIds = audios.map((audio) => audio.id);
+
+    if (audioIds.length === 0) {
+      return []; // No audio records found for the user
+    }
+
+    const streams = await db.dailyStream.findMany({
+      where: {
+        audioId: {
+          in: audioIds,
+        },
+      },
+      include: {
+        platform: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    const totalStreamsAcrossAllPlatforms = streams.reduce(
+      (sum, stream) => sum + stream.streamCount,
+      0,
+    );
+
+    return totalStreamsAcrossAllPlatforms;
   }),
 });

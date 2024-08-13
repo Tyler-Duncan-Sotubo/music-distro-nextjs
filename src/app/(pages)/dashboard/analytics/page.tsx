@@ -13,8 +13,12 @@ const page = async () => {
   const userSubscription = await api.subscriptions.getSubscription();
   const streams = await api.streams.getStreams();
 
+  const totalStreams = await api.streams.getStreamsTotal();
+
   if (userSubscription?.status === "active") {
-    return <RenderAnalyticsPage streams={streams} />;
+    return (
+      <RenderAnalyticsPage streams={streams} totalStreams={totalStreams} />
+    );
   } else {
     return <RenderAnalyticsDemo />;
   }

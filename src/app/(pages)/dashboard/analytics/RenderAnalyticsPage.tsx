@@ -1,14 +1,13 @@
 "use client";
-
-import React from "react";
 import WeeklyStreamChart from "./components/LineChart";
 
-// Render component
-const RenderAnalyticsPage = ({
-  streams,
-}: {
+type PageProps = {
   streams: never[] | Record<string, { date: string; streamCount: number }[]>; // Update the type of the streams parameter
-}) => {
+  totalStreams: number | never[];
+};
+
+// Render component
+const RenderAnalyticsPage = ({ streams, totalStreams }: PageProps) => {
   // Calculate totals for each platform
   const calculateTotals = (
     data: Record<string, { date: string; streamCount: number }[]>,
@@ -55,8 +54,8 @@ const RenderAnalyticsPage = ({
             </h3>
           </div>
 
-          <div className="mb-32 md:flex md:h-[350px]">
-            <div className="md:w-[65%]">
+          <div className="h-[500px] md:flex md:h-[350px] lg:mb-44">
+            <div className="relative h-full md:w-[65%]">
               {Object.keys(streams ?? {}).length === 0 ? (
                 <section className="relative inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
                   <div className="flex h-[30%] w-full flex-col items-center justify-center gap-6 bg-white px-10 py-6 opacity-70 md:h-[400px]">
@@ -76,8 +75,11 @@ const RenderAnalyticsPage = ({
               <h1 className="my-6 text-center text-2xl font-bold">
                 Weekly Report
               </h1>
-              <div className="mb-4 text-center text-3xl">
+              <div className="mb-1 text-center text-3xl">
                 <p className="text-lg">Total Streams</p>
+                <h4 className="my-2 text-center text-2xl font-bold">
+                  {totalStreams}
+                </h4>
               </div>
               <div className="mb-4 text-center text-3xl">
                 <p className="text-lg">This Week</p>

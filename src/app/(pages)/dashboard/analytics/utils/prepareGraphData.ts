@@ -3,15 +3,23 @@ import { aggregateDailyData } from "./aggregateDailyData";
 
 const colorPalette: Record<string, string> = {
   "Apple Music": "black",
-  Spotify: "green",
-  Facebook: "lightBlue",
+  Spotify: "#1DB954",
+  Facebook: "#1877F2",
+  Tiktok: "#ff0050",
+  YouTube: "#FF0000",
+  Amazon: "purple",
+  Soundcloud: "darkOrange",
   // Add more colors as needed
 };
 
 const bgColorPalette: Record<string, string> = {
   "Apple Music": "black",
-  Spotify: "green",
-  Facebook: "lightBlue",
+  Spotify: "#1DB954",
+  Facebook: "#1877F2",
+  Tiktok: "#ff0050",
+  YouTube: "#FF0000",
+  Amazon: "purple",
+  Soundcloud: "darkOrange",
   // Add more colors as needed
 };
 
