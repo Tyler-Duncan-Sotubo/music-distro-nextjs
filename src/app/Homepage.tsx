@@ -6,7 +6,6 @@ import { TestimonialSlider } from "@/components/common/TestimonialSlider";
 import Footer from "@/components/layout/Footer";
 import SubscriptionPlan from "@/components/common/SubscriptionPlan";
 import Link from "next/link";
-
 type DistroType = {
   name: string;
   image: string;

@@ -204,7 +204,6 @@ model Audio {
 
     User         User          @relation(fields: [userId], references: [id])
     dailyStreams DailyStream[] @relation("AudioDailyStreams")
-    Metric       Metric[]
     Stream       Stream[]
     Track        Track[]
 }
@@ -241,15 +240,71 @@ model DailyStream {
     @@unique([date, audioId, platformId])
 }
 
-model Metric {
-    id          String   @id @default(cuid())
-    metricType  String // Type of the metric (e.g., 'totalStreams', 'totalDownloads')
-    value       Float // Value of the metric
-    periodStart DateTime // Start of the period for the metric (e.g., '2024-08-01')
-    periodEnd   DateTime // End of the period for the metric (e.g., '2024-08-07')
-    audioId     String
+//  Admin user model for the admin dashboard
+model AdminUser {
+    id       String  @id @default(cuid())
+    name     String?
+    email    String? @unique
+    password String?
+}
 
-    Audio Audio @relation(fields: [audioId], references: [id])
+// New Partner model to track revenue
+model Partner {
+    id                        String                      @id @default(cuid())
+    name                      String
+    password                  String
+    email                     String?                     @unique
+    artists                   PartnerArtist[]
+    revenue                   PartnerArtistRevenue[]
+    PartnerArtistSubscription PartnerArtistSubscription[]
+}
 
-    @@unique([metricType, periodStart, periodEnd, audioId])
+model PartnerArtist {
+    id        String                 @id @default(cuid())
+    name      String
+    image     String?
+    releases  String?
+    partnerId String
+    revenue   PartnerArtistRevenue[]
+
+    partner                   Partner                     @relation(fields: [partnerId], references: [id])
+    PartnerArtistSubscription PartnerArtistSubscription[]
+}
+
+model PartnerArtistRevenue {
+    id        String        @id @default(cuid())
+    amount    Float
+    date      DateTime
+    artist    PartnerArtist @relation(fields: [artistId], references: [id])
+    artistId  String
+    partner   Partner       @relation(fields: [partnerId], references: [id])
+    partnerId String
+}
+
+model PartnerArtistSubscription {
+    id               String @id @default(cuid())
+    artistId         String
+    partnerId        String
+    subscriptionPlan String
+
+    artist  PartnerArtist @relation(fields: [artistId], references: [id])
+    partner Partner       @relation(fields: [partnerId], references: [id])
+}
+
+model SmartLink {
+    id         String  @id @default(cuid())
+    url        String  @unique
+    artist     String
+    title      String
+    image      String
+    itunes     String?
+    spotify    String?
+    apple      String?
+    amazon     String?
+    deezer     String?
+    tidal      String?
+    youtube    String?
+    audioMack  String?
+    boomPlay   String?
+    soundcloud String?
 }

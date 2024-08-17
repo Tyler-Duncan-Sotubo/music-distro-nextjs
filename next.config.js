@@ -9,9 +9,17 @@ const config = {
   reactStrictMode: true,
   output: "standalone",
   images: {
-    domains: [
-      "lh3.googleusercontent.com",
-      "tooxclusive-artist-profile.s3.amazonaws.com",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "tooxclusive-artist-profile.s3.amazonaws.com",
+        pathname: "/**",
+      },
     ],
   },
 };

@@ -33,23 +33,16 @@ export const prepareGraphData = (platformData: PlatformData) => {
     }
   }
 
-  // Collect all unique days of the week
-  const allDays = new Set<string>();
+  // Collect all unique dates
+  const allDates = new Set<string>();
   Object.values(aggregatedData).forEach((data) => {
-    Object.keys(data).forEach((day) => allDays.add(day));
+    Object.keys(data).forEach((dateStr) => {
+      allDates.add(dateStr);
+    });
   });
 
-  // Sort days and create labels
-  const daysOrder = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const labels = daysOrder.filter((day) => allDays.has(day));
+  // Sort dates and create labels
+  const labels = Array.from(allDates).sort();
 
   // Create datasets for each platform
   const datasets = Object.keys(aggregatedData).map((platform) => {
@@ -57,7 +50,9 @@ export const prepareGraphData = (platformData: PlatformData) => {
 
     return {
       label: platform,
-      data: data.map((counts) => counts.reduce((sum, count) => sum + count, 0)),
+      data: data
+        .map((counts) => counts.reduce((sum, count) => sum + count, 0))
+        .reverse(),
       fill: false,
       borderColor: colorPalette[platform] ?? "rgba(0, 0, 0, 0.1)",
       backgroundColor: bgColorPalette[platform] ?? "rgba(0, 0, 0, 0.1)",
@@ -65,6 +60,5 @@ export const prepareGraphData = (platformData: PlatformData) => {
       borderWidth: 2,
     };
   });
-
   return { labels, datasets };
 };
