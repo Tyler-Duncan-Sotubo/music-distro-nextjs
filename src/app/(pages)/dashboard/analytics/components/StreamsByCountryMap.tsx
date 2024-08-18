@@ -29,14 +29,14 @@ const StreamsByCountryMap: React.FC<StreamsByCountryMapProps> = ({
 
   const colorScale = scaleLinear<string>()
     .domain([0, maxStreams])
-    .range(["#e0f7fa", "#00796b"]);
+    .range(["#e0f7fr", "#00796b"]);
 
   // Use the L.Path type for layer
   const onEachCountry = (feature: Feature<GeometryObject>, layer: L.Path) => {
     const countryData = data?.find((d) => d.id === feature.id);
     // Set style for the country feature
     layer.setStyle({
-      fillColor: countryData ? colorScale(countryData.streams) : "#FFF",
+      fillColor: countryData ? colorScale(countryData.streams) : "#e0f7fr",
       fillOpacity: 0.7,
       color: "#FFF",
       weight: 1,
@@ -60,15 +60,16 @@ const StreamsByCountryMap: React.FC<StreamsByCountryMapProps> = ({
   };
 
   return (
-    <div style={{ width: "100%", maxWidth: "800px", margin: "0 auto" }}>
+    <div className="mx-auto w-full max-w-[800px]">
       <MapContainer
         style={{
           width: "100%",
           height: "auto",
-          aspectRatio: "16/9", // Maintains a 16:9 aspect ratio
+          aspectRatio: "16/9",
+          backgroundColor: "#fff",
         }}
-        zoom={1}
-        center={[20, 0]}
+        zoom={0.5}
+        center={[20, 3]}
         scrollWheelZoom={false}
         zoomControl={false}
         dragging={false}

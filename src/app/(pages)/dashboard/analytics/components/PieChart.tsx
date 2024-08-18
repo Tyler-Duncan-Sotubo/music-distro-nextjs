@@ -44,7 +44,7 @@ const WeeklyPieChart: React.FC<PlatformPieChartProps> = ({ platformData }) => {
   };
 
   return (
-    <div className="h-96 w-96">
+    <div className="mx-auto w-[90%] lg:h-96 lg:w-96">
       <Pie data={pieData} options={options} />
     </div>
   );

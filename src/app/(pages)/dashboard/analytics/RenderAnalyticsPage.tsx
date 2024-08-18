@@ -163,11 +163,10 @@ const RenderAnalyticsPage = ({
             </table>
           )}
         </div>
-        <div className="mb-44 lg:w-1/3">
-          {Object.keys(streams ?? {}).length > 0 && (
-            <WeeklyPieChart platformData={streamsCopy} />
-          )}
-        </div>
+
+        {Object.keys(streams ?? {}).length > 0 && (
+          <WeeklyPieChart platformData={streamsCopy} />
+        )}
       </section>
 
       {/* Streams by Territory */}
