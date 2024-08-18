@@ -15,9 +15,15 @@ const page = async () => {
 
   const totalStreams = await api.streams.getStreamsTotal();
 
+  const StreamsByCountry = await api.streams.getStreamsByCountry();
+
   if (userSubscription?.status === "active") {
     return (
-      <RenderAnalyticsPage streams={streams} totalStreams={totalStreams} />
+      <RenderAnalyticsPage
+        streams={streams}
+        totalStreams={totalStreams}
+        StreamsByCountry={StreamsByCountry}
+      />
     );
   } else {
     return <RenderAnalyticsDemo />;

@@ -34,7 +34,7 @@ const WeeklyStreamChart: React.FC<{ platformData: PlatformData }> = ({
 
   const options = {
     responsive: true,
-    // maintainAspectRatio: false,
+    maintainAspectRatio: false,
     scales: {
       y: {
         beginAtZero: true,
@@ -53,7 +53,7 @@ const WeeklyStreamChart: React.FC<{ platformData: PlatformData }> = ({
   };
 
   return (
-    <div>
+    <div className="min-h-96 min-w-96">
       <Line data={chartData} options={options} />
     </div>
   );

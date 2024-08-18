@@ -55,7 +55,14 @@ model User {
     Subscriptions      Subscriptions[]
     CartItem           CartItem[]
     Social             Social[]
-    Stream             Stream[]
+}
+
+//  Admin user model for the admin dashboard
+model AdminUser {
+    id       String  @id @default(cuid())
+    name     String?
+    email    String? @unique
+    password String?
 }
 
 model PasswordResetToken {
@@ -152,29 +159,6 @@ model Social {
     User User @relation(fields: [userId], references: [id])
 }
 
-// Old Stream model to delete soon
-model Stream {
-    id            String   @id @default(cuid())
-    userId        String
-    audioId       String
-    total_streams Int
-    week_start    String
-    week_end      String
-    apple         Json?    @default("{}")
-    spotify       Json?    @default("{}")
-    youtube       Json?    @default("{}")
-    amazon        Json?    @default("{}")
-    tidal         Json?    @default("{}")
-    deezer        Json?    @default("{}")
-    boomPlay      Json?    @default("{}")
-    tiktok        Json?    @default("{}")
-    facebook      Json?    @default("{}")
-    createdAt     DateTime @default(now())
-
-    User  User  @relation(fields: [userId], references: [id])
-    audio Audio @relation(fields: [audioId], references: [id])
-}
-
 // All models below are for audio and streaming data
 model Audio {
     id               String   @id @default(cuid())
@@ -202,10 +186,10 @@ model Audio {
     updatedAt        DateTime @updatedAt
     smartLink        String   @default("")
 
-    User         User          @relation(fields: [userId], references: [id])
-    dailyStreams DailyStream[] @relation("AudioDailyStreams")
-    Stream       Stream[]
-    Track        Track[]
+    User            User              @relation(fields: [userId], references: [id])
+    dailyStreams    DailyStream[]     @relation("AudioDailyStreams")
+    Track           Track[]
+    StreamByCountry StreamByCountry[]
 }
 
 model Track {
@@ -240,12 +224,22 @@ model DailyStream {
     @@unique([date, audioId, platformId])
 }
 
-//  Admin user model for the admin dashboard
-model AdminUser {
-    id       String  @id @default(cuid())
-    name     String?
-    email    String? @unique
-    password String?
+model Country {
+    id               String            @id @default(uuid())
+    name             String            @unique
+    isoCode          String            @unique
+    streamsByCountry StreamByCountry[]
+}
+
+model StreamByCountry {
+    id        String  @id @default(uuid())
+    countryId String
+    country   Country @relation(fields: [countryId], references: [id])
+    streams   Int
+    audioId   String
+    audio     Audio   @relation(fields: [audioId], references: [id])
+
+    @@unique([countryId, audioId])
 }
 
 // New Partner model to track revenue
@@ -291,6 +285,7 @@ model PartnerArtistSubscription {
     partner Partner       @relation(fields: [partnerId], references: [id])
 }
 
+// Smar link model to store all streaming links
 model SmartLink {
     id         String  @id @default(cuid())
     url        String  @unique
