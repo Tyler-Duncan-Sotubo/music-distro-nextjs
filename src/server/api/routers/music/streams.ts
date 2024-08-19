@@ -31,11 +31,12 @@ export const streamRouter = createTRPCRouter({
         audioId: {
           in: audioIds,
         },
-        date: {
-          gte: tenDaysAgo,
-          lt: threeDaysAgo,
-        },
+        AND: [
+          { date: { gte: tenDaysAgo.toISOString() } }, // greater than or equal to tenDaysAgo
+          { date: { lte: threeDaysAgo.toISOString() } }, // less than or equal to sevenDaysAgo
+        ],
       },
+      distinct: ["date", "audioId", "platformId"], // Ensure uniqueness based on these fields
       include: {
         platform: {
           select: {

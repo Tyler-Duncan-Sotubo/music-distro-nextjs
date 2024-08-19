@@ -87,6 +87,9 @@ export const audioRouter = createTRPCRouter({
         where: {
           audioId: audioRelease.id,
         },
+        orderBy: {
+          trackNumber: "asc",
+        },
       });
 
       return {
