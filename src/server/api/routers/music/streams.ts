@@ -37,6 +37,9 @@ export const streamRouter = createTRPCRouter({
         ],
       },
       distinct: ["date", "audioId", "platformId"], // Ensure uniqueness based on these fields
+      orderBy: {
+        date: "asc",
+      },
       include: {
         platform: {
           select: {
