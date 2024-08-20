@@ -287,8 +287,8 @@ model PartnerArtistSubscription {
 
 // Smar link model to store all streaming links
 model SmartLink {
-    id         String  @id @default(cuid())
-    url        String  @unique
+    id         String   @id @default(cuid())
+    url        String   @unique
     artist     String
     title      String
     image      String
@@ -302,4 +302,5 @@ model SmartLink {
     audioMack  String?
     boomPlay   String?
     soundcloud String?
+    createdAt  DateTime @default(now())
 }

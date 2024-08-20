@@ -11,21 +11,21 @@ type DistroType = {
   image: string;
 };
 
-type releaseType = {
+type smartLinkType = {
   title: string;
   artist: string;
-  releaseCover: string;
-  smartLink: string;
+  image: string;
+  url: string;
 };
 
 interface ExchangeRateResponse {
   nairaToDollarsRateToday: number;
-  releases: releaseType[] | null;
+  smartLinks: smartLinkType[] | null;
 }
 
 const Homepage = ({
   nairaToDollarsRateToday,
-  releases,
+  smartLinks,
 }: ExchangeRateResponse) => {
   return (
     <>
@@ -127,28 +127,30 @@ const Homepage = ({
             <h1 className="text-4xl font-bold">New Releases</h1>
           </div>
           <div className="mt-6 grid w-full grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
-            {releases
-              ?.slice(0, 8)
-              .map((release: releaseType, index: number) => (
-                <Link href={release.smartLink} key={index} target="_blank">
-                  <div className="flex w-full flex-col items-center">
-                    <div className="relative h-[200px] w-[200px] md:h-[330px] md:w-[300px]">
-                      <Image
-                        src={release.releaseCover}
-                        alt={release.title}
-                        fill
-                        style={{ objectFit: "contain" }}
-                      />
-                    </div>
-                    <h3 className="text-center text-sm font-bold md:text-lg">
-                      {release.title}
-                    </h3>
-                    <h3 className="mb-10 mt-1 text-sm text-zinc-900 md:text-lg">
-                      {release.artist}
-                    </h3>
+            {smartLinks?.map((release: smartLinkType, index: number) => (
+              <Link
+                href={`https://weplugmusic.link/${release.url}`}
+                key={index}
+                target="_blank"
+              >
+                <div className="flex w-full flex-col items-center">
+                  <div className="relative h-[200px] w-[200px] md:h-[330px] md:w-[300px]">
+                    <Image
+                      src={release.image}
+                      alt={release.title}
+                      fill
+                      style={{ objectFit: "contain" }}
+                    />
                   </div>
-                </Link>
-              ))}
+                  <h3 className="text-center text-sm font-bold md:text-lg">
+                    {release.title}
+                  </h3>
+                  <h3 className="mb-10 mt-1 text-sm text-zinc-900 md:text-lg">
+                    {release.artist}
+                  </h3>
+                </div>
+              </Link>
+            ))}
           </div>
         </section>
 

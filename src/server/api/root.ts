@@ -1,7 +1,7 @@
 import { registerRouter, passwordRouter, verifyRouter } from "./routers/auth/";
 import { subscriptionRouter } from "./routers/subscriptions/subscriptions";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
-import { streamRouter, audioRouter } from "./routers/music";
+import { streamRouter, audioRouter, smartLinkRouter } from "./routers/music";
 import { userRouter } from "./routers/user/user";
 import { cartRouter } from "./routers/cart/cart";
 import { photoRouter } from "./routers/user";
@@ -17,6 +17,7 @@ export const appRouter = createTRPCRouter({
   verify: verifyRouter,
   subscriptions: subscriptionRouter,
   audio: audioRouter,
+  smartLinks: smartLinkRouter,
   user: userRouter,
   streams: streamRouter,
   cart: cartRouter,

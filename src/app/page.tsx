@@ -7,13 +7,13 @@ export default async function Home() {
   const { getExchangeRate } = exchangeRateAPI();
   const nairaToDollarsRateToday = await getExchangeRate();
 
-  const releases = await api.audio.getAllReleases();
+  const smartLinks = await api.smartLinks.getAllSmartLinks();
 
   return (
     <HydrateClient>
       <Homepage
         nairaToDollarsRateToday={nairaToDollarsRateToday}
-        releases={releases}
+        smartLinks={smartLinks}
       />
     </HydrateClient>
   );
