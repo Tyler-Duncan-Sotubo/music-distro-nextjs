@@ -46,7 +46,7 @@ export const streamsRouter = createTRPCRouter({
 
       const audios = await db.audio.findMany({
         where: {
-          userId: "66467ddf83bc10188ef2e695",
+          userId: session.user.id,
         },
         select: {
           id: true,
