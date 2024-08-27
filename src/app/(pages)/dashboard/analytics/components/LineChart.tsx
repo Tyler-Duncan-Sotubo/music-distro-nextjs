@@ -8,9 +8,10 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler,
 } from "chart.js";
 import { prepareGraphData } from "../utils/prepareGraphData";
-import { type PlatformData } from "../types/streams.types";
+import { type PlatformData, type TimeRange } from "../types/streams.types";
 
 ChartJS.register(
   LineElement,
@@ -20,15 +21,45 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
+  Filler,
 );
 
-const WeeklyStreamChart: React.FC<{ platformData: PlatformData }> = ({
-  platformData,
-}) => {
-  const graphData = prepareGraphData(platformData);
+const formatDate = (date: string): string => {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const [year, month, day] = date.split("-").map(Number);
+  return month ? `${months[month - 1]} ${day}` : "";
+};
+
+// Function to check if a date string is in the format YYYY-MM-DD
+const isValidDateFormat = (date: string): boolean => {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  return regex.test(date);
+};
+
+const WeeklyStreamChart: React.FC<{
+  platformData: PlatformData;
+  timeRange: TimeRange;
+}> = ({ platformData, timeRange }) => {
+  const graphData = prepareGraphData(platformData, timeRange);
 
   const chartData = {
-    labels: graphData.labels,
+    labels: graphData.labels.map((label) =>
+      isValidDateFormat(label) ? formatDate(label) : label,
+    ),
     datasets: graphData.datasets,
   };
 

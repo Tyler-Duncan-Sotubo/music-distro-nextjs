@@ -3,16 +3,20 @@ import React from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { prepareGraphData } from "../utils/prepareGraphData"; // Adjust path as needed
-import { type PlatformData } from "../types/streams.types";
+import { type TimeRange, type PlatformData } from "../types/streams.types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface PlatformPieChartProps {
   platformData: PlatformData;
+  timeRange: TimeRange;
 }
 
-const WeeklyPieChart: React.FC<PlatformPieChartProps> = ({ platformData }) => {
-  const { datasets } = prepareGraphData(platformData);
+const WeeklyPieChart: React.FC<PlatformPieChartProps> = ({
+  platformData,
+  timeRange,
+}) => {
+  const { datasets } = prepareGraphData(platformData, timeRange);
 
   // Summing up the total streams per platform for the pie chart
   const totalStreams = datasets.map((dataset) => {

@@ -11,18 +11,17 @@ export const metadata: Metadata = {
 
 const page = async () => {
   const userSubscription = await api.subscriptions.getSubscription();
-  const streams = await api.streams.getStreams();
+  const streams = await api.streams.getStreams({ timeRange: "7days" });
+  const StreamsByCountry = await api.streamsByCountry.getStreamsByCountry();
 
-  const totalStreams = await api.streams.getStreamsTotal();
-
-  const StreamsByCountry = await api.streams.getStreamsByCountry();
+  const audios = await api.streams.getAudioReleases();
 
   if (userSubscription?.status === "active") {
     return (
       <RenderAnalyticsPage
         streams={streams}
-        totalStreams={totalStreams}
         StreamsByCountry={StreamsByCountry}
+        audios={audios}
       />
     );
   } else {
