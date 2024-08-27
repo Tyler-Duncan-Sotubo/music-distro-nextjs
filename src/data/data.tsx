@@ -117,6 +117,7 @@ export const features = [
     id: 3,
     product: "Platinum",
     description: "Basic Distribution to top digital music services",
+    price: "100,000",
     price_in_usd: "70",
     features: [
       "Everything in Bronze Plan & Gold Plan",
