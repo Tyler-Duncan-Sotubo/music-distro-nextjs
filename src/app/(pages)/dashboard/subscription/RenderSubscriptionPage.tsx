@@ -11,12 +11,10 @@ import { type Subscriptions, type CartItem } from "@prisma/client";
 
 type SubscriptionPlanProps = {
   userSubscription: Subscriptions | null;
-  nairaToDollarsRateToday: number;
 };
 
 const RenderSubscriptionPage = ({
   userSubscription,
-  nairaToDollarsRateToday,
 }: SubscriptionPlanProps) => {
   const [currency, setCurrency] = useState<string | null>("NGN");
 
@@ -102,13 +100,7 @@ const RenderSubscriptionPage = ({
                 <h3>{feature.product}</h3>
                 <div className="my-2 flex items-center gap-2">
                   {currency === "USD" ? (
-                    <h1>
-                      $
-                      {(
-                        nairaToDollarsRateToday *
-                        Number(feature.price.replace(/,/g, ""))
-                      ).toFixed(0)}
-                    </h1>
+                    <h1>${feature.price_in_usd}</h1>
                   ) : (
                     <h1>₦{feature.price}</h1>
                   )}

@@ -2,7 +2,6 @@ import FrequentlyAskedQuestions from "@/components/common/FrequentlyAskedQuestio
 import SubscriptionPlan from "@/components/common/SubscriptionPlan";
 import { subscriptionPlanToChoose, pricingFAQ } from "@/data/data";
 import { FaCircleCheck } from "react-icons/fa6";
-import exchangeRateAPI from "@/libs/exchangeRateAPI";
 
 const GetStartedButton = () => (
   <button className="mt-4 rounded-3xl border-2 px-2 py-2 text-xs capitalize text-black md:px-6 md:text-2xl">
@@ -11,9 +10,6 @@ const GetStartedButton = () => (
 );
 
 const page = async () => {
-  const { getExchangeRate } = exchangeRateAPI();
-  const nairaToDollarsRateToday = await getExchangeRate();
-
   return (
     <>
       <section>
@@ -21,10 +17,7 @@ const page = async () => {
           <h1 className="mb-10 mt-10 text-center text-7xl">Pricing</h1>
         </div>
         <section className="mx-auto w-[90%]">
-          <SubscriptionPlan
-            header="Choose the Right Plan for Your Music Distribution"
-            nairaToDollarsRateToday={nairaToDollarsRateToday}
-          />
+          <SubscriptionPlan header="Choose the Right Plan for Your Music Distribution" />
         </section>
 
         {/* Frequently Asked Questions For Pricing */}

@@ -10,13 +10,9 @@ import { useSession } from "next-auth/react";
 
 type SubscriptionPlanProps = {
   header?: string;
-  nairaToDollarsRateToday: number;
 };
 
-const SubscriptionPlan = ({
-  header = "",
-  nairaToDollarsRateToday = 0,
-}: SubscriptionPlanProps) => {
+const SubscriptionPlan = ({ header = "" }: SubscriptionPlanProps) => {
   const { data: session } = useSession();
   const user = session?.user;
   const [currency, setCurrency] = useState<string | null>("NGN");
@@ -57,13 +53,7 @@ const SubscriptionPlan = ({
                 {currency === "NGN" ? (
                   <h1>₦{feature.price}</h1>
                 ) : (
-                  <h1>
-                    $
-                    {(
-                      nairaToDollarsRateToday *
-                      Number(feature.price.replace(/,/g, ""))
-                    ).toFixed(0)}
-                  </h1>
+                  <h1>${feature.price_in_usd}</h1>
                 )}
                 <p>Per Year</p>
               </div>

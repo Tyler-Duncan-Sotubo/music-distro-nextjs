@@ -6,6 +6,7 @@ import { TestimonialSlider } from "@/components/common/TestimonialSlider";
 import Footer from "@/components/layout/Footer";
 import SubscriptionPlan from "@/components/common/SubscriptionPlan";
 import Link from "next/link";
+
 type DistroType = {
   name: string;
   image: string;
@@ -18,15 +19,11 @@ type smartLinkType = {
   url: string;
 };
 
-interface ExchangeRateResponse {
-  nairaToDollarsRateToday: number;
+interface HomepageProps {
   smartLinks: smartLinkType[] | null;
 }
 
-const Homepage = ({
-  nairaToDollarsRateToday,
-  smartLinks,
-}: ExchangeRateResponse) => {
+const Homepage = ({ smartLinks }: HomepageProps) => {
   return (
     <>
       <header>
@@ -156,10 +153,7 @@ const Homepage = ({
 
         {/* Subscription Plan */}
         <section className="mx-auto w-[90%]">
-          <SubscriptionPlan
-            header="Choose Your Perfect Plan"
-            nairaToDollarsRateToday={nairaToDollarsRateToday}
-          />
+          <SubscriptionPlan header="Choose Your Perfect Plan" />
         </section>
 
         {/* Vevo */}

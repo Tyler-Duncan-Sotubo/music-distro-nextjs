@@ -1,6 +1,6 @@
 import { BiSolidVideos } from "react-icons/bi";
 import { FaMusic } from "react-icons/fa";
-import {  MdLock } from "react-icons/md";
+import { MdLock } from "react-icons/md";
 
 export const distros = [
   { image: "/img/distros/spotify-auth.svg", name: "Deezer" },
@@ -86,6 +86,7 @@ export const features = [
     id: 1,
     product: "Bronze",
     description: "Basic Distribution to top digital music services",
+    price_in_usd: "50",
     price: "60,000",
     features: [
       "Unlimited releases to 100+ platforms for a year",
@@ -102,6 +103,7 @@ export const features = [
     product: "Gold",
     description: "Basic Distribution to top digital music services",
     price: "80,000",
+    price_in_usd: "60",
     features: [
       "Everything in Bronze Plan",
       "80% Revenue Pay-out",
@@ -115,7 +117,7 @@ export const features = [
     id: 3,
     product: "Platinum",
     description: "Basic Distribution to top digital music services",
-    price: "100,000",
+    price_in_usd: "70",
     features: [
       "Everything in Bronze Plan & Gold Plan",
       "85% Revenue Pay-out",
