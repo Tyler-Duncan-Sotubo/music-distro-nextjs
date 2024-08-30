@@ -22,18 +22,11 @@ const CommentForm = ({ ticketId }: PageProps) => {
     resolver: yupResolver(CreateCommentSchema) as Resolver<CreateCommentInput>,
   });
 
-  const comments = api.comment.getCommentById.useQuery({
-    ticketId,
-  });
-
   const tickets = api.ticket.getTicketById.useQuery({
     ticketId,
   });
 
   const createComment = api.comment.createComment.useMutation({
-    onSuccess: async () => {
-      await comments.refetch();
-    },
     onError: (error) => {
       console.error(error);
     },

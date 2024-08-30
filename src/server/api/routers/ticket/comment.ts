@@ -43,6 +43,15 @@ export const commentRouter = createTRPCRouter({
         },
       });
 
+      await db.ticket.updateMany({
+        where: {
+          id: input.ticketId,
+        },
+        data: {
+          updatedAt: new Date(),
+        },
+      });
+
       if (!comment) {
         return null;
       }

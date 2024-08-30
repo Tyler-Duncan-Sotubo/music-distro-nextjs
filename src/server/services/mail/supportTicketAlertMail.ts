@@ -2,7 +2,7 @@ import * as sgMail from "@sendgrid/mail";
 import { env } from "@/env";
 
 sgMail.setApiKey(env.SEND_GRID_API_KEY);
-// email ?? undefined,
+
 export const sendNewSupportTicketEmail = async (
   email: string | null | undefined,
   referenceNumber: string,
@@ -10,7 +10,7 @@ export const sendNewSupportTicketEmail = async (
   description: string,
 ) => {
   const msg = {
-    to: "tylertooxclusive@gmail.com",
+    to: email ?? undefined,
     from: {
       name: "The Weplug Music Team",
       email: "support@weplugmusic.com",
