@@ -2,15 +2,25 @@ import * as sgMail from "@sendgrid/mail";
 import { env } from "@/env";
 
 sgMail.setApiKey(env.SEND_GRID_API_KEY);
-
-export const sendMusicReleaseAlertToAdmin = async () => {
+// email ?? undefined,
+export const sendNewSupportTicketEmail = async (
+  email: string | null | undefined,
+  referenceNumber: string,
+  ticketLink: string,
+  description: string,
+) => {
   const msg = {
     to: "tylertooxclusive@gmail.com",
     from: {
-      name: "New Update Alert",
-      email: "noreply@weplugmusic.com",
+      name: "The Weplug Music Team",
+      email: "support@weplugmusic.com",
     },
-    templateId: env.RELEASE_NOTIFICATION_TEMPLATE_ID,
+    templateId: env.SUPPORT_TICKET_TEMPLATE_ID,
+    dynamicTemplateData: {
+      referenceNumber: referenceNumber,
+      ticketLink: ticketLink,
+      description: description,
+    },
   };
 
   async function sendEmail() {

@@ -6,6 +6,7 @@ import { userRouter } from "./routers/user/user";
 import { cartRouter } from "./routers/cart/cart";
 import { photoRouter } from "./routers/user";
 import { streamsRouter, streamsByCountryRouter } from "./routers/streams";
+import { ticketRouter, commentRouter } from "./routers/ticket";
 
 /**
  * This is the primary router for your server.
@@ -27,6 +28,10 @@ export const appRouter = createTRPCRouter({
   // streams
   streams: streamsRouter,
   streamsByCountry: streamsByCountryRouter,
+
+  // ticket
+  ticket: ticketRouter,
+  comment: commentRouter,
 });
 
 // export type definition of API

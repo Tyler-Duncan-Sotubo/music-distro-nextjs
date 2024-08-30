@@ -5,8 +5,8 @@ export default {
   content: ["./src/**/*.tsx"],
   theme: {
     colors: {
-      primary: "#1e40af",
-      primaryHover: "#1d4ed8",
+      primary: "rgb(29, 78, 216)",
+      primaryHover: "rgba(29, 78, 216, 0.8)",
       secondary: "#f4f4fe",
       white: "#fdfdff",
       black: "#000000",

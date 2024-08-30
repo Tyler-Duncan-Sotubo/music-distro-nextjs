@@ -55,14 +55,18 @@ model User {
     Subscriptions      Subscriptions[]
     CartItem           CartItem[]
     Social             Social[]
+    Ticket             Ticket[]
+    Comment            Comment[]
 }
 
 //  Admin user model for the admin dashboard
 model AdminUser {
-    id       String  @id @default(cuid())
+    id       String    @id @default(cuid())
     name     String?
-    email    String? @unique
+    email    String?   @unique
     password String?
+    Ticket   Ticket[]
+    Comment  Comment[]
 }
 
 model PasswordResetToken {
@@ -303,4 +307,49 @@ model SmartLink {
     boomPlay   String?
     soundcloud String?
     createdAt  DateTime @default(now())
+}
+
+// Support ticket model --------------------------------
+model Ticket {
+    id              String         @id @default(cuid())
+    title           String
+    description     String
+    status          TicketStatus   @default(OPEN)
+    priority        TicketPriority @default(NORMAL)
+    createdAt       DateTime       @default(now())
+    updatedAt       DateTime       @updatedAt
+    user            User?          @relation(fields: [userId], references: [id])
+    userId          String?
+    admin           AdminUser?     @relation(fields: [adminId], references: [id])
+    adminId         String?
+    referenceNumber String         @unique
+    comments        Comment[]
+}
+
+// Define the comment model
+model Comment {
+    id        String     @id @default(cuid())
+    content   String
+    createdAt DateTime   @default(now())
+    ticket    Ticket     @relation(fields: [ticketId], references: [id])
+    ticketId  String
+    user      User?      @relation(fields: [userId], references: [id])
+    userId    String?
+    admin     AdminUser? @relation(fields: [adminId], references: [id])
+    adminId   String?
+}
+
+// Enum for ticket status
+enum TicketStatus {
+    OPEN
+    IN_PROGRESS
+    RESOLVED
+    CLOSED
+}
+
+// Enum for ticket priority
+enum TicketPriority {
+    LOW
+    NORMAL
+    HIGH
 }

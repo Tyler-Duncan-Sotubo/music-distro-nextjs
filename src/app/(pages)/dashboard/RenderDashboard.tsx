@@ -12,6 +12,28 @@ type RenderDashboardProps = {
   userAudioReleases: Audio[] | null;
 };
 
+const RenderPlanName = ({ name }: { name: string }) => {
+  return (
+    <span className="bg-primaryHover px-6 py-3 font-bold uppercase text-white">
+      {name}
+    </span>
+  );
+};
+
+const PlanDetails = ({
+  userSubscription,
+}: {
+  userSubscription: Subscriptions;
+}) => {
+  if (userSubscription.plan === "Bronze") {
+    return <RenderPlanName name="Bronze plan" />;
+  } else if (userSubscription.plan === "Gold") {
+    return <RenderPlanName name="Gold plan" />;
+  } else {
+    return <RenderPlanName name="Platinum plan" />;
+  }
+};
+
 const RenderDashboard = ({
   userSubscription,
   userAudioReleases,
@@ -20,11 +42,6 @@ const RenderDashboard = ({
     <>
       {/* Subscription Plan */}
       <section className="mt-12 flex flex-col justify-between gap-6 md:mt-44 md:flex-row md:gap-3">
-        {/* Welcome Message for user */}
-        <p className="mb-4 text-2xl text-black md:hidden">
-          {/* Welcome, {user?.name} */}
-        </p>
-
         <div className="capitalize md:w-1/2">
           <h1 className="mb-5 text-5xl font-semibold leading-tight tracking-wider md:text-7xl">
             track and control your subscription
@@ -57,32 +74,21 @@ const RenderDashboard = ({
         </div>
 
         {/* Subscription Plan */}
-        <div className="h-72 bg-white p-10 shadow-md md:w-[40%]">
-          <h2 className="mb-8 font-semibold">Your Subscription</h2>
+        <div className="h-[350px] border border-gray bg-white p-8 shadow-md md:h-[330px] md:w-[45%]">
+          <h2 className="mb-8 font-semibold">Your Plan</h2>
           {userSubscription?.status === "active" ? (
-            <div className="font-medium">
+            <div>
               <div className="my-4 text-lg font-medium tracking-wider">
-                {userSubscription.plan === "Bronze" ? (
-                  <p>
-                    You are currently on the
-                    <span className="font-medium"> Bronze plan</span>
-                  </p>
-                ) : userSubscription.plan === "Gold" ? (
-                  <p>
-                    You are currently on the
-                    <span className="font-medium"> Gold plan</span>
-                  </p>
-                ) : (
-                  <p>
-                    You are currently on the
-                    <span className="font-medium"> Platinum plan</span>
-                  </p>
-                )}
+                <PlanDetails userSubscription={userSubscription} />
+                <p className="my-6 text-lg font-medium tracking-wider">
+                  Unlimited releases for 1 artist, music publishing, sync and
+                  all Pro features.
+                </p>
               </div>
-              <div className="w-2/3">
-                <p className="my-4 text-lg font-medium tracking-wide">
+              <div className="md:w-2/3">
+                <p className="my-4 text-lg tracking-wide">
                   Your subscription will expire on {""}
-                  <span className="font-medium">
+                  <span className="my-2 block font-bold">
                     {userSubscription.expiresAt?.toDateString().slice(0, 20)}
                   </span>
                 </p>

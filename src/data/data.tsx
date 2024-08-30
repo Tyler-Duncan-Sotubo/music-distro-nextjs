@@ -43,7 +43,7 @@ export const dashboardNav = [
   { name: "Videos", href: "/dashboard/videos" },
   { name: "Royalties", href: "/dashboard/sales" },
   { name: "Analytics", href: "/dashboard/analytics" },
-  { name: "Promotion", href: "/promo" },
+  { name: "Support", href: "/dashboard/tickets" },
 ];
 
 export const userNavData = [
