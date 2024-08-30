@@ -23,7 +23,7 @@ export function RefreshCache({ check }: { check: () => Promise<void> }) {
 
     const interval = setInterval(() => {
       void check();
-    }, 36000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [check, shouldRun]);
