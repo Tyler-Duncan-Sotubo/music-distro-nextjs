@@ -32,7 +32,7 @@ const DesktopDashboardNav = ({
 
   return (
     <nav
-      className="absolute top-0 mx-auto hidden w-full bg-white px-10 py-4 md:flex md:items-center md:justify-between md:gap-10 md:px-20 md:py-5"
+      className="absolute top-0 mx-auto hidden w-full border-b border-gray bg-white px-10 py-4 md:flex md:items-center md:justify-between md:gap-10 md:px-20 md:py-5"
       id="nav"
     >
       <div className="flex items-center justify-between gap-10">

@@ -26,7 +26,10 @@ const MobileDashboardNav = ({ RenderCartButton }: MobileDashboardNavProps) => {
   const { data: session } = useSession();
   const loggedInUser = session?.user;
   return (
-    <nav className="relative mb-10 mt-2 w-full text-primary md:hidden" id="nav">
+    <nav
+      className="relative mb-10 mt-2 w-full border-b border-gray text-primary md:hidden"
+      id="nav"
+    >
       <section className="flex items-center justify-between px-5 py-3">
         {/* Cart */}
         <RenderCartButton />

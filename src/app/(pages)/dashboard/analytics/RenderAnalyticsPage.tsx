@@ -64,13 +64,13 @@ const RenderAnalyticsPage = ({
       </section>
 
       <div>
-        <div className="flex w-2/3 justify-end px-10">
+        <div className="flex justify-end px-10 md:w-2/3">
           <select
             id="timeRange"
             name="timeRange"
             value={timeRange}
             onChange={handleChange}
-            className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-[25%] self-end rounded-md border bg-white p-2 shadow-sm focus:outline-none sm:text-sm"
+            className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full self-end rounded-md border bg-white p-2 shadow-sm focus:outline-none sm:text-sm md:w-[25%]"
           >
             <option value="7days">Last 7 Days</option>
             <option value="14days">Last 14 Days</option>
