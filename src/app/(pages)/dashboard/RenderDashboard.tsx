@@ -40,8 +40,18 @@ const RenderDashboard = ({
 }: RenderDashboardProps) => {
   return (
     <>
+      {/* Information Area*/}
+      <div className="bg-secondary p-3 md:mt-32">
+        <p className="text-center">
+          For assistance or to address a specific issue, please open a{" "}
+          <Link href="/dashboard/tickets" className="text-primary">
+            support ticket
+          </Link>
+          . This ensures your inquiry is handled promptly. Thank you.
+        </p>
+      </div>
       {/* Subscription Plan */}
-      <section className="mt-12 flex flex-col justify-between gap-6 md:mt-44 md:flex-row md:gap-3">
+      <section className="mt-12 flex flex-col justify-between gap-6 md:mt-12 md:flex-row md:gap-3">
         <div className="capitalize md:w-1/2">
           <h1 className="mb-5 text-5xl font-semibold leading-tight tracking-wider md:text-7xl">
             track and control your subscription
