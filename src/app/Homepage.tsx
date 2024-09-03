@@ -123,7 +123,7 @@ const Homepage = ({ smartLinks }: HomepageProps) => {
           <div className="flex items-center justify-center">
             <h1 className="text-4xl font-bold">New Releases</h1>
           </div>
-          <div className="mt-6 grid w-full grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
+          <div className="mt-6 grid w-full grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5">
             {smartLinks?.map((release: smartLinkType, index: number) => (
               <Link
                 href={`https://weplugmusic.link/${release.url}`}
@@ -131,7 +131,7 @@ const Homepage = ({ smartLinks }: HomepageProps) => {
                 target="_blank"
               >
                 <div className="flex w-full flex-col items-center">
-                  <div className="relative h-[200px] w-[200px] md:h-[330px] md:w-[300px]">
+                  <div className="relative mb-2 h-[180px] w-[180px] lg:h-[250px] lg:w-[250px]">
                     <Image
                       src={release.image}
                       alt={release.title}
@@ -142,7 +142,7 @@ const Homepage = ({ smartLinks }: HomepageProps) => {
                   <h3 className="text-center text-sm font-bold md:text-lg">
                     {release.title}
                   </h3>
-                  <h3 className="mb-10 mt-1 text-sm text-zinc-900 md:text-lg">
+                  <h3 className="mb-10 mt-1 text-center text-sm text-zinc-900 md:text-lg">
                     {release.artist}
                   </h3>
                 </div>

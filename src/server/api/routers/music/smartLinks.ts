@@ -5,7 +5,7 @@ export const smartLinkRouter = createTRPCRouter({
     const { db } = ctx;
 
     const smartLinks = await db.smartLink.findMany({
-      take: 8,
+      take: 10,
       select: {
         title: true,
         artist: true,
