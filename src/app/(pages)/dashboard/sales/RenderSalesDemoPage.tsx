@@ -1,7 +1,6 @@
 "use client";
 
 import { EarningsGraph } from "../graphs/EarningsGraph";
-import Link from "next/link";
 
 const RenderSalesDemoPage = () => {
   return (

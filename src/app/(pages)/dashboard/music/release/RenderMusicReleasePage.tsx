@@ -6,7 +6,6 @@ import Label from "@/components/ui/Label";
 import {
   type Resolver,
   useForm,
-  useFieldArray,
   type UseFormRegister,
   type FieldValues,
 } from "react-hook-form";

@@ -1,5 +1,5 @@
 import React from "react";
-import { TrackStats } from "../../types/sales.types";
+import { type TrackStats } from "../../types/sales.types";
 import { OverviewRow } from "./OverviewRow";
 import { formatEarnings } from "../../utils/formatEarningsToTwoDecimal";
 

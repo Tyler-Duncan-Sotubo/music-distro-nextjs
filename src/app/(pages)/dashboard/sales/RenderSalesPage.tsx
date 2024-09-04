@@ -22,8 +22,6 @@ const RenderSalesPage = async () => {
   const monthlyStats = await api.report.getMonthlyStats();
   const trackStats = await api.report.getTrackStats();
 
-  console.log(trackStats);
-
   return (
     <>
       {/* Sales Notice */}

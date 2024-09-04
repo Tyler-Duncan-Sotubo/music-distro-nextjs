@@ -4,7 +4,7 @@ import { useState } from "react";
 import { type Summary } from "../types/sales.types";
 import Overview from "./overview/Overview";
 import Monthly from "./overview/Monthly";
-import { type MonthlyStatsProps, TrackStats } from "../types/sales.types";
+import { type MonthlyStatsProps, type TrackStats } from "../types/sales.types";
 import TrackOverview from "./overview/TrackStats";
 
 interface PageProps {

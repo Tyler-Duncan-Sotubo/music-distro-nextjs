@@ -1,5 +1,4 @@
 import React from "react";
-import { api } from "@/trpc/server";
 
 type Summary = {
   totalDownloads: number;

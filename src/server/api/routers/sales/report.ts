@@ -1,5 +1,4 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { z } from "zod";
 
 type Summary = {
   totalDownloads: number;
@@ -213,17 +212,17 @@ export const reportRouter = createTRPCRouter({
       const { country, streams, streamEarnings, downloads, downloadEarnings } =
         item;
 
-      if (!countryMap.has(country.id as string)) {
-        countryMap.set(country.id as string, {
-          name: country.name as string,
-          id: country.isoCode as string,
+      if (!countryMap.has(country.id)) {
+        countryMap.set(country.id, {
+          name: country.name,
+          id: country.isoCode,
           totalStreams: 0,
           totalDownloads: 0,
           totalEarnings: 0,
         });
       }
 
-      const aggregate = countryMap.get(country.id as string)!;
+      const aggregate = countryMap.get(country.id)!;
 
       // Update the totals
       aggregate.totalStreams += streams;
