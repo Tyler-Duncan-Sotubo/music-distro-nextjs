@@ -2,7 +2,7 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { prepareGraphData } from "../utils/prepareGraphData"; // Adjust path as needed
+import { prepareGraphData } from "@/app/(pages)/dashboard/analytics/utils/prepareGraphData"; // Adjust path as needed
 import { type TimeRange, type PlatformData } from "../types/streams.types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);

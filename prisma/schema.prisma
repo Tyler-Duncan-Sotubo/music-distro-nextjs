@@ -238,6 +238,7 @@ model Country {
     name             String            @unique
     isoCode          String            @unique
     streamsByCountry StreamByCountry[]
+    CountryEarnings  CountryEarnings[]
 }
 
 model StreamByCountry {
@@ -378,7 +379,8 @@ model CountryEarnings {
     id               String   @id @default(cuid())
     audioId          String
     audio            Audio    @relation(fields: [audioId], references: [id])
-    country          String
+    countryId        String
+    country          Country  @relation(fields: [countryId], references: [id])
     month            String
     streams          Int
     streamEarnings   Float
@@ -387,7 +389,7 @@ model CountryEarnings {
     createdAt        DateTime @default(now())
     updatedAt        DateTime @updatedAt
 
-    @@index([audioId, country, month])
+    @@index([audioId, month])
 }
 
 model PlatformEarnings {

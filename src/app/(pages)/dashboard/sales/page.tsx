@@ -11,7 +11,8 @@ export const metadata: Metadata = {
 
 const page = async () => {
   const userSubscription = await api.subscriptions.getSubscription();
-  if (userSubscription?.status === "active") {
+  const earnings = await api.report.getTotalEarnings();
+  if (userSubscription?.status === "active" && earnings) {
     return <RenderSalesPage />;
   } else {
     return <RenderSalesDemoPage />;

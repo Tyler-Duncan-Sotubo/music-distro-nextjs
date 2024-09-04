@@ -4,27 +4,8 @@ import { EarningsGraph } from "../graphs/EarningsGraph";
 import Link from "next/link";
 
 const RenderSalesDemoPage = () => {
-  // Check if user is subscribed
-  const salesWarningModal = true;
-
   return (
     <>
-      {/* Sales Warning Modal */}
-      {salesWarningModal && (
-        <section className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
-          <div className="flex h-[30%] w-[80%] flex-col items-center justify-center gap-6 rounded-2xl bg-white px-10 py-6 md:h-[30%] md:w-[40%]">
-            <h3 className="text-center text-lg">
-              You are currently on a demo account. To view your sales and
-              analytics data, please subscribe to a plan.
-            </h3>
-            <Link href="/dashboard/subscription">
-              <button className="w-full bg-primary px-3 py-4 text-center text-white">
-                Subscribe To A Plan
-              </button>
-            </Link>
-          </div>
-        </section>
-      )}
       {/* Sales Notice */}
       <h1 className="text-center text-3xl font-bold md:mt-32 md:text-5xl">
         Sales and Streaming Reports

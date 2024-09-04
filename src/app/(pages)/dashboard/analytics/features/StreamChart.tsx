@@ -1,7 +1,7 @@
 "use client";
 
-import WeeklyStreamChart from "../components/LineChart";
-import WeeklyPieChart from "../components/PieChart";
+import WeeklyStreamChart from "../_components/LineChart";
+import WeeklyPieChart from "../_components/PieChart";
 import { type TimeRange } from "../types/streams.types";
 
 type StreamProps = {

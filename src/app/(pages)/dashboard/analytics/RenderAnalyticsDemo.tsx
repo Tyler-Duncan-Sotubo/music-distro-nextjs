@@ -1,7 +1,7 @@
 "use client";
 
 import { TbTriangleInvertedFilled } from "react-icons/tb";
-import { StreamsGraph } from "./components/StreamsGraph";
+import { StreamsGraph } from "./_components/StreamsGraph";
 import Link from "next/link";
 
 const RenderAnalyticsDemo = () => {

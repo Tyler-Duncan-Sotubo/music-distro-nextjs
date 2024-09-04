@@ -7,6 +7,7 @@ import { cartRouter } from "./routers/cart/cart";
 import { photoRouter } from "./routers/user";
 import { streamsRouter, streamsByCountryRouter } from "./routers/streams";
 import { ticketRouter, commentRouter } from "./routers/ticket";
+import { reportRouter } from "./routers/sales/report";
 
 /**
  * This is the primary router for your server.
@@ -32,6 +33,9 @@ export const appRouter = createTRPCRouter({
   // ticket
   ticket: ticketRouter,
   comment: commentRouter,
+
+  // sales
+  report: reportRouter,
 });
 
 // export type definition of API

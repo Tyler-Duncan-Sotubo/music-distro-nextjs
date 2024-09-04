@@ -10,7 +10,7 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { prepareGraphData } from "../utils/prepareGraphData";
+import { prepareGraphData } from "@/app/(pages)/dashboard/analytics/utils/prepareGraphData";
 import { type PlatformData, type TimeRange } from "../types/streams.types";
 
 ChartJS.register(
