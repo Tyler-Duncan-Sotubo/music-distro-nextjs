@@ -40,20 +40,6 @@ This repository contains the source code for a **Music Distribution Platform** b
 - **Email Service**: SendGrid API
 - **Analytics**: Custom analytics engine (or third-party service integration)
 
-## Prerequisites
-
-Before running the project, ensure you have the following:
-
-- **Node.js** (v14.x or higher)
-- **npm** or **yarn**
-- **PostgreSQL** (or another relational database supported by Prisma)
-- **PayPal Developer Account** with API credentials
-- **Paystack** Developer Account
-- **SendGrid** account for sending emails
-- **Cloud storage** (e.g., AWS S3) for file uploads (music and video)
-
-## Getting Started
-
 ### 1. Clone the repository:
 
 ```bash
