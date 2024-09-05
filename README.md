@@ -1,29 +1,61 @@
-# Create T3 App
+# Music Distribution Platform
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This repository contains the source code for a **Music Distribution Platform** built using **Next.js**. The platform allows artists to upload music and videos, manage their profiles, monitor royalties and analytics, and handle payments via **PayPal** and **Paystack** for subscriptions. Additionally, the platform includes features like **OAuth login**, password reset, email verification, and support ticketing, with all emails sent via **SendGrid**.
 
-## What's next? How do I make an app with this?
+## Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- **User Authentication**: 
+  - Login and registration with **NextAuth.js** and **OAuth**.
+  - Password reset and email verification functionality.
+  
+- **Payment Integration**: 
+  - **PayPal** and **Paystack** for subscriptions and royalty payments.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+- **Music & Video Upload**:
+  - Artists can upload tracks and music videos for distribution.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- **Artist Profile**:
+  - Artists can manage their profile, including social links and bio.
 
-## Learn More
+- **Royalties Report**:
+  - Track and report royalties earned through distribution.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- **Daily Analytics Report**:
+  - Provide detailed insights into streams, downloads, and engagement.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- **Support Ticketing**:
+  - Artists can create and track support tickets.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+- **Email Notifications**:
+  - All system-generated emails (account verification, password reset, support tickets, etc.) are sent via **SendGrid**.
 
-## How do I deploy this?
+## Technologies Used
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+- **Frontend**: Next.js, React, Tailwind CSS
+- **Backend**: Next.js API routes, Node.js
+- **Database**: Prisma ORM (PostgreSQL or another supported DB)
+- **Authentication**: NextAuth.js with OAuth (Google, Facebook, etc.)
+- **Payment**: PayPal API, Paystack API
+- **File Storage**: AWS S3 (or similar for music/video uploads)
+- **Email Service**: SendGrid API
+- **Analytics**: Custom analytics engine (or third-party service integration)
+
+## Prerequisites
+
+Before running the project, ensure you have the following:
+
+- **Node.js** (v14.x or higher)
+- **npm** or **yarn**
+- **PostgreSQL** (or another relational database supported by Prisma)
+- **PayPal Developer Account** with API credentials
+- **Paystack** Developer Account
+- **SendGrid** account for sending emails
+- **Cloud storage** (e.g., AWS S3) for file uploads (music and video)
+
+## Getting Started
+
+### 1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd music-distribution-platform
