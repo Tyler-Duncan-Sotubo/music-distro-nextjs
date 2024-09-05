@@ -40,8 +40,16 @@ This repository contains the source code for a **Music Distribution Platform** b
 - **Email Service**: SendGrid API
 - **Analytics**: Custom analytics engine (or third-party service integration)
 
-### 1. Clone the repository:
 
-```bash
-git clone <repository-url>
-cd music-distribution-platform
+
+---
+
+### Key Sections Included:
+
+1. **Authentication with NextAuth** and OAuth (Google OAuth integration).
+2. **Payment handling with PayPal and Paystack**, including sandbox and production settings.
+3. **File upload for music and videos**, using **AWS S3**.
+4. **Royalties report** and **daily analytics** tracking for artists.
+5. **Support ticketing** system with email notifications powered by **SendGrid**.
+6. Detailed **setup instructions** for both local development and production deployment.
+
