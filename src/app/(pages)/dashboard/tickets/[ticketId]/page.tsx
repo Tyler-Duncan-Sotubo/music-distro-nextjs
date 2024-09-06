@@ -9,6 +9,7 @@ import { formatDate } from "@/helper/dateFormater";
 import { RiAdminFill } from "react-icons/ri";
 import { FaInfoCircle } from "react-icons/fa";
 import { RefreshCache } from "@/helper/refresh-cache";
+import parse from "html-react-parser";
 
 interface PageProps {
   params: {
@@ -74,7 +75,7 @@ const page = async ({ params }: PageProps) => {
                   key={comment.id}
                   className="flex justify-between border-b border-gray py-8"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex gap-4">
                     <div className="hidden md:block">
                       {comment.userId === user?.id ? (
                         <div className="flex h-8 w-8 items-center justify-center rounded-full border-4 border-gray bg-black p-6 text-white">
@@ -91,7 +92,9 @@ const page = async ({ params }: PageProps) => {
                       <h4 className="font-semibold">
                         {comment.userId === user?.id ? user?.name : "Admin"}
                       </h4>
-                      <p className="text-lg font-light">{comment.content}</p>
+                      <p className="comments text-lg font-light">
+                        {parse(comment.content)}
+                      </p>
                     </div>
                   </div>
                   <div>
