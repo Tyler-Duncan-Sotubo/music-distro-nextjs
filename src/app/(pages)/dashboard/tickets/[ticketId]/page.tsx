@@ -73,7 +73,7 @@ const page = async ({ params }: PageProps) => {
               {comments?.map((comment) => (
                 <div
                   key={comment.id}
-                  className="flex justify-between border-b border-gray py-8"
+                  className="flex flex-col justify-between border-b border-gray py-8 lg:flex-row"
                 >
                   <div className="flex gap-4">
                     <div className="hidden md:block">
@@ -97,7 +97,7 @@ const page = async ({ params }: PageProps) => {
                       </p>
                     </div>
                   </div>
-                  <div>
+                  <div className="mt-10 font-bold lg:mt-0">
                     <p>{formatDate(comment.createdAt.toString())}</p>
                   </div>
                 </div>
