@@ -29,7 +29,7 @@ const RenderAnalyticsPage = ({
   StreamsByCountry,
   audios,
 }: PageProps) => {
-  const [timeRange, setTimeRange] = useState<TimeRange>("7days"); // Default to 7 days
+  const [timeRange, setTimeRange] = useState<TimeRange>("14days"); // Default to 14 days
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedRange = e.target.value as TimeRange;
