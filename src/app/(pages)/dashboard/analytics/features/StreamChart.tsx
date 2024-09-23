@@ -1,21 +1,21 @@
 "use client";
 
+import Link from "next/link";
 import WeeklyStreamChart from "../_components/LineChart";
 import WeeklyPieChart from "../_components/PieChart";
 import { type TimeRange } from "../types/streams.types";
+import { FaChevronRight } from "react-icons/fa6";
+import Image from "next/image";
 
 type StreamProps = {
   streams: never[] | Record<string, { date: string; streamCount: number }[]>; // Update the type of the streams pa
   timeRange: TimeRange;
-  audios: Audios[] | null;
+  audios:
+    | never[]
+    | Record<string, { title: string; totalStreams: number; cover: string }>;
 };
 
-interface Audios {
-  id: string;
-  title: string;
-}
-
-const StreamChart = ({ streams, timeRange }: StreamProps) => {
+const StreamChart = ({ streams, timeRange, audios }: StreamProps) => {
   const calculateTotals = (
     data: Record<string, { date: string; streamCount: number }[]>,
   ) => {
@@ -74,7 +74,7 @@ const StreamChart = ({ streams, timeRange }: StreamProps) => {
             )}
           </div>
 
-          <div className="flex flex-col gap-3 border-l border-gray text-center capitalize lg:w-[25%]">
+          <div className="flex flex-col gap-3 border-gray text-center capitalize lg:w-[25%] lg:border-l">
             <h1 className="my-6 text-center text-2xl font-bold">
               {timeRange === "7days"
                 ? "Weekly Report"
@@ -89,6 +89,43 @@ const StreamChart = ({ streams, timeRange }: StreamProps) => {
               </h4>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Total Streams by Release */}
+
+      <section>
+        <div className="my-20 lg:w-2/3">
+          {Object.keys(audios ?? {}).length > 0 && (
+            <h3 className="text-2xl font-bold">Tracks</h3>
+          )}
+          {audios &&
+            Object.entries(audios)
+              .sort(([, a], [, b]) => b.totalStreams - a.totalStreams) // Sort by totalStreams in ascending order
+              .map(([id, audio]) => (
+                <div key={id} className="border-b">
+                  <Link
+                    href={`/dashboard/analytics/${id}`}
+                    key={id}
+                    className="flex w-full items-center justify-between"
+                  >
+                    <div className="flex w-[50%] items-center gap-5">
+                      <Image
+                        src={audio.cover}
+                        alt={audio.title}
+                        width={50}
+                        height={50}
+                      />
+                      <p className="text-sm lg:text-lg">{audio.title}</p>
+                    </div>
+                    <div className="whitespace-nowrap px-4 py-4 font-medium">
+                      <p>Streams</p>
+                      <p className="text-xl font-bold">{audio.totalStreams}</p>
+                    </div>
+                    <FaChevronRight className="text-3xl" />
+                  </Link>
+                </div>
+              ))}
         </div>
       </section>
 

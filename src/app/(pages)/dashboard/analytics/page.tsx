@@ -14,14 +14,14 @@ const page = async () => {
   const streams = await api.streams.getStreams({ timeRange: "7days" });
   const StreamsByCountry = await api.streamsByCountry.getStreamsByCountry();
 
-  const audios = await api.streams.getAudioReleases();
+  const audioStreams = await api.streams.getByAudioStreams();
 
   if (userSubscription?.status === "active") {
     return (
       <RenderAnalyticsPage
         streams={streams}
         StreamsByCountry={StreamsByCountry}
-        audios={audios}
+        audios={audioStreams}
       />
     );
   } else {

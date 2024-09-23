@@ -1,31 +1,18 @@
 "use client";
 
-import StreamChart from "./features/StreamChart";
-import StreamCountry from "./features/StreamCountry";
+import StreamChart from "../features/StreamChart";
 import { useState } from "react";
 import { api } from "@/trpc/react";
+import Image from "next/image";
+import { Button } from "@/components/ui/Button";
 
-interface StreamData {
+interface PageProps {
+  streamByAudioId: Record<string, { date: string; streamCount: number }[]>;
+  audioDetails: { title: string; releaseCover: string } | null;
   id: string;
-  name: string;
-  streams: number;
 }
-
-type PageProps = {
-  streams: never[] | Record<string, { date: string; streamCount: number }[]>; // Update the type of the streams parameter
-  StreamsByCountry: StreamData[] | undefined;
-  audios:
-    | never[]
-    | Record<string, { title: string; totalStreams: number; cover: string }>;
-};
-
 type TimeRange = "7days" | "14days" | "30days";
-
-const RenderAnalyticsPage = ({
-  streams,
-  StreamsByCountry,
-  audios,
-}: PageProps) => {
+const StreamsById = ({ streamByAudioId, id, audioDetails }: PageProps) => {
   const [timeRange, setTimeRange] = useState<TimeRange>("14days"); // Default to 14 days
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -33,8 +20,9 @@ const RenderAnalyticsPage = ({
     setTimeRange(selectedRange);
   };
 
-  const updateStreams = api.streams.getStreams.useQuery({
+  const updateStreams = api.streams.getStreamsByAudioId.useQuery({
     timeRange: timeRange,
+    audioId: id,
   }).data;
 
   let audioStreams;
@@ -44,22 +32,25 @@ const RenderAnalyticsPage = ({
       audioStreams = updateStreams;
       break;
     default: // Fallback to streams if neither is truthy
-      audioStreams = streams;
+      audioStreams = streamByAudioId;
   }
 
   return (
-    <div>
-      {/* Streams and Downloads */}
-      <section className="my-20 text-center md:mt-36">
-        <div className="my-16">
-          <h1 className="">My Streams and Downloads</h1>
-          <h3 className="my-4">
-            Some stores don’t provide live sales & streaming data, so these
-            reports may not reflect your exact final sales figures.
-          </h3>
+    <div className="my-20 md:mt-36">
+      <div>
+        <Button>
+          <a href="/dashboard/analytics">Back</a>
+        </Button>
+        <div className="my-8 flex gap-4">
+          <Image
+            src={audioDetails?.releaseCover ?? "/default-cover.png"}
+            alt="cover"
+            width={100}
+            height={100}
+          />
+          <h3 className="my-4 text-2xl font-bold"> {audioDetails?.title} </h3>
         </div>
-      </section>
-
+      </div>
       <div>
         <div className="flex justify-end px-10 md:w-2/3">
           <select
@@ -76,16 +67,10 @@ const RenderAnalyticsPage = ({
           </select>
         </div>
         {/* Streams by DSPs */}
-        <StreamChart
-          streams={audioStreams}
-          timeRange={timeRange}
-          audios={audios}
-        />
+        <StreamChart streams={audioStreams} timeRange={timeRange} audios={[]} />
       </div>
-      {/* Streams by Country */}
-      <StreamCountry StreamsByCountry={StreamsByCountry} />
     </div>
   );
 };
 
-export default RenderAnalyticsPage;
+export default StreamsById;
