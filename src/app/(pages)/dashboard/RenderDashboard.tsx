@@ -4,7 +4,7 @@
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { type Subscriptions } from "@prisma/client";
-import { type Audio } from "@prisma/client";
+import { type Audio } from "./types/audio.type";
 import ReleaseCard from "@/components/ui/ReleaseCard";
 
 type RenderDashboardProps = {

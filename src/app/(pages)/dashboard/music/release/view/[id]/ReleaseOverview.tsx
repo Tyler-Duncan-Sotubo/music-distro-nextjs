@@ -1,15 +1,12 @@
-import { type Track, type Audio } from "@prisma/client";
+import { type AudioRelease } from "../../../types/audio-release.type";
 import Image from "next/image";
 import React from "react";
 import ReleaseStatus from "@/app/(pages)/dashboard/music/_components/ReleaseStatus";
 import TrackListCard from "../../../_components/TrackListCard";
+import { convertIsoDateString } from "@/helper/convertIsoDate";
 
 type ReleaseOverviewProps = {
-  release:
-    | ({
-        track: Track[] | null;
-      } & Audio)
-    | null;
+  release: AudioRelease;
 };
 
 const RenderReleaseDetailsText = ({
@@ -76,7 +73,7 @@ const ReleaseOverview = ({ release }: ReleaseOverviewProps) => {
                 />
                 <RenderReleaseDetailsText
                   title="Release Date"
-                  value={release?.releaseDate?.toDateString().slice(0, 20)}
+                  value={convertIsoDateString(release?.releaseDate)}
                 />
                 <RenderReleaseDetailsText title="UPC" value={release?.UPC} />
 

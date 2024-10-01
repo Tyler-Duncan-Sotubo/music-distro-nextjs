@@ -1,11 +1,10 @@
 import { registerRouter, passwordRouter, verifyRouter } from "./routers/auth/";
 import { subscriptionRouter } from "./routers/subscriptions/subscriptions";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
-import { audioRouter, smartLinkRouter } from "./routers/music";
+import { smartLinkRouter } from "./routers/smartLinks/smartLinks";
 import { userRouter } from "./routers/user/user";
 import { cartRouter } from "./routers/cart/cart";
 import { photoRouter } from "./routers/user";
-import { streamsRouter, streamsByCountryRouter } from "./routers/streams";
 import { ticketRouter, commentRouter } from "./routers/ticket";
 import { reportRouter } from "./routers/sales/report";
 
@@ -19,16 +18,11 @@ export const appRouter = createTRPCRouter({
   password: passwordRouter,
   verify: verifyRouter,
   subscriptions: subscriptionRouter,
-  audio: audioRouter,
   smartLinks: smartLinkRouter,
   user: userRouter,
 
   cart: cartRouter,
   photo: photoRouter,
-
-  // streams
-  streams: streamsRouter,
-  streamsByCountry: streamsByCountryRouter,
 
   // ticket
   ticket: ticketRouter,

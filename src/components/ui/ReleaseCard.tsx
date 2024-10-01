@@ -1,9 +1,10 @@
-import { type Audio } from "@prisma/client";
+import { type Audio } from "@/app/(pages)/dashboard/types/audio.type";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./Button";
 import { ButtonWithIcon } from "./ButtonWithIcon";
 import { FaChevronRight } from "react-icons/fa";
+import { convertIsoDateString } from "@/helper/convertIsoDate";
 
 type ReleaseMobileView = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -76,7 +77,7 @@ const ReleaseCard = ({ releases }: { releases: Audio[] | null }) => {
                     <p>{release?.artist}</p>
                   </td>
                   <td className="whitespace-nowrap border-b border-gray px-4 py-4">
-                    <p>{release?.releaseDate?.toDateString().slice(0, 20)}</p>
+                    <p>{convertIsoDateString(release?.releaseDate)}</p>
                   </td>
                   <td className="whitespace-nowrap border-b border-gray px-4 py-4">
                     <p>{release?.UPC === "" ? "N/A" : release?.UPC}</p>
@@ -152,7 +153,7 @@ const ReleaseCard = ({ releases }: { releases: Audio[] | null }) => {
                 />
 
                 <MobileViewReleaseDetails
-                  release={release?.releaseDate?.toDateString().slice(0, 20)}
+                  release={convertIsoDateString(release?.releaseDate)}
                   description="Release Date"
                 />
                 <div>

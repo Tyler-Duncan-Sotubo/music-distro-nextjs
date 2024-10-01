@@ -1,6 +1,7 @@
 import React from "react";
-import { api } from "@/trpc/server";
+
 import StreamsById from "./StreamsById";
+import { env } from "@/env";
 
 interface PageProps {
   params: {
@@ -8,15 +9,33 @@ interface PageProps {
   };
 }
 
-const page = async ({ params }: PageProps) => {
-  const streamByAudioId = await api.streams.getStreamsByAudioId({
-    audioId: params.id,
-    timeRange: "7days",
-  });
+interface audioDetails {
+  title: string;
+  releaseCover: string;
+}
 
-  const audioDetails = await api.streams.getAudioReleases({
-    audioId: params.id,
-  });
+const fetchAudioReleasesById = async (audioId: string) => {
+  const audio = await fetch(
+    `${env.NEXT_PUBLIC_BACKEND_URL}/api/audio-by-id/audio/${audioId}`,
+  );
+  const audioData = (await audio.json()) as audioDetails;
+  return audioData;
+};
+
+const fetchStreamsByAudioId = async (audioId: string) => {
+  const streams = await fetch(
+    `${env.NEXT_PUBLIC_BACKEND_URL}/api/streams/${audioId}?timeRange=14days`,
+  );
+  const streamData = (await streams.json()) as Record<
+    string,
+    { date: string; total: number }[]
+  >;
+  return streamData;
+};
+
+const page = async ({ params }: PageProps) => {
+  const streamByAudioId = await fetchStreamsByAudioId(params.id);
+  const audioDetails = await fetchAudioReleasesById(params.id);
 
   return (
     <StreamsById

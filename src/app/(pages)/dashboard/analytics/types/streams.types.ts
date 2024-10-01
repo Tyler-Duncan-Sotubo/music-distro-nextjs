@@ -1,7 +1,6 @@
 export interface StreamData {
   date: string; // ISO date string
-  streamCount: number;
-  downloadCount?: number; // Optional
+  total: number;
 }
 
 export type PlatformData = Record<string, StreamData[]>;

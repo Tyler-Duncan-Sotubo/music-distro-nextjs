@@ -1,5 +1,5 @@
 import { FaMusic } from "react-icons/fa";
-import { type Audio } from "@prisma/client";
+import { type Audio } from "../types/audio.type";
 import MusicReleaseComponent from "./_components/MusicReleaseComponent";
 import Link from "next/link";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { type Audio } from "@prisma/client";
+import { type Audio } from "../../types/audio.type";
 import React, { useState } from "react";
 import MusicReleaseCard from "./MusicReleaseCard";
 

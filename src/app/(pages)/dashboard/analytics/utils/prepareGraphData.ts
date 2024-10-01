@@ -26,27 +26,28 @@ const bgColorPalette: Record<string, string> = {
 
 export const prepareGraphData = (
   platformData: PlatformData,
-  timeRange: TimeRange, // Add timeRange parameter
+  timeRange: TimeRange,
 ) => {
   const aggregatedData: Record<string, Record<string, number[]>> = {};
+
   // Get the current date and calculate the start date based on the selected time range
   const currentDate = new Date();
   const startDate = new Date();
   switch (timeRange) {
     case "7days":
-      startDate.setDate(currentDate.getDate() - 10);
+      startDate.setDate(currentDate.getDate() - 7);
       break;
     case "14days":
-      startDate.setDate(currentDate.getDate() - 17);
+      startDate.setDate(currentDate.getDate() - 14);
       break;
     case "30days":
-      startDate.setDate(currentDate.getDate() - 33);
+      startDate.setDate(currentDate.getDate() - 30);
       break;
     case "all":
       startDate.setDate(currentDate.getDate() - 365);
       break;
     default:
-      startDate.setDate(currentDate.getDate() - 10);
+      startDate.setDate(currentDate.getDate() - 7);
   }
 
   // Aggregate data for each platform
@@ -57,7 +58,9 @@ export const prepareGraphData = (
         const entryDate = new Date(entry.date);
         return entryDate >= startDate && entryDate <= currentDate;
       });
-      aggregatedData[platform] = aggregateDailyData(filteredData, timeRange); // Use aggregateDailyData function
+
+      // Use aggregateDailyData function to aggregate data
+      aggregatedData[platform] = aggregateDailyData(filteredData, timeRange);
     }
   }
 
@@ -79,7 +82,8 @@ export const prepareGraphData = (
     const data = labels.map((date) => {
       // Ensure each date is formatted correctly and exists in the data
       const counts = aggregatedData[platform]?.[date] ?? [];
-      return counts.reduce((sum, count) => sum + count, 0); // Aggregate counts
+      // Check if counts array is not empty, if empty, return 0
+      return counts.length ? counts.reduce((sum, count) => sum + count, 0) : 0;
     });
 
     return {
@@ -92,6 +96,5 @@ export const prepareGraphData = (
       borderWidth: 2,
     };
   });
-
   return { labels, datasets };
 };

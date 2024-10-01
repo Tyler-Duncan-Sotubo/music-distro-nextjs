@@ -2,8 +2,9 @@
 
 import StreamChart from "./features/StreamChart";
 import StreamCountry from "./features/StreamCountry";
-import { useState } from "react";
-import { api } from "@/trpc/react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import axios from "@/libs/axios";
 
 interface StreamData {
   id: string;
@@ -12,7 +13,7 @@ interface StreamData {
 }
 
 type PageProps = {
-  streams: never[] | Record<string, { date: string; streamCount: number }[]>; // Update the type of the streams parameter
+  streamByUserId: never[] | Record<string, { date: string; total: number }[]>; // Update the type of the streams parameter
   StreamsByCountry: StreamData[] | undefined;
   audios:
     | never[]
@@ -22,29 +23,48 @@ type PageProps = {
 type TimeRange = "7days" | "14days" | "30days";
 
 const RenderAnalyticsPage = ({
-  streams,
+  streamByUserId,
   StreamsByCountry,
   audios,
 }: PageProps) => {
-  const [timeRange, setTimeRange] = useState<TimeRange>("14days"); // Default to 14 days
+  const [timeRange, setTimeRange] = useState<TimeRange>("7days"); // Default to 14 days
+  const [streams, setStreams] = useState<
+    Record<string, { date: string; total: number }[]>
+  >({});
+  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedRange = e.target.value as TimeRange;
     setTimeRange(selectedRange);
   };
 
-  const updateStreams = api.streams.getStreams.useQuery({
-    timeRange: timeRange,
-  }).data;
+  const { data: session } = useSession(); // Get the user's session
+
+  const fetchStreamData = async (timeRange: string) => {
+    setError("");
+
+    try {
+      const res = await axios.get(
+        `/api/all-streams/${session?.user.id}?timeRange=${timeRange}`,
+      ); // Fetch data from the server
+      setStreams(res.data as Record<string, { date: string; total: number }[]>); // Set the response data
+    } catch (err) {
+      setError("Error"); // Handle error
+    }
+  };
+
+  useEffect(() => {
+    void fetchStreamData(timeRange); // Fetch data whenever timeRange changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeRange]);
 
   let audioStreams;
-  // Switch based on the presence of data
   switch (true) {
-    case !!updateStreams: // Check if updateStreams is truthy
-      audioStreams = updateStreams;
+    case !!streams: // Check if updateStreams is truthy
+      audioStreams = streams;
       break;
     default: // Fallback to streams if neither is truthy
-      audioStreams = streams;
+      audioStreams = streamByUserId;
   }
 
   return (
@@ -75,6 +95,7 @@ const RenderAnalyticsPage = ({
             <option value="all">All Time</option>
           </select>
         </div>
+        {error && <div>{error}</div>}
         {/* Streams by DSPs */}
         <StreamChart
           streams={audioStreams}

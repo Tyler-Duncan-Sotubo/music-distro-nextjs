@@ -1,35 +1,51 @@
 "use client";
 
 import StreamChart from "../features/StreamChart";
-import { useState } from "react";
-import { api } from "@/trpc/react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
+import axios from "@/libs/axios";
 
 interface PageProps {
-  streamByAudioId: Record<string, { date: string; streamCount: number }[]>;
+  streamByAudioId: Record<string, { date: string; total: number }[]>;
   audioDetails: { title: string; releaseCover: string } | null;
   id: string;
 }
 type TimeRange = "7days" | "14days" | "30days";
 const StreamsById = ({ streamByAudioId, id, audioDetails }: PageProps) => {
   const [timeRange, setTimeRange] = useState<TimeRange>("14days"); // Default to 14 days
+  const [streams, setStreams] = useState<
+    Record<string, { date: string; total: number }[]>
+  >({});
+
+  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedRange = e.target.value as TimeRange;
     setTimeRange(selectedRange);
   };
 
-  const updateStreams = api.streams.getStreamsByAudioId.useQuery({
-    timeRange: timeRange,
-    audioId: id,
-  }).data;
+  const fetchStreamData = async (timeRange: string) => {
+    setError("");
+
+    try {
+      const res = await axios.get(`/api/streams/${id}?timeRange=${timeRange}`); // Fetch data from the server
+      setStreams(res.data as Record<string, { date: string; total: number }[]>); // Set the response data
+    } catch (err) {
+      setError("Error"); // Handle error
+    }
+  };
+
+  useEffect(() => {
+    void fetchStreamData(timeRange); // Fetch data whenever timeRange changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeRange]);
 
   let audioStreams;
   // Switch based on the presence of data
   switch (true) {
-    case !!updateStreams: // Check if updateStreams is truthy
-      audioStreams = updateStreams;
+    case !!streams: // Check if updateStreams is truthy
+      audioStreams = streams;
       break;
     default: // Fallback to streams if neither is truthy
       audioStreams = streamByAudioId;
@@ -69,6 +85,7 @@ const StreamsById = ({ streamByAudioId, id, audioDetails }: PageProps) => {
         {/* Streams by DSPs */}
         <StreamChart streams={audioStreams} timeRange={timeRange} audios={[]} />
       </div>
+      {error && <div>{error}</div>}
     </div>
   );
 };

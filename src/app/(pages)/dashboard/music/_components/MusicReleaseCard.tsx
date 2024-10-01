@@ -1,8 +1,9 @@
-import { type Audio } from "@prisma/client";
+import { type Audio } from "../../types/audio.type";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ButtonWithIcon } from "@/components/ui/ButtonWithIcon";
+import { convertIsoDateString } from "@/helper/convertIsoDate";
 
 type ReleaseMobileView = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,7 +18,9 @@ const MobileViewReleaseDetails = ({
   <div className="my-2 px-4 text-sm">
     <h5 className="my-2 font-light capitalize">{description}</h5>
     <p className="font-bold">
-      {typeof release === "string" ? release.substring(0, 30) + "..." : release}
+      {typeof release === "string" && release.length > 30
+        ? release.substring(0, 30) + "..."
+        : release}
     </p>
   </div>
 );
@@ -38,8 +41,8 @@ const MusicReleaseCard = ({ release }: { release: Audio }) => {
           description="song title"
         />
         <MobileViewReleaseDetails
-          release={release?.releaseDate?.getFullYear()}
-          description="Release Year"
+          release={convertIsoDateString(release?.releaseDate)}
+          description="Release Date"
         />
         <Link
           href={`/dashboard/music/release/view/${release?.id}`}

@@ -1,13 +1,9 @@
 import React from "react";
-import { type Track, type Audio } from "@prisma/client";
 import { MdOutlineCancel, MdCheckCircleOutline } from "react-icons/md";
+import { type AudioRelease } from "../types/audio-release.type";
 
 type TrackListProps = {
-  release:
-    | ({
-        track: Track[] | null;
-      } & Audio)
-    | null;
+  release: AudioRelease;
 };
 
 const TrackListCard = ({ release }: TrackListProps) => {
@@ -28,7 +24,7 @@ const TrackListCard = ({ release }: TrackListProps) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray capitalize">
-            {release?.track?.map((track: Track, index) => (
+            {release?.Track?.map((track, index) => (
               <tr
                 key={index}
                 className={`font-medium ${index % 2 ? "bg-secondary" : "bg-white"}`}
@@ -79,7 +75,7 @@ const TrackListCard = ({ release }: TrackListProps) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray text-[.8rem] capitalize">
-            {release?.track?.map((track: Track, index) => (
+            {release?.Track?.map((track, index) => (
               <tr
                 key={index}
                 className={`font-medium ${index % 2 ? "bg-secondary" : "bg-white"}`}
