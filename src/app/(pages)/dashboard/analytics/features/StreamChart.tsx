@@ -10,12 +10,9 @@ import Image from "next/image";
 type StreamProps = {
   streams: Record<string, { date: string; total: number }[]> | never[];
   timeRange: TimeRange;
-  audios:
-    | Record<string, { title: string; totalStreams: number; cover: string }>
-    | never[];
 };
 
-const StreamChart = ({ streams, timeRange, audios }: StreamProps) => {
+const StreamChart = ({ streams, timeRange }: StreamProps) => {
   const streamsData = streams as Record<
     string,
     { date: string; total: number }[]
@@ -24,8 +21,6 @@ const StreamChart = ({ streams, timeRange, audios }: StreamProps) => {
   const totals = calculateTotals(streamsData);
   const grandTotal = calculateGrandTotal(totals);
 
-  console.log("totals", totals);
-
   return (
     <>
       <SectionChart
@@ -33,7 +28,6 @@ const StreamChart = ({ streams, timeRange, audios }: StreamProps) => {
         timeRange={timeRange}
         grandTotal={grandTotal}
       />
-      <TracksSection audios={audios} />
       <DspSection
         streamsData={streamsData}
         totals={totals}
@@ -120,51 +114,6 @@ const SummaryCard = ({
       <p className="text-lg">Total streams</p>
       <h4 className="my-2 text-center text-2xl font-bold">{grandTotal}</h4>
     </div>
-  </div>
-);
-
-const TracksSection = ({
-  audios,
-}: {
-  audios:
-    | Record<string, { title: string; totalStreams: number; cover: string }>
-    | never[];
-}) => (
-  <section>
-    <div className="my-20 lg:w-2/3">
-      {Object.keys(audios).length > 0 && (
-        <h3 className="text-2xl font-bold">Tracks</h3>
-      )}
-      {audios &&
-        Object.entries(audios)
-          .sort(([, a], [, b]) => b.totalStreams - a.totalStreams) // Sort by totalStreams in descending order
-          .map(([id, audio]) => <TrackLink key={id} audio={audio} id={id} />)}
-    </div>
-  </section>
-);
-
-const TrackLink = ({
-  audio,
-  id,
-}: {
-  audio: { title: string; totalStreams: number; cover: string };
-  id: string;
-}) => (
-  <div className="border-b">
-    <Link
-      href={`/dashboard/analytics/${id}`}
-      className="flex w-full items-center justify-between"
-    >
-      <div className="flex w-[50%] items-center gap-5">
-        <Image src={audio.cover} alt={audio.title} width={50} height={50} />
-        <p className="text-sm lg:text-lg">{audio.title}</p>
-      </div>
-      <div className="whitespace-nowrap px-4 py-4 font-medium">
-        <p>Streams</p>
-        <p className="text-xl font-bold">{audio.totalStreams}</p>
-      </div>
-      <FaChevronRight className="text-3xl" />
-    </Link>
   </div>
 );
 

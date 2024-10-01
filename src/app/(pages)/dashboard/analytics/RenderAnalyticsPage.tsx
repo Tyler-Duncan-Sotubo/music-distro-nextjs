@@ -5,6 +5,7 @@ import StreamCountry from "./features/StreamCountry";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "@/libs/axios";
+import { Spinner } from "@/components/common/Spinner";
 
 interface StreamData {
   id: string;
@@ -27,45 +28,52 @@ const RenderAnalyticsPage = ({
   StreamsByCountry,
   audios,
 }: PageProps) => {
-  const [timeRange, setTimeRange] = useState<TimeRange>("7days"); // Default to 14 days
+  const [timeRange, setTimeRange] = useState<TimeRange>("7days"); // Default to 7 days
   const [streams, setStreams] = useState<
     Record<string, { date: string; total: number }[]>
-  >({});
-  const [error, setError] = useState("");
-
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedRange = e.target.value as TimeRange;
-    setTimeRange(selectedRange);
-  };
+  >(Array.isArray(streamByUserId) ? {} : streamByUserId);
+  const [selectedTrackId, setSelectedTrackId] = useState<string | null>(null); // For selected track
+  const [loading, setLoading] = useState(false); // Loading state for UI feedback
+  const [error, setError] = useState<string | null>(null);
 
   const { data: session } = useSession(); // Get the user's session
 
-  const fetchStreamData = async (timeRange: string) => {
-    setError("");
-
+  // Fetch stream data with proper API call
+  const fetchStreamData = async (timeRange: string, trackId?: string) => {
+    setLoading(true);
+    setError(null);
     try {
-      const res = await axios.get(
-        `/api/all-streams/${session?.user.id}?timeRange=${timeRange}`,
-      ); // Fetch data from the server
+      const url = trackId
+        ? `/api/streams/${trackId}?timeRange=${timeRange}` // API call for selected track
+        : `/api/all-streams/${session?.user.id}?timeRange=${timeRange}`; // Default API call for all streams
+      const res = await axios.get(url);
+
       setStreams(res.data as Record<string, { date: string; total: number }[]>); // Set the response data
     } catch (err) {
-      setError("Error"); // Handle error
+      setError("Error fetching streams"); // Handle error
+    } finally {
+      setLoading(false); // Stop loading after the request
     }
   };
 
-  useEffect(() => {
-    void fetchStreamData(timeRange); // Fetch data whenever timeRange changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeRange]);
+  // Handle time range changes
+  const handleTimeRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTimeRange(e.target.value as TimeRange); // Update time range state
+  };
 
-  let audioStreams;
-  switch (true) {
-    case !!streams: // Check if updateStreams is truthy
-      audioStreams = streams;
-      break;
-    default: // Fallback to streams if neither is truthy
-      audioStreams = streamByUserId;
-  }
+  // Handle track selection changes
+  const handleTrackChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const trackId = e.target.value || null; // Capture the selected track ID
+    setSelectedTrackId(trackId); // Update selected track ID
+  };
+
+  // Trigger fetching stream data when either timeRange or selectedTrackId changes
+  useEffect(() => {
+    if (session?.user.id) {
+      void fetchStreamData(timeRange, selectedTrackId ?? undefined);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeRange, selectedTrackId, session?.user.id]); // Re-fetch data when time range or track selection changes
 
   return (
     <div>
@@ -81,12 +89,36 @@ const RenderAnalyticsPage = ({
       </section>
 
       <div>
-        <div className="flex justify-end px-10 md:w-2/3">
+        <div className="flex flex-col justify-between gap-5 px-5 md:w-2/3 md:flex-row">
+          <div className="flex w-full items-center gap-2 md:flex-row">
+            <h3 className="text-lg font-bold">By:</h3>
+            {/* Track selection */}
+            {audios &&
+              Object.keys(audios).length > 1 && ( // Check if there are more than 1 audio tracks
+                <select
+                  id="trackSelection"
+                  name="trackSelection"
+                  value={selectedTrackId ?? ""}
+                  onChange={handleTrackChange} // Track change handler
+                  className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full self-end rounded-md border bg-white p-2 shadow-sm focus:outline-none sm:text-sm md:w-[35%]"
+                >
+                  <option value="">Track</option>
+                  {Object.entries(audios)
+                    .sort(([, a], [, b]) => b.totalStreams - a.totalStreams) // Sort by totalStreams in descending order
+                    .map(([id, audio]) => (
+                      <option key={id} value={id}>
+                        {audio.title}
+                      </option>
+                    ))}
+                </select>
+              )}
+          </div>
+          {/* Time range selection */}
           <select
             id="timeRange"
             name="timeRange"
             value={timeRange}
-            onChange={handleChange}
+            onChange={handleTimeRangeChange}
             className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full self-end rounded-md border bg-white p-2 shadow-sm focus:outline-none sm:text-sm md:w-[25%]"
           >
             <option value="7days">Last 7 Days</option>
@@ -95,14 +127,19 @@ const RenderAnalyticsPage = ({
             <option value="all">All Time</option>
           </select>
         </div>
-        {error && <div>{error}</div>}
-        {/* Streams by DSPs */}
-        <StreamChart
-          streams={audioStreams}
-          timeRange={timeRange}
-          audios={audios}
-        />
+
+        {/* Error display */}
+        {error && <div className="text-red-500">{error}</div>}
+
+        {/* Loading state */}
+        {loading ? (
+          <Spinner />
+        ) : (
+          // Streams by DSPs Chart Component
+          <StreamChart streams={streams} timeRange={timeRange} />
+        )}
       </div>
+
       {/* Streams by Country */}
       <StreamCountry StreamsByCountry={StreamsByCountry} />
     </div>
