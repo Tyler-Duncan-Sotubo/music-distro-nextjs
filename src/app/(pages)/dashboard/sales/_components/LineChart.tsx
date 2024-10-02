@@ -147,7 +147,7 @@ const SalesReportLineChart = ({ monthlyReports = [] }: Props) => {
 
   return (
     <div className="flex flex-col items-center border-b border-gray py-6 lg:flex-row">
-      <div className="mx-auto w-full py-6 lg:min-h-[500px] lg:w-2/3">
+      <div className="mx-auto h-[400px] w-full py-6 lg:min-h-[500px] lg:w-2/3">
         <Line data={chartData} options={options} />
       </div>
       <div className="flex flex-col gap-6 text-center lg:w-1/3">
