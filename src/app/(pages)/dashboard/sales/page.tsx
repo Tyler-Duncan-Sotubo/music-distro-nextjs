@@ -2,7 +2,9 @@ import RenderSalesPage from "./RenderSalesPage";
 import RenderSalesDemoPage from "./RenderSalesDemoPage";
 import { api } from "@/trpc/server";
 import { type Metadata } from "next";
-import { type Summary } from "./types/sales.types";
+import { getServerAuthSession } from "@/server/auth";
+import { fetchMonthlyReports } from "@/hooks/fetch-sales-report";
+import { type MonthlyReport } from "./types/sales.types";
 
 export const metadata: Metadata = {
   title: "Sales and Analytics | We Plug Music - Dashboard",
@@ -11,9 +13,14 @@ export const metadata: Metadata = {
 };
 
 const page = async () => {
+  const session = await getServerAuthSession();
+  const userId = session?.user.id;
+  const monthlySalesReports = (await fetchMonthlyReports(
+    userId,
+  )) as MonthlyReport[];
   const userSubscription = await api.subscriptions.getSubscription();
-  const earnings = (await api.report.getTotalEarnings()) as Summary;
-  if (userSubscription?.status === "active" && earnings.totalEarnings > 0) {
+
+  if (userSubscription?.status === "active" && monthlySalesReports.length > 0) {
     return <RenderSalesPage />;
   } else {
     return <RenderSalesDemoPage />;

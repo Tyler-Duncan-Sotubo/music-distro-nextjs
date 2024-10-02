@@ -9,17 +9,10 @@ import {
 } from "geojson";
 import "leaflet/dist/leaflet.css";
 import type L from "leaflet";
-
-type CountrySummary = {
-  id: string;
-  name: string;
-  totalStreams: number;
-  totalDownloads: number;
-  totalEarnings: number;
-};
+import { type ICountryReport } from "../types/sales.types";
 
 interface StreamsByCountryMapProps {
-  data: CountrySummary[] | undefined;
+  data: ICountryReport[] | undefined;
   geography: FeatureCollection<GeometryObject>;
 }
 
@@ -27,7 +20,7 @@ const EarningsByCountryMap: React.FC<StreamsByCountryMapProps> = ({
   data,
   geography,
 }) => {
-  const maxStreams = Math.max(...(data ?? []).map((d) => d.totalEarnings));
+  const maxStreams = Math.max(...(data ?? []).map((d) => d.earnings));
   const colorScale = scaleLinear<string>()
     .domain([0, maxStreams])
     .range(["#e0f7fr", "#00796b"]);
@@ -37,9 +30,7 @@ const EarningsByCountryMap: React.FC<StreamsByCountryMapProps> = ({
     const countryData = data?.find((d) => d.id === feature.id);
     // Set style for the country feature
     layer.setStyle({
-      fillColor: countryData
-        ? colorScale(countryData.totalEarnings)
-        : "#e0f7fr",
+      fillColor: countryData ? colorScale(countryData.earnings) : "#e0f7fr",
       fillOpacity: 0.7,
       color: "#FFF",
       weight: 1,
@@ -50,9 +41,9 @@ const EarningsByCountryMap: React.FC<StreamsByCountryMapProps> = ({
       const tooltipContentHtml = `
       <strong>${countryData?.name}</strong>
       <br/>
-      Royalty: £${countryData?.totalEarnings.toLocaleString()}
+      Royalty: £${countryData?.earnings.toLocaleString()}
       <br/>
-      Streams: ${countryData?.totalStreams.toLocaleString()}
+      Streams: ${countryData?.streams.toLocaleString()}
       `;
       const tooltipContent = tooltipContentHtml;
       layer.bindTooltip(tooltipContent, {
@@ -70,7 +61,7 @@ const EarningsByCountryMap: React.FC<StreamsByCountryMapProps> = ({
   };
 
   return (
-    <div className="mx-auto w-full max-w-[1000px]">
+    <div className="mx-auto w-full max-w-[900px]">
       <MapContainer
         style={{
           width: "100%",

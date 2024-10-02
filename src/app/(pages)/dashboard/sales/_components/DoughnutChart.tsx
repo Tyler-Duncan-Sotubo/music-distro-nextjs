@@ -2,27 +2,20 @@
 
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { type IStoreReport } from "../types/sales.types";
 
 // Register the necessary Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// Platform summary type
-type PlatformSummary = {
-  platform: string;
-  totalStreams: number;
-  totalDownloads: number;
-  totalEarnings: number;
-};
-
 // Props type
 interface Props {
-  platformSummaries: PlatformSummary[];
+  platformSummaries: IStoreReport[];
 }
 
 // DoughnutChart component
 const PlatformDoughnutChart = ({ platformSummaries }: Props) => {
   const maxEarnings = Math.max(
-    ...platformSummaries.map((summary) => summary.totalEarnings),
+    ...platformSummaries.map((summary) => summary.earnings),
   );
 
   // Function to compute color with opacity
@@ -38,12 +31,12 @@ const PlatformDoughnutChart = ({ platformSummaries }: Props) => {
   };
 
   // Prepare chart data
-  const labels = platformSummaries.map((summary) => summary.platform);
+  const labels = platformSummaries.map((summary) => summary.name);
   const backgroundColors = platformSummaries.map((summary) =>
-    getColorWithOpacity(summary.totalEarnings, maxEarnings),
+    getColorWithOpacity(summary.earnings, maxEarnings),
   );
   const borderColors = platformSummaries.map((summary) =>
-    getColorWithOpacity(summary.totalEarnings, maxEarnings),
+    getColorWithOpacity(summary.earnings, maxEarnings),
   );
 
   // Chart data
@@ -52,7 +45,7 @@ const PlatformDoughnutChart = ({ platformSummaries }: Props) => {
     datasets: [
       {
         label: "Total Earnings",
-        data: platformSummaries.map((summary) => summary.totalEarnings),
+        data: platformSummaries.map((summary) => summary.earnings),
         backgroundColor: backgroundColors,
         borderColor: borderColors,
         borderWidth: 1,

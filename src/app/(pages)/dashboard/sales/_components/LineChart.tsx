@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { type MonthlyReport } from "../types/sales.types";
 
 ChartJS.register(
   LineElement,
@@ -20,80 +21,104 @@ ChartJS.register(
   Legend,
 );
 
-const monthNames: Record<string, string> = {
-  "01": "Jan",
-  "02": "Feb",
-  "03": "Mar",
-  "04": "April",
-  "05": "May",
-  "06": "June",
-  "07": "July",
-  "08": "Aug",
-  "09": "Sept",
-  "10": "Oct",
-  "11": "Nov",
-  "12": "Dec",
+// Month name mapping
+const monthNames: Record<number, string> = {
+  1: "Jan",
+  2: "Feb",
+  3: "Mar",
+  4: "Apr",
+  5: "May",
+  6: "Jun",
+  7: "Jul",
+  8: "Aug",
+  9: "Sep",
+  10: "Oct",
+  11: "Nov",
+  12: "Dec",
 };
 
-const getMonthName = (yearMonth: string): string => {
-  const [_, month] = yearMonth.split("-");
-  return `${monthNames[month!]}`;
-};
-
-// Get the last month in YYYY-MM format
-const getLastMonth = (data: Record<string, number>): string => {
-  return Object.keys(data).sort().pop()!;
-};
-
-// Generate all months for the past 12 months including the last month from data
-const generateMonthRange = (lastMonth: string): string[] => {
-  const [lastYear, lastMonthNum] = lastMonth.split("-");
+// Function to generate last 12 months in "YYYY-MM" format
+const generateMonthRange = (
+  currentMonth: number,
+  currentYear: number,
+): string[] => {
   const months = [];
+  let month = currentMonth;
+  let year = currentYear;
 
   for (let i = 0; i < 12; i++) {
-    const monthNum = ((parseInt(lastMonthNum!) - i + 12) % 12 || 12)
-      .toString()
-      .padStart(2, "0");
-    const year =
-      parseInt(lastYear!) - Math.floor((parseInt(lastMonthNum!) - i) / 12);
-    months.push(`${year}-${monthNum}`);
+    months.push(`${year}-${month.toString().padStart(2, "0")}`);
+    month--;
+    if (month === 0) {
+      month = 12;
+      year--;
+    }
   }
 
   return months.reverse();
 };
 
-function calculateTotalEarnings(
-  earnings: Record<string, number> | never[],
-): number {
-  let total = 0;
-  for (const month in earnings) {
-    if (earnings.hasOwnProperty(month)) {
-      total += (earnings as Record<string, number>)[month] ?? 0;
-    }
-  }
-  return total;
+// Function to calculate total earnings from monthly reports
+function calculateTotalEarnings(monthlyReports: MonthlyReport[]): number {
+  return monthlyReports.reduce((total, report) => total + report.earnings, 0);
 }
 
-type MonthlyEarnings = Record<string, number> | never[] | [];
-
+// Component props type
 type Props = {
-  monthlyEarnings: MonthlyEarnings;
+  monthlyReports?: MonthlyReport[];
 };
 
-const SalesReportLineChart = ({ monthlyEarnings }: Props) => {
-  const data: Record<string, number> = monthlyEarnings as Record<
-    string,
-    number
-  >;
-  const lastMonth = getLastMonth(data);
-  const allMonths = generateMonthRange(lastMonth);
+// Main component
+const SalesReportLineChart = ({ monthlyReports = [] }: Props) => {
+  // Ensure we have data to work with
+  if (!monthlyReports || monthlyReports.length === 0) {
+    return (
+      <div className="flex flex-col items-center border-b border-gray py-6">
+        <h3>No data available for the Monthly Report.</h3>
+      </div>
+    );
+  }
 
-  // Map all months to their corresponding values, defaulting to 0 if not present in data
-  const labels = allMonths.map(getMonthName);
-  const values = allMonths.map((month) => data[month] ?? 0);
+  // Sort monthlyReports by year and month in descending order
+  const sortedReports = [...monthlyReports].sort((a, b) => {
+    if (a.year === b.year) {
+      return b.month - a.month; // Sort by month if years are equal
+    }
+    return b.year - a.year; // Otherwise, sort by year
+  });
 
-  const totalEarnings = calculateTotalEarnings(monthlyEarnings);
+  // Get the latest report to use as the base for the month range
+  const lastReport = sortedReports[0]; // Since we sorted in desc, the latest is now at index 0
+  if (!lastReport) {
+    return (
+      <div className="flex flex-col items-center border-b border-gray py-6">
+        <h3>No data available for the Monthly Report.</h3>
+      </div>
+    );
+  }
+  const lastYear = lastReport.year;
+  const lastMonth = lastReport.month;
 
+  // Generate month range
+  const allMonths = generateMonthRange(lastMonth, lastYear);
+
+  // Map months to corresponding earnings
+  const labels = allMonths.map((month) => {
+    const [year, monthNum] = month.split("-");
+    return monthNames[parseInt(monthNum ?? "0", 10)];
+  });
+
+  const values = allMonths.map((month) => {
+    const report = monthlyReports.find(
+      (report) =>
+        `${report.year}-${report.month.toString().padStart(2, "0")}` === month,
+    );
+    return report ? report.earnings : 0;
+  });
+
+  const totalEarnings = calculateTotalEarnings(monthlyReports);
+
+  // Chart data
   const chartData = {
     labels: labels,
     datasets: [
@@ -107,6 +132,8 @@ const SalesReportLineChart = ({ monthlyEarnings }: Props) => {
       },
     ],
   };
+
+  console;
 
   const options = {
     responsive: true,

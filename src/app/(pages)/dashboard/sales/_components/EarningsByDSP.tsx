@@ -1,15 +1,9 @@
 import React from "react";
 import PlatformDoughnutChart from "./DoughnutChart";
-
-type PlatformSummary = {
-  platform: string;
-  totalStreams: number;
-  totalDownloads: number;
-  totalEarnings: number;
-};
+import { type IStoreReport } from "../types/sales.types";
 
 interface Props {
-  earningsByDSP: PlatformSummary[];
+  earningsByDSP: IStoreReport[];
 }
 
 const EarningsByDSP = ({ earningsByDSP }: Props) => {
@@ -17,7 +11,7 @@ const EarningsByDSP = ({ earningsByDSP }: Props) => {
     <div className="border-b border-gray py-6">
       <h2 className="mb-10">Revenue By DSP</h2>
       <section className="flex flex-col items-start justify-between lg:flex-row lg:gap-20">
-        <div className="w-[90%] lg:w-1/3 lg:p-2">
+        <div className="mx-auto w-full text-sm lg:w-1/3 lg:p-2">
           {earningsByDSP.length > 0 && (
             <table className="mb-12 w-[60%] min-w-full divide-y divide-gray capitalize">
               <thead className="bg-black font-medium uppercase text-white lg:text-lg">
@@ -29,24 +23,22 @@ const EarningsByDSP = ({ earningsByDSP }: Props) => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray capitalize">
-                {earningsByDSP.map(
-                  (platform: PlatformSummary, index: number) => (
-                    <tr key={index} className="text-xl">
-                      <td className="whitespace-nowrap border border-gray px-4 py-4 font-medium">
-                        <p>{platform.platform}</p>
-                      </td>
-                      <td className="whitespace-nowrap border border-gray px-4 py-4 font-medium">
-                        <p>{platform.totalDownloads}</p>
-                      </td>
-                      <td className="whitespace-nowrap border border-gray px-4 py-4 font-medium">
-                        <p>{platform.totalStreams}</p>
-                      </td>
-                      <td className="whitespace-nowrap border border-gray px-4 py-4 font-medium">
-                        <p>{platform.totalEarnings}</p>
-                      </td>
-                    </tr>
-                  ),
-                )}
+                {earningsByDSP.map((platform: IStoreReport, index: number) => (
+                  <tr key={index} className="text-xl">
+                    <td className="whitespace-nowrap border border-gray px-4 py-4 font-medium">
+                      <p>{platform.name}</p>
+                    </td>
+                    <td className="whitespace-nowrap border border-gray px-4 py-4 font-medium">
+                      <p>{platform.trackDownloads}</p>
+                    </td>
+                    <td className="whitespace-nowrap border border-gray px-4 py-4 font-medium">
+                      <p>{platform.streams}</p>
+                    </td>
+                    <td className="whitespace-nowrap border border-gray px-4 py-4 font-medium">
+                      <p>{platform.earnings}</p>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           )}

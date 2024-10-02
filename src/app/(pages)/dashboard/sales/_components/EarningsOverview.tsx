@@ -1,27 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { type Summary } from "../types/sales.types";
 import Overview from "./overview/Overview";
 import Monthly from "./overview/Monthly";
-import { type MonthlyStatsProps, type TrackStats } from "../types/sales.types";
 import TrackOverview from "./overview/TrackStats";
 
-interface PageProps {
-  earnings: Summary;
-  monthlyStats: MonthlyStatsProps | never[];
-  trackStats: TrackStats[];
-}
-
-const EarningsOverview = ({
-  earnings,
-  monthlyStats,
-  trackStats,
-}: PageProps) => {
+const EarningsOverview = () => {
   const [filterStatus, setFilterStatus] = useState("overview");
 
   const isActive = (status: string) => filterStatus === status;
-
   const ButtonComponent = ({
     status,
     label,
@@ -43,11 +30,11 @@ const EarningsOverview = ({
 
   const renderContent = () => {
     if (filterStatus === "overview") {
-      return <Overview earnings={earnings} />;
+      return <Overview />;
     } else if (filterStatus === "months") {
-      return <Monthly monthlyStats={monthlyStats} />;
+      return <Monthly />;
     } else if (filterStatus === "tracks") {
-      return <TrackOverview trackStats={trackStats} />;
+      return <TrackOverview />;
     }
 
     return (

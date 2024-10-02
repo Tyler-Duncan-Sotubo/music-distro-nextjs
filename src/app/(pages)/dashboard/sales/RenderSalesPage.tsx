@@ -1,26 +1,23 @@
 import React from "react";
 import TotalEarnings from "./_components/TotalEarnings";
 import EarningsOverview from "./_components/EarningsOverview";
-import { api } from "@/trpc/server";
 import SalesReportLineChart from "./_components/LineChart";
 import EarningsByDSP from "./_components/EarningsByDSP";
 import EarningsByCountry from "./_components/EarningsByCountry";
-
-type Summary = {
-  totalDownloads: number;
-  totalStreams: number;
-  totalStreamEarnings: number;
-  totalDownloadEarnings: number;
-  totalEarnings: number;
-};
+import {
+  fetchMonthlyReports,
+  fetchReportByStore,
+  fetchReportByCountry,
+} from "@/hooks/fetch-sales-report";
+import { getServerAuthSession } from "@/server/auth";
 
 const RenderSalesPage = async () => {
-  const earnings = (await api.report.getTotalEarnings()) as Summary;
-  const monthlyEarnings = await api.report.getMonthlyEarnings();
-  const earningsByDSP = await api.report.getReportByPlatform();
-  const earningsByCountry = await api.report.getReportByCountry();
-  const monthlyStats = await api.report.getMonthlyStats();
-  const trackStats = await api.report.getTrackStats();
+  const session = await getServerAuthSession();
+  const userId = session?.user?.id;
+
+  const monthlySalesReports = await fetchMonthlyReports(userId);
+  const earningsByDSP = await fetchReportByStore(userId);
+  const earningsByCountry = await fetchReportByCountry(userId);
 
   return (
     <>
@@ -37,19 +34,15 @@ const RenderSalesPage = async () => {
 
       <section>
         {/* Total Earnings Graph */}
-        <SalesReportLineChart monthlyEarnings={monthlyEarnings} />
+        <SalesReportLineChart monthlyReports={monthlySalesReports} />
         {/* Earnings by DSP */}
         <EarningsByDSP earningsByDSP={earningsByDSP} />
         {/* Earnings by Country */}
         <EarningsByCountry earningsByCountry={earningsByCountry} />
         {/* sales overview */}
-        <TotalEarnings earnings={earnings} />
+        <TotalEarnings earnings={monthlySalesReports} />
         {/* Earnings overview */}
-        <EarningsOverview
-          earnings={earnings}
-          monthlyStats={monthlyStats}
-          trackStats={trackStats}
-        />
+        <EarningsOverview />
       </section>
     </>
   );

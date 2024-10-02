@@ -1,39 +1,71 @@
+"use client";
+
 import { OverviewRow } from "./OverviewRow";
 import { formatEarnings } from "../../utils/formatEarningsToTwoDecimal";
-import { type Summary } from "../../types/sales.types";
+import { type MonthlyReport } from "../../types/sales.types";
+import { Spinner } from "@/components/common/Spinner";
+import useFetchReport from "@/hooks/use-fetch-report";
 
-interface PageProps {
-  earnings: Summary;
+// Function to calculate total earnings, downloads, streams, and sales
+export function calculateTotals(monthlyReports: MonthlyReport[]) {
+  return monthlyReports.reduce(
+    (totals, { trackDownloads, streams, totalSales, earnings }) => ({
+      totalDownloads: totals.totalDownloads + trackDownloads,
+      totalStreams: totals.totalStreams + streams,
+      totalSales: totals.totalSales + totalSales,
+      totalEarnings: totals.totalEarnings + earnings,
+    }),
+    {
+      totalDownloads: 0,
+      totalStreams: 0,
+      totalSales: 0,
+      totalEarnings: 0,
+    },
+  );
 }
 
-const Overview = ({ earnings }: PageProps) => {
+const Overview = () => {
+  const { loading, error, data } = useFetchReport<MonthlyReport>(
+    "api/sales-report/month",
+  );
+
+  const { totalDownloads, totalStreams, totalSales, totalEarnings } =
+    calculateTotals(data);
+
   return (
-    <table className="my-6 min-w-full divide-y divide-gray text-[14px] capitalize">
-      <thead className="font-regular bg-white text-sm uppercase">
-        <tr>
-          <th className="p-4 text-left">Category</th>
-          <th className="p-4 text-left">Total Sales</th>
-          <th className="p-4 text-left">Total Earnings</th>
-        </tr>
-      </thead>
-      <tbody className="divide-y divide-gray bg-white capitalize">
-        <OverviewRow
-          label="Downloads"
-          value={earnings.totalDownloads === 0 ? "-" : earnings.totalDownloads}
-          formattedValue={formatEarnings(earnings.totalDownloadEarnings)}
-        />
-        <OverviewRow
-          label="Streams"
-          value={earnings.totalStreams === 0 ? "-" : earnings.totalStreams}
-          formattedValue={formatEarnings(earnings.totalStreamEarnings)}
-        />
-        <OverviewRow
-          label="Total"
-          value={earnings.totalStreams + earnings.totalDownloads}
-          formattedValue={formatEarnings(earnings.totalEarnings)}
-        />
-      </tbody>
-    </table>
+    <>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <table className="my-6 min-w-full divide-y divide-gray text-[14px] capitalize">
+          <thead className="font-regular bg-white text-sm uppercase">
+            <tr>
+              <th className="p-4 text-left">Category</th>
+              <th className="p-4 text-left">Total Sales</th>
+              <th className="p-4 text-left">Total Earnings</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray bg-white capitalize">
+            <OverviewRow
+              label="Downloads"
+              value={totalDownloads === 0 ? "-" : totalDownloads}
+              formattedValue={formatEarnings(totalDownloads)}
+            />
+            <OverviewRow
+              label="Streams"
+              value={totalStreams === 0 ? "-" : totalStreams}
+              formattedValue={formatEarnings(totalEarnings)}
+            />
+            <OverviewRow
+              label="Total"
+              value={totalSales}
+              formattedValue={formatEarnings(totalEarnings)}
+            />
+          </tbody>
+        </table>
+      )}
+      {error && <p>{error}</p>}
+    </>
   );
 };
 

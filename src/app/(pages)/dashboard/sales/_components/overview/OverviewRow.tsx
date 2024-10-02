@@ -1,7 +1,7 @@
 interface OverviewRowProps {
   label: string;
   value?: number | string;
-  formattedValue: string;
+  formattedValue: number | string;
   streams?: number;
   downloads?: number | string;
 }

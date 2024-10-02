@@ -91,26 +91,28 @@ const RenderAnalyticsPage = ({
       <div>
         <div className="flex flex-col justify-between gap-5 px-5 md:w-2/3 md:flex-row">
           <div className="flex w-full items-center gap-2 md:flex-row">
-            <h3 className="text-lg font-bold">By:</h3>
             {/* Track selection */}
             {audios &&
               Object.keys(audios).length > 1 && ( // Check if there are more than 1 audio tracks
-                <select
-                  id="trackSelection"
-                  name="trackSelection"
-                  value={selectedTrackId ?? ""}
-                  onChange={handleTrackChange} // Track change handler
-                  className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full self-end rounded-md border bg-white p-2 shadow-sm focus:outline-none sm:text-sm md:w-[35%]"
-                >
-                  <option value="">Track</option>
-                  {Object.entries(audios)
-                    .sort(([, a], [, b]) => b.totalStreams - a.totalStreams) // Sort by totalStreams in descending order
-                    .map(([id, audio]) => (
-                      <option key={id} value={id}>
-                        {audio.title}
-                      </option>
-                    ))}
-                </select>
+                <>
+                  <h3 className="text-lg font-bold">By:</h3>
+                  <select
+                    id="trackSelection"
+                    name="trackSelection"
+                    value={selectedTrackId ?? ""}
+                    onChange={handleTrackChange} // Track change handler
+                    className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full self-end rounded-md border bg-white p-2 shadow-sm focus:outline-none sm:text-sm md:w-[35%]"
+                  >
+                    <option value="">Track</option>
+                    {Object.entries(audios)
+                      .sort(([, a], [, b]) => b.totalStreams - a.totalStreams) // Sort by totalStreams in descending order
+                      .map(([id, audio]) => (
+                        <option key={id} value={id}>
+                          {audio.title}
+                        </option>
+                      ))}
+                  </select>
+                </>
               )}
           </div>
           {/* Time range selection */}
