@@ -3,7 +3,6 @@
 import { OverviewRow } from "./OverviewRow";
 import { formatEarnings } from "../../utils/formatEarningsToTwoDecimal";
 import { type MonthlyReport } from "../../types/sales.types";
-import { Spinner } from "@/components/common/Spinner";
 import useFetchReport from "@/hooks/use-fetch-report";
 
 // Function to calculate total earnings, downloads, streams, and sales
@@ -25,7 +24,7 @@ export function calculateTotals(monthlyReports: MonthlyReport[]) {
 }
 
 const Overview = () => {
-  const { loading, error, data } = useFetchReport<MonthlyReport>(
+  const { error, data } = useFetchReport<MonthlyReport>(
     "api/sales-report/month",
   );
 
@@ -34,36 +33,32 @@ const Overview = () => {
 
   return (
     <>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <table className="my-6 min-w-full divide-y divide-gray text-[14px] capitalize">
-          <thead className="font-regular bg-white text-sm uppercase">
-            <tr>
-              <th className="p-4 text-left">Category</th>
-              <th className="p-4 text-left">Total Sales</th>
-              <th className="p-4 text-left">Total Earnings</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray bg-white capitalize">
-            <OverviewRow
-              label="Downloads"
-              value={totalDownloads === 0 ? "-" : totalDownloads}
-              formattedValue={formatEarnings(totalDownloads)}
-            />
-            <OverviewRow
-              label="Streams"
-              value={totalStreams === 0 ? "-" : totalStreams}
-              formattedValue={formatEarnings(totalEarnings)}
-            />
-            <OverviewRow
-              label="Total"
-              value={totalSales}
-              formattedValue={formatEarnings(totalEarnings)}
-            />
-          </tbody>
-        </table>
-      )}
+      <table className="my-6 min-w-full divide-y divide-gray text-[14px] capitalize">
+        <thead className="font-regular bg-white text-sm uppercase">
+          <tr>
+            <th className="p-4 text-left">Category</th>
+            <th className="p-4 text-left">Total Sales</th>
+            <th className="p-4 text-left">Total Earnings</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray bg-white capitalize">
+          <OverviewRow
+            label="Downloads"
+            value={totalDownloads === 0 ? "-" : totalDownloads}
+            formattedValue={formatEarnings(totalDownloads)}
+          />
+          <OverviewRow
+            label="Streams"
+            value={totalStreams === 0 ? "-" : totalStreams}
+            formattedValue={formatEarnings(totalEarnings)}
+          />
+          <OverviewRow
+            label="Total"
+            value={totalSales}
+            formattedValue={formatEarnings(totalEarnings)}
+          />
+        </tbody>
+      </table>
       {error && <p>{error}</p>}
     </>
   );
