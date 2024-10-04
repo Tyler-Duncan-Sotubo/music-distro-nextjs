@@ -28,7 +28,7 @@ const RenderAnalyticsPage = ({
   StreamsByCountry,
   audios,
 }: PageProps) => {
-  const [timeRange, setTimeRange] = useState<TimeRange>("7days"); // Default to 7 days
+  const [timeRange, setTimeRange] = useState<TimeRange>("14days"); // Default to 7 days
   const [streams, setStreams] = useState<
     Record<string, { date: string; total: number }[]>
   >(Array.isArray(streamByUserId) ? {} : streamByUserId);
