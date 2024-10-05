@@ -56,3 +56,15 @@ export interface ICountryReport extends PerformanceMetrics {
   name: string;
   id: string;
 }
+
+interface MonthlyReportRevenue {
+  month: number;
+  year: number;
+  totalEarnings: number;
+}
+
+export interface CachedEarnings {
+  message: string;
+  earnings: number;
+  monthlyReports: MonthlyReportRevenue[];
+}

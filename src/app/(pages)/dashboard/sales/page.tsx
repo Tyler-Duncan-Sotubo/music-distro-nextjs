@@ -4,7 +4,7 @@ import { api } from "@/trpc/server";
 import { type Metadata } from "next";
 import { getServerAuthSession } from "@/server/auth";
 import { fetchMonthlyReports } from "@/hooks/fetch-sales-report";
-import { type MonthlyReport } from "./types/sales.types";
+import { type MonthlyReport } from "./_types/sales.types";
 
 export const metadata: Metadata = {
   title: "Sales and Analytics | We Plug Music - Dashboard",

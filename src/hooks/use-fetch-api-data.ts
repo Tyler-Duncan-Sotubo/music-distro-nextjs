@@ -11,7 +11,7 @@ interface UseFetchData<T> {
   fetchData: () => Promise<void>; // Expose fetch function for manual triggers
 }
 
-const useFetchReport = <T>(baseURL: string): UseFetchData<T> => {
+const useFetchApiData = <T>(baseURL: string): UseFetchData<T> => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
@@ -32,8 +32,6 @@ const useFetchReport = <T>(baseURL: string): UseFetchData<T> => {
     }
   };
 
-  console.log("data", data);
-
   useEffect(() => {
     void fetchData(); // Fetch data when the component mounts
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,4 +40,4 @@ const useFetchReport = <T>(baseURL: string): UseFetchData<T> => {
   return { data, loading, error, fetchData }; // Expose the data, loading, error, and fetch function
 };
 
-export default useFetchReport;
+export default useFetchApiData;

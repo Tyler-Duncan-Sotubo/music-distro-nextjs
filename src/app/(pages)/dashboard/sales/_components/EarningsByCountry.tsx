@@ -8,8 +8,8 @@ import {
   type Geometry,
 } from "geojson";
 import worldGeography from "@/data/countries.geo.json";
-import { formatEarnings } from "../utils/formatEarningsToTwoDecimal";
-import { type ICountryReport } from "../types/sales.types";
+import { formatEarnings } from "../_utils/formatEarningsToTwoDecimal";
+import { type ICountryReport } from "../_types/sales.types";
 
 const EarningsByCountryMap = dynamic(() => import("./EarningsByCountryMap"), {
   ssr: false,

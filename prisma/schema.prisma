@@ -190,13 +190,8 @@ model Audio {
     updatedAt        DateTime @updatedAt
     smartLink        String   @default("")
 
-    User             User               @relation(fields: [userId], references: [id])
-    dailyStreams     DailyStream[]      @relation("AudioDailyStreams")
-    Track            Track[]
-    StreamByCountry  StreamByCountry[]
-    MonthlyReport    MonthlyReport[]
-    CountryEarnings  CountryEarnings[]
-    PlatformEarnings PlatformEarnings[]
+    User  User    @relation(fields: [userId], references: [id])
+    Track Track[]
 
     @@index([userId])
 }
@@ -212,44 +207,6 @@ model Track {
     audioLink        String // URL or path to track audio file
 
     Audio Audio @relation(fields: [audioId], references: [id])
-}
-
-model Platform {
-    id           String        @id @default(cuid())
-    name         String        @unique
-    dailyStreams DailyStream[] @relation("PlatformDailyStreams")
-}
-
-model DailyStream {
-    id            String   @id @default(cuid())
-    date          DateTime // Specific date of the stream data
-    streamCount   Int // Number of streams for the specific date
-    downloadCount Int // Number of downloads for the specific date
-    platformId    String
-    platform      Platform @relation("PlatformDailyStreams", fields: [platformId], references: [id])
-    audioId       String
-    Audio         Audio    @relation("AudioDailyStreams", fields: [audioId], references: [id])
-
-    @@unique([date, audioId, platformId])
-}
-
-model Country {
-    id               String            @id @default(uuid())
-    name             String            @unique
-    isoCode          String            @unique
-    streamsByCountry StreamByCountry[]
-    CountryEarnings  CountryEarnings[]
-}
-
-model StreamByCountry {
-    id        String  @id @default(uuid())
-    countryId String
-    country   Country @relation(fields: [countryId], references: [id])
-    streams   Int
-    audioId   String
-    audio     Audio   @relation(fields: [audioId], references: [id])
-
-    @@unique([countryId, audioId])
 }
 
 // New Partner model to track revenue
@@ -358,51 +315,4 @@ enum TicketPriority {
     LOW
     NORMAL
     HIGH
-}
-
-// Sales Report model
-
-model MonthlyReport {
-    id               String @id @default(cuid())
-    audioId          String
-    audio            Audio  @relation(fields: [audioId], references: [id])
-    month            String
-    streams          Int
-    streamEarnings   Float
-    downloads        Int
-    downloadEarnings Float
-
-    @@index([audioId, month]) // Index on releaseId and month for faster queries
-}
-
-model CountryEarnings {
-    id               String   @id @default(cuid())
-    audioId          String
-    audio            Audio    @relation(fields: [audioId], references: [id])
-    countryId        String
-    country          Country  @relation(fields: [countryId], references: [id])
-    month            String
-    streams          Int
-    streamEarnings   Float
-    downloads        Int
-    downloadEarnings Float
-    createdAt        DateTime @default(now())
-    updatedAt        DateTime @updatedAt
-
-    @@index([audioId, month])
-}
-
-model PlatformEarnings {
-    id        String   @id @default(cuid())
-    audioId   String
-    audio     Audio    @relation(fields: [audioId], references: [id])
-    platform  String
-    month     String // Format: YYYY-MM (e.g., "2024-06")
-    streams   Int
-    downloads Int
-    earnings  Float
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([audioId, platform, month])
 }

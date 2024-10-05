@@ -9,7 +9,7 @@ import {
 } from "geojson";
 import "leaflet/dist/leaflet.css";
 import type L from "leaflet";
-import { type ICountryReport } from "../types/sales.types";
+import { type ICountryReport } from "../_types/sales.types";
 
 interface StreamsByCountryMapProps {
   data: ICountryReport[] | undefined;

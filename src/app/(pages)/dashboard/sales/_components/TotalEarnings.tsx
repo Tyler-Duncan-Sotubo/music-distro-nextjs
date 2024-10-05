@@ -1,4 +1,4 @@
-import { type MonthlyReport } from "../types/sales.types";
+import { type MonthlyReport } from "../_types/sales.types";
 
 type CardProps = {
   title: string;

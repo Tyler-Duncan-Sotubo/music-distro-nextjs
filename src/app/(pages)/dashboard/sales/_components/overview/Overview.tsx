@@ -1,9 +1,9 @@
 "use client";
 
 import { OverviewRow } from "./OverviewRow";
-import { formatEarnings } from "../../utils/formatEarningsToTwoDecimal";
-import { type MonthlyReport } from "../../types/sales.types";
-import useFetchReport from "@/hooks/use-fetch-report";
+import { formatEarnings } from "../../_utils/formatEarningsToTwoDecimal";
+import { type MonthlyReport } from "../../_types/sales.types";
+import useFetchApiData from "@/hooks/use-fetch-api-data";
 
 // Function to calculate total earnings, downloads, streams, and sales
 export function calculateTotals(monthlyReports: MonthlyReport[]) {
@@ -24,7 +24,7 @@ export function calculateTotals(monthlyReports: MonthlyReport[]) {
 }
 
 const Overview = () => {
-  const { error, data } = useFetchReport<MonthlyReport>(
+  const { error, data } = useFetchApiData<MonthlyReport>(
     "api/sales-report/month",
   );
 

@@ -12,6 +12,7 @@ export default {
       black: "#000000",
       backgroundTo: "#040a1f",
       error: "#ff0000",
+      warning: "#ffae00",
       gray: "#E5E4E2",
       zinc: {
         900: "#44403c",

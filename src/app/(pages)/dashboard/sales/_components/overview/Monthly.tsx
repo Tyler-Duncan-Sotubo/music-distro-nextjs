@@ -1,13 +1,13 @@
 "use client";
 
 import { OverviewRow } from "./OverviewRow";
-import { formatEarnings } from "../../utils/formatEarningsToTwoDecimal";
-import { type MonthlyReport } from "../../types/sales.types";
+import { formatEarnings } from "../../_utils/formatEarningsToTwoDecimal";
+import { type MonthlyReport } from "../../_types/sales.types";
 import { Spinner } from "@/components/common/Spinner";
-import useFetchReport from "@/hooks/use-fetch-report";
+import useFetchApiData from "@/hooks/use-fetch-api-data";
 
 const Monthly = () => {
-  const { loading, error, data } = useFetchReport<MonthlyReport>(
+  const { loading, error, data } = useFetchApiData<MonthlyReport>(
     "api/sales-report/month",
   );
   return (

@@ -2,9 +2,9 @@
 
 import React from "react";
 import { OverviewRow } from "./OverviewRow";
-import { formatEarnings } from "../../utils/formatEarningsToTwoDecimal";
+import { formatEarnings } from "../../_utils/formatEarningsToTwoDecimal";
 import { Spinner } from "@/components/common/Spinner";
-import useFetchReport from "@/hooks/use-fetch-report";
+import useFetchApiData from "@/hooks/use-fetch-api-data";
 
 interface TrackReport {
   trackDownloads: number;
@@ -14,7 +14,7 @@ interface TrackReport {
 }
 
 const TrackOverview = () => {
-  const { loading, error, data } = useFetchReport<TrackReport>(
+  const { loading, error, data } = useFetchApiData<TrackReport>(
     "api/sales-report/track",
   );
 

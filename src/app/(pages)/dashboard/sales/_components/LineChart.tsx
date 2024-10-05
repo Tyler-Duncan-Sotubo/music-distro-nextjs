@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { type MonthlyReport } from "../types/sales.types";
+import { type MonthlyReport } from "../_types/sales.types";
 
 ChartJS.register(
   LineElement,

@@ -1,6 +1,6 @@
 import React from "react";
 import PlatformDoughnutChart from "./DoughnutChart";
-import { type IStoreReport } from "../types/sales.types";
+import { type IStoreReport } from "../_types/sales.types";
 
 interface Props {
   earningsByDSP: IStoreReport[];
