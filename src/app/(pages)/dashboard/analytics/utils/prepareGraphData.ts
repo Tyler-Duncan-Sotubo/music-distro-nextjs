@@ -35,13 +35,13 @@ export const prepareGraphData = (
   const startDate = new Date();
   switch (timeRange) {
     case "7days":
-      startDate.setDate(currentDate.getDate() - 7);
+      startDate.setDate(currentDate.getDate() - 10);
       break;
     case "14days":
-      startDate.setDate(currentDate.getDate() - 14);
+      startDate.setDate(currentDate.getDate() - 17);
       break;
     case "30days":
-      startDate.setDate(currentDate.getDate() - 30);
+      startDate.setDate(currentDate.getDate() - 33);
       break;
     case "all":
       startDate.setDate(currentDate.getDate() - 365);
