@@ -41,7 +41,7 @@ const page = async () => {
         </div>
         <div className="md:w-[45%]">
           <Image
-            src="/blog/banner.jpg"
+            src="https://tooxclusive-artist-profile.s3.amazonaws.com/blog/banner.jpg"
             alt="blog image"
             width={600}
             height={600}
