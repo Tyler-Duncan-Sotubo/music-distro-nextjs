@@ -24,15 +24,15 @@
 }
 
 .blog h1 {
-  @apply my-10 text-3xl tracking-wide md:text-5xl;
+  @apply my-10 text-2xl tracking-wide md:text-3xl;
 }
 
 .blog p {
-  @apply my-5 text-lg leading-loose tracking-wide md:text-xl;
+  @apply my-5 text-lg leading-loose tracking-wide;
 }
 
 .blog h2 {
-  @apply my-7 text-2xl tracking-wide md:text-4xl;
+  @apply my-7 text-2xl tracking-wide;
 }
 
 .blog h3 {

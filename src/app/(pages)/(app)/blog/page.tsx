@@ -1,8 +1,9 @@
-import { blogPost } from "@/data/blog";
 import Image from "next/image";
 import Link from "next/link";
+import { api } from "@/trpc/server";
 
-const page = () => {
+const page = async () => {
+  const blogPost = await api.post.getAllPosts();
   return (
     <section className="mx-auto my-10 w-[92%] md:my-32">
       {/* blog posts */}
@@ -26,10 +27,12 @@ const page = () => {
                   />
                 </div>
                 <div className="md:p-4">
-                  <h2 className="mt-4 text-3xl font-bold md:text-5xl">
+                  <h2 className="mt-4 text-2xl font-bold md:text-3xl">
                     {post.title}
                   </h2>
-                  <p className="mt-2 text-primaryHover">{post.date}</p>
+                  <p className="mt-2 text-primaryHover">
+                    {post.publishedAt.toDateString()}
+                  </p>
                   <p className="mt-4 text-xl italic">{post.subtitle}</p>
                 </div>
               </article>

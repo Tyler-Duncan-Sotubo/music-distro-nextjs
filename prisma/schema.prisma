@@ -47,7 +47,6 @@ model User {
     image                            String?
     accounts                         Account[]
     sessions                         Session[]
-    audio                            Audio[]
 
     PasswordResetToken PasswordResetToken[]
     UserInformation    UserInformation[]
@@ -163,52 +162,6 @@ model Social {
     User User @relation(fields: [userId], references: [id])
 }
 
-// All models below are for audio and streaming data
-model Audio {
-    id               String   @id @default(cuid())
-    userId           String
-    title            String
-    artist           String
-    releaseDate      DateTime
-    primaryGenre     String
-    secondaryGenre   String
-    language         String
-    label            String
-    copyrightHolder  String
-    copyrightYear    String
-    productionHolder String
-    productionYear   String
-    releaseCover     String
-    releaseAudio     String?
-    releaseAudioLink String?
-    lyrics           String?
-    releaseType      String
-    status           String
-    UPC              String   @default("")
-    ISRC             String   @default("")
-    createdAt        DateTime @default(now())
-    updatedAt        DateTime @updatedAt
-    smartLink        String   @default("")
-
-    User  User    @relation(fields: [userId], references: [id])
-    Track Track[]
-
-    @@index([userId])
-}
-
-model Track {
-    id               String  @id @default(cuid())
-    audioId          String
-    title            String
-    lyrics           String?
-    productionCredit String?
-    ISRC             String?
-    trackNumber      Int // Track number in the album
-    audioLink        String // URL or path to track audio file
-
-    Audio Audio @relation(fields: [audioId], references: [id])
-}
-
 // New Partner model to track revenue
 model Partner {
     id                        String                      @id @default(cuid())
@@ -315,4 +268,15 @@ enum TicketPriority {
     LOW
     NORMAL
     HIGH
+}
+
+model Blog {
+    id          String   @id @default(cuid())
+    title       String
+    HtmlContent String
+    subtitle    String
+    image       String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    publishedAt DateTime @default(now())
 }
