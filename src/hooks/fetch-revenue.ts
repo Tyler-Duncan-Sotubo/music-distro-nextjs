@@ -12,7 +12,7 @@ interface CachedEarnings {
 
 export const fetchRevenue = async (userId: string | undefined) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/revenue/${userId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/revenue/${userId}`,
   );
 
   if (!response.ok) {

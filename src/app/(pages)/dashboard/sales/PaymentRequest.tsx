@@ -19,7 +19,11 @@ const PaymentRequest = ({ revenueData }: Props) => {
   const [showModal, setShowModal] = useState(false);
 
   // Fetching data from the API
-  const { data: documentData } = useFetchApiData<IDocument>("api/id-check");
+  const { data: documentData } = useFetchApiData<IDocument>(
+    "api/payment/identity",
+  );
+
+  console.log(documentData.length);
 
   useEffect(() => {
     if (showModal) {
@@ -38,7 +42,7 @@ const PaymentRequest = ({ revenueData }: Props) => {
     <>
       <section className="my-10 md:w-2/3">
         {/* Identity Verification */}
-        {!documentData && (
+        {documentData.length === 0 && (
           <section className="relative rounded-xl border border-secondary bg-gradient-to-r from-primary from-15% via-primary via-30% to-black to-90% px-5 py-8 text-white shadow-2xl">
             <div className="md:w-2/3">
               <h1 className="py-4">Identity Verification</h1>
@@ -61,7 +65,7 @@ const PaymentRequest = ({ revenueData }: Props) => {
         )}
       </section>
       {/* Payment Request */}
-      <section className="bg-warning my-10 flex items-center justify-between gap-6 border border-secondary p-5">
+      <section className="my-10 flex items-center justify-between gap-6 border border-secondary bg-warning p-5">
         <BiError size={100} />
         <p className="text-lg">
           You can request a payment once you have reached the minimum threshold
@@ -90,7 +94,7 @@ const PaymentRequest = ({ revenueData }: Props) => {
             {revenueData.monthlyReports.map((report) => (
               <tr key={report.month}>
                 <td className="p-4">{`${report.month}/${report.year}`}</td>
-                <td className="p-4">£{report.totalEarnings}</td>
+                <td className="p-4">£{report.earnings}</td>
               </tr>
             ))}
           </tbody>

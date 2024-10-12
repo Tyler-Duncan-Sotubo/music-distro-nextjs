@@ -28,7 +28,7 @@ const DocumentUpload = ({ setFilterStatus }: Props) => {
     }
     try {
       // Send the image and document type to the server
-      const res = await axios.post("/api/id-check", {
+      const res = await axios.post("/api/payment/identity", {
         image: image as string,
         imageFileName: imageFileName!,
         user: session?.user,

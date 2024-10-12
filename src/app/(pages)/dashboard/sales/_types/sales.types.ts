@@ -60,7 +60,7 @@ export interface ICountryReport extends PerformanceMetrics {
 interface MonthlyReportRevenue {
   month: number;
   year: number;
-  totalEarnings: number;
+  earnings: number;
 }
 
 export interface CachedEarnings {
