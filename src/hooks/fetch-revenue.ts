@@ -1,7 +1,7 @@
 interface MonthlyReport {
   month: number;
   year: number;
-  totalEarnings: number;
+  earnings: number;
 }
 
 interface CachedEarnings {
