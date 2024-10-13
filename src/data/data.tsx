@@ -86,7 +86,7 @@ export const features = [
     id: 1,
     product: "Bronze",
     description: "Basic Distribution to top digital music services",
-    price_in_usd: "5",
+    price_in_usd: "50",
     price: "60,000",
     features: [
       "Unlimited releases to 100+ platforms for a year",
