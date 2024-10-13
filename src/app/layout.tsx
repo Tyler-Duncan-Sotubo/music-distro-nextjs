@@ -7,6 +7,7 @@ import { NextAuthProvider } from "@/server/provider/nextAuthProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Suspense } from "react";
+import PaypalProvider from "@/features/paypal/PaypalProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,14 +23,16 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <NextAuthProvider>
-          <Suspense fallback={<div></div>}>
-            <TRPCReactProvider>{children}</TRPCReactProvider>
-          </Suspense>
-        </NextAuthProvider>
-        <ToastContainer autoClose={3000} />
-      </body>
+      <PaypalProvider>
+        <body className={inter.className}>
+          <NextAuthProvider>
+            <Suspense fallback={<div></div>}>
+              <TRPCReactProvider>{children}</TRPCReactProvider>
+            </Suspense>
+          </NextAuthProvider>
+          <ToastContainer autoClose={3000} />
+        </body>
+      </PaypalProvider>
     </html>
   );
 }

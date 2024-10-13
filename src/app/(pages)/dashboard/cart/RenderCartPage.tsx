@@ -11,6 +11,7 @@ import { useLayoutEffect } from "react";
 import { api } from "@/trpc/react";
 import { toast } from "react-toastify";
 import { formatNumberWithCommas } from "./utils/formatNumber";
+import PaypalPayment from "@/features/paypal/PaypalPayment";
 
 type Props = {
   user: User | undefined;
@@ -142,17 +143,16 @@ const CartPage = ({ user, cartItem }: Props) => {
               </div>
 
               {/* Payment Buttons */}
-
               <div className="mt-24 justify-end gap-10 md:flex">
-                {/* PayStack */}
-                <div className="my-10 w-full md:my-0 md:w-1/4">
-                  <PayStack cartItem={cartItem?.[0]} user={user} />
-                </div>
-
-                {/* Paypal */}
-                {/* <div className="w-full md:w-1/4">
-                  <PaypalPayment cartItem={cartItem?.[0]} user={user} />
-                </div> */}
+                {(cartItem?.[0]?.price ?? 0) > 70 ? (
+                  <div className="my-10 w-full md:my-0 md:w-1/4">
+                    <PayStack cartItem={cartItem?.[0]} user={user} />
+                  </div>
+                ) : (
+                  <div className="w-full md:w-1/4">
+                    <PaypalPayment cartItem={cartItem?.[0]} user={user} />
+                  </div>
+                )}
               </div>
               <h5 className="my-6 text-center md:text-right">
                 By making a payment you are agreeing to our

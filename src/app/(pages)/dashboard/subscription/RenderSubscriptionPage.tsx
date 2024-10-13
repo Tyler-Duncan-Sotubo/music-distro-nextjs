@@ -7,7 +7,21 @@ import { BsFillPatchCheckFill } from "react-icons/bs";
 import { features } from "@/data/data";
 import CurrencySelectorComponent from "@/components/common/CurrencySelector";
 import { toast } from "react-toastify";
-import { type Subscriptions, type CartItem } from "@prisma/client";
+import { type Subscriptions } from "@prisma/client";
+
+type CartItem = {
+  id: string;
+  userId: string;
+  productId: string;
+  product: string;
+  description: string;
+  price: number;
+  price_in_usd: number; // Added this line
+  quantity: number;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 type SubscriptionPlanProps = {
   userSubscription: Subscriptions | null;
@@ -52,7 +66,10 @@ const RenderSubscriptionPage = ({
       createCartItem.mutate({
         productId: item.id.toString(),
         description: item.description,
-        price: Number(item.price.toString().replace(/,/g, "")),
+        price:
+          currency === "USD"
+            ? Number(item.price_in_usd)
+            : Number(item.price.toString().replace(/,/g, "")),
         quantity: 1,
         product: item.product,
       });
