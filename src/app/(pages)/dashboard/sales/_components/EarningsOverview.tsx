@@ -48,7 +48,7 @@ const EarningsOverview = () => {
     <div className="my-16">
       <div className="my-2 flex gap-4 text-xl">
         <ButtonComponent status="overview" label="Overview" />
-        <ButtonComponent status="tracks" label="Tracks" />
+        <ButtonComponent status="tracks" label="Tracks/Album" />
         <ButtonComponent status="months" label="Months" />
         {/* <ButtonComponent status="countries" label="Countries" /> */}
       </div>

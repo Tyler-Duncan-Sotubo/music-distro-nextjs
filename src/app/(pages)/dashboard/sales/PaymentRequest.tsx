@@ -76,7 +76,9 @@ const PaymentRequest = ({ revenueData }: Props) => {
       <section className="flex items-center justify-between border border-secondary p-5 shadow-xl">
         <p className="text-xl">
           Current Balance:{" "}
-          <span className="text-2xl">£{revenueData.earnings}</span>
+          <span className="text-2xl">
+            £{parseFloat(revenueData.earnings.toString()).toFixed(2)}
+          </span>
         </p>
         <Button disabled>Request Payment</Button>
       </section>
@@ -94,7 +96,9 @@ const PaymentRequest = ({ revenueData }: Props) => {
             {revenueData.monthlyReports.map((report) => (
               <tr key={report.month}>
                 <td className="p-4">{`${report.month}/${report.year}`}</td>
-                <td className="p-4">£{report.earnings}</td>
+                <td className="p-4">
+                  £{parseFloat(report.earnings.toString()).toFixed(2)}
+                </td>
               </tr>
             ))}
           </tbody>

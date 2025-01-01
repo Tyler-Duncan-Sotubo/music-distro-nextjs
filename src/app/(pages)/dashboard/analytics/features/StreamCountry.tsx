@@ -28,7 +28,7 @@ type StreamCountryProps = {
 };
 
 const StreamCountry = ({ StreamsByCountry }: StreamCountryProps) => {
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
   const sortedData = StreamsByCountry?.sort((a, b) => b.streams - a.streams);
   const totalPages = Math.ceil((sortedData?.length ?? 0) / itemsPerPage);
   const [currentPage, setCurrentPage] = useState<number>(1);

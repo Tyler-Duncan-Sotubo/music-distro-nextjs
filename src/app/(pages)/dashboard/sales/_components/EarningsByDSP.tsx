@@ -37,7 +37,9 @@ const EarningsByDSP = ({ earningsByDSP }: Props) => {
                       <p>{platform.streams}</p>
                     </td>
                     <td className="whitespace-nowrap border border-gray px-4 py-4 font-medium">
-                      <p>{platform.earnings}</p>
+                      <p>
+                        {parseFloat(platform.earnings.toString()).toFixed(2)}
+                      </p>
                     </td>
                   </tr>
                 ))}

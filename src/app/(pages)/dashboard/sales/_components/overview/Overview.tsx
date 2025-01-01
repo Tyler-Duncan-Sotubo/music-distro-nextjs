@@ -34,28 +34,22 @@ const Overview = () => {
   return (
     <>
       <table className="my-6 min-w-full divide-y divide-gray text-[14px] capitalize">
-        <thead className="font-regular bg-white text-sm uppercase">
+        <thead className="font-regular bg-white uppercase">
           <tr>
-            <th className="p-4 text-left">Category</th>
+            <th className="p-4 text-left"></th>
+            <th className="p-4 text-left">Streams</th>
+            <th className="hidden p-4 text-left lg:block">Downloads</th>
             <th className="p-4 text-left">Total Sales</th>
-            <th className="p-4 text-left">Total Earnings</th>
+            <th className="p-4 text-left">Earnings</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray bg-white capitalize">
-          <OverviewRow
-            label="Downloads"
-            value={totalDownloads === 0 ? "-" : totalDownloads}
-            formattedValue={formatEarnings(totalDownloads)}
-          />
-          <OverviewRow
-            label="Streams"
-            value={totalStreams === 0 ? "-" : totalStreams}
-            formattedValue={formatEarnings(totalEarnings)}
-          />
+        <tbody className="divide-y divide-gray bg-white text-left capitalize">
           <OverviewRow
             label="Total"
-            value={totalSales}
+            streams={totalStreams}
+            downloads={totalDownloads === 0 ? "-" : totalDownloads}
             formattedValue={formatEarnings(totalEarnings)}
+            value={totalSales}
           />
         </tbody>
       </table>

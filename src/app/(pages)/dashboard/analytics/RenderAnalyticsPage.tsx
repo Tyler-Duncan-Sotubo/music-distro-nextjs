@@ -75,7 +75,6 @@ const RenderAnalyticsPage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRange, selectedTrackId, session?.user.id]); // Re-fetch data when time range or track selection changes
 
-  console.log(streams);
   return (
     <div>
       {/* Streams and Downloads */}

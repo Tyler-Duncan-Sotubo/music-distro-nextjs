@@ -155,7 +155,10 @@ const SalesReportLineChart = ({ monthlyReports = [] }: Props) => {
           <h3 className="mx-auto mb-1 text-2xl font-semibold">
             Monthly Report
           </h3>
-          <h2 className="mx-auto font-bold">£{values[values.length - 1]}</h2>
+          <h2 className="mx-auto font-bold">
+            £
+            {parseFloat((values[values.length - 1] ?? 0).toString()).toFixed(2)}
+          </h2>
         </div>
         <div>
           <p className="mx-auto text-lg">Last reporting month</p>
@@ -163,7 +166,9 @@ const SalesReportLineChart = ({ monthlyReports = [] }: Props) => {
         </div>
         <div>
           <h3 className="">Total Earnings</h3>
-          <h2 className="mt-4 text-3xl font-bold">£{totalEarnings}</h2>
+          <h2 className="mt-4 text-3xl font-bold">
+            £{parseFloat(totalEarnings.toFixed(2))}
+          </h2>
         </div>
       </div>
     </div>

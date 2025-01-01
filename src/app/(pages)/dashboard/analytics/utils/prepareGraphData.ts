@@ -22,7 +22,7 @@ const bgColorPalette: Record<string, string> = {
   YouTube: "rgba(255, 0, 0, 0.3)",
   Amazon: "purple",
   Soundcloud: "darkOrange",
-  Boomplay: "lightYellow",
+  Boomplay: "rgba(255, 165, 0, 0.15)",
   // Add more colors as needed
 };
 
