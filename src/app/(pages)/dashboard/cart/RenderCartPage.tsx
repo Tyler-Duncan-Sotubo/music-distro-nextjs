@@ -39,7 +39,7 @@ const CartPage = ({ user, cartItem }: Props) => {
       router.push("/dashboard");
     },
     onError: () => {
-      toast.error("An error occurred while deleting cart item", {
+      toast.error("Please Try Again", {
         position: "top-center",
       });
     },

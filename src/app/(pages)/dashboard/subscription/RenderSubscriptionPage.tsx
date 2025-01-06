@@ -49,9 +49,15 @@ const RenderSubscriptionPage = ({
           position: "top-right",
         });
       } else {
-        toast.error("Failed to create cart item", {
-          position: "top-right",
-        });
+        toast.error(
+          "Network error occurred while adding item to cart. Please try again",
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            style: { backgroundColor: "#d9534f", color: "#fff" },
+          },
+        );
       }
     },
   });
