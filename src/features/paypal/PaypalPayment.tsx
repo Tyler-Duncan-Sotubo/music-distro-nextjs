@@ -103,6 +103,7 @@ const PaypalPayment = ({ cartItem, user }: cartItem) => {
 
   return (
     <>
+      {paymentError && <div>{paymentError}</div>}
       <PayPalButtons
         createOrder={(data, actions) => createOrder(data, actions)}
         onApprove={(data, actions) => onApprove(data, actions)}

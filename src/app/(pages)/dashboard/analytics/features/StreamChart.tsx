@@ -1,11 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import WeeklyStreamChart from "../_components/LineChart";
 import WeeklyPieChart from "../_components/PieChart";
 import { type TimeRange } from "../types/streams.types";
-import { FaChevronRight } from "react-icons/fa6";
-import Image from "next/image";
 
 type StreamProps = {
   streams: Record<string, { date: string; total: number }[]> | never[];
