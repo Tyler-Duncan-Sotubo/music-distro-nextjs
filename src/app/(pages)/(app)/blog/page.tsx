@@ -1,9 +1,10 @@
+import { fetchPosts } from "@/hooks/fetch-posts";
 import Image from "next/image";
 import Link from "next/link";
-import { api } from "@/trpc/server";
+import { formatDate } from "@/helper/dateFormater";
 
 const page = async () => {
-  const blogPost = await api.post.getAllPosts();
+  const blogPost = await fetchPosts();
   return (
     <section className="mx-auto my-10 w-[92%] md:my-32">
       {/* blog posts */}
@@ -31,7 +32,7 @@ const page = async () => {
                     {post.title}
                   </h2>
                   <p className="mt-2 text-primaryHover">
-                    {post.publishedAt.toDateString()}
+                    {formatDate(post.publishedAt)}
                   </p>
                   <p className="mt-4 text-xl italic">{post.subtitle}</p>
                 </div>

@@ -28,7 +28,7 @@ interface ICountryReport extends PerformanceMetrics {
 
 export const fetchMonthlyReports = async (userId: string | undefined) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sales-report/month/${userId}?timeRange=7days`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sales-report/month/${userId}`,
   );
 
   if (!response.ok) {
@@ -42,7 +42,7 @@ export const fetchMonthlyReports = async (userId: string | undefined) => {
 
 export const fetchReportByStore = async (userId: string | undefined) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sales-report/store/${userId}?timeRange=7days`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sales-report/store/${userId}`,
   );
 
   if (!response.ok) {
@@ -56,7 +56,7 @@ export const fetchReportByStore = async (userId: string | undefined) => {
 
 export const fetchReportByCountry = async (userId: string | undefined) => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sales-report/country/${userId}?timeRange=7days`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sales-report/country/${userId}`,
   );
 
   if (!response.ok) {

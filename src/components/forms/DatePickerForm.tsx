@@ -7,6 +7,7 @@ import { Controller } from "react-hook-form";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Calendar } from "../ui/calendar";
 
 const DatePickerForm = ({ control, setValue }: any) => {
   const tenDaysFromCurrentDate = new Date();
@@ -30,14 +31,16 @@ const DatePickerForm = ({ control, setValue }: any) => {
         control={control}
         defaultValue={startDate.toISOString()} // Convert startDate to string
         render={() => (
-          <DatePicker
-            selected={startDate}
-            placeholderText="Select date"
-            minDate={tenDaysFromCurrentDate}
-            onChange={(date: Date | null) => handleDateChange(date)}
-            className="w-full rounded-lg bg-secondary py-3"
-            wrapperClassName="w-full"
-          />
+          <>
+            <DatePicker
+              selected={startDate}
+              placeholderText="Select date"
+              minDate={tenDaysFromCurrentDate}
+              onChange={(date: Date | null) => handleDateChange(date)}
+              className="w-full rounded-lg bg-secondary py-3"
+              wrapperClassName="w-full"
+            />
+          </>
         )}
       />
     </div>

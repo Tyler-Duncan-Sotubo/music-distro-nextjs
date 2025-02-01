@@ -8,7 +8,9 @@ import { FaChevronDown, FaUserCircle } from "react-icons/fa";
 import DropDown from "@/components/common/DropDown";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { api } from "@/trpc/react";
+import { fetchProfilePhoto } from "@/hooks/user";
+import { useQuery } from "@tanstack/react-query";
+import { Spinner } from "../common/Spinner";
 
 type DesktopDashboardNavProps = {
   RenderCartButton: () => JSX.Element;
@@ -28,7 +30,15 @@ const DesktopDashboardNav = ({
   const { data: session } = useSession();
   const loggedInUser = session?.user;
 
-  const photo = api.photo.getProfilePhoto.useQuery();
+  // Use query to fetch data
+  const { data: photo, isLoading } = useQuery({
+    queryKey: ["aggregatedData", session?.user.id],
+    queryFn: () => fetchProfilePhoto(session!.user.id), // Important to pass as a function reference
+  });
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <nav
@@ -67,11 +77,11 @@ const DesktopDashboardNav = ({
         {/* User Profile */}
         <div className="group relative z-50 cursor-pointer">
           <div className="flex items-center gap-2">
-            {photo?.data?.image ? (
+            {photo?.image ? (
               <div className="relative h-12 w-12 rounded-full">
                 <Image
                   fill
-                  src={photo?.data?.image || ""}
+                  src={photo?.image || ""}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   alt="user profile image"
                   className="rounded-full"

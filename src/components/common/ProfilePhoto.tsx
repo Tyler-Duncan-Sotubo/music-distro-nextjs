@@ -2,15 +2,31 @@ import { useState } from "react";
 import Image from "next/image";
 import { FaImage, FaRegEdit, FaUserCircle } from "react-icons/fa";
 import { Button } from "../ui/Button";
-import { api } from "@/trpc/react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Spinner } from "../common/Spinner";
+import { fetchProfilePhoto } from "@/hooks/user";
+import { useSession } from "next-auth/react";
+import axios from "@/libs/axios";
+import { toast } from "react-toastify";
 
 const ProfilePhoto = () => {
-  const photo = api.photo.getProfilePhoto.useQuery();
+  const { data: session } = useSession();
+  const queryClient = useQueryClient();
 
   const [image, setImage] = useState<string | ArrayBuffer | null>(null);
   const [imageFileName, setImageFileName] = useState<string | null>(null);
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [error, setError] = useState("");
+
+  // Use query to fetch data
+  const { data: photo, isLoading } = useQuery({
+    queryKey: ["photo", session?.user.id],
+    queryFn: () => fetchProfilePhoto(session!.user.id), // Important to pass as a function reference
+  });
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   const handleImage = (file: File | undefined) => {
     if (file) {
@@ -50,30 +66,41 @@ const ProfilePhoto = () => {
     event.preventDefault();
   };
 
-  const uploadImageToServer = api.photo.updateProfilePhoto.useMutation({
-    onSuccess: async () => {
-      await photo.refetch();
-      setIsModelOpen(false);
-    },
-  });
-
   const onSubmit = async () => {
     if (image) {
-      await uploadImageToServer.mutateAsync({
-        image: image as string,
-        imageFileName: imageFileName!,
-      });
+      try {
+        const res = await axios.put("/api/profile-photo", {
+          image,
+          imageFileName,
+          email: session?.user.email,
+        });
+
+        if (res.data) {
+          toast.success("Profile Updated Successfully");
+          setIsModelOpen(false);
+          setImage(null);
+
+          // Refetch updated photo
+          await queryClient.invalidateQueries({
+            queryKey: ["photo", session!.user.id],
+          });
+        }
+      } catch (error) {
+        toast.error("Error Updating Profile Photo, Try Later!");
+        setIsModelOpen(false);
+        setImage(null);
+      }
     }
   };
 
   return (
     <>
       <section className="mx-auto mb-6 mt-10 flex flex-col items-center md:w-1/4">
-        {photo?.data?.image ? (
+        {photo?.image ? (
           <div className="relative h-72 w-72 rounded-full">
             <Image
               fill
-              src={photo?.data?.image || ""}
+              src={photo?.image || ""}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               alt="user profile image"
               className="rounded-full"

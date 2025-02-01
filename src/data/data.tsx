@@ -83,7 +83,7 @@ export const uploadData = [
 
 export const features = [
   {
-    id: 1,
+    id: "1",
     product: "Bronze",
     description: "Basic Distribution to top digital music services",
     price_in_usd: "50",
@@ -99,7 +99,7 @@ export const features = [
     ],
   },
   {
-    id: 2,
+    id: "2",
     product: "Gold",
     description: "Basic Distribution to top digital music services",
     price: "80,000",
@@ -114,7 +114,7 @@ export const features = [
     ],
   },
   {
-    id: 3,
+    id: "3",
     product: "Platinum",
     description: "Basic Distribution to top digital music services",
     price: "100,000",

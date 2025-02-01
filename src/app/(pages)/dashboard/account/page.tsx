@@ -1,6 +1,7 @@
 import RenderUserAccount from "./RenderUserAccount";
 import { type Metadata } from "next";
-import { api } from "@/trpc/server";
+import { getServerAuthSession } from "@/server/auth";
+import { fetchUserInfo } from "@/hooks/user";
 
 export const metadata: Metadata = {
   title: "My Account | We Plug Music - Dashboard",
@@ -9,8 +10,10 @@ export const metadata: Metadata = {
 };
 
 const page = async () => {
-  const userInfo = await api.user.getUserInfo();
-  const userSocialUrls = await api.user.getUserSocial();
+  const session = await getServerAuthSession();
+  const user = await fetchUserInfo(session!.user.id);
+  const { userInfo, userSocialUrls } = user;
+
   return (
     <RenderUserAccount userInfo={userInfo} userSocialUrls={userSocialUrls} />
   );

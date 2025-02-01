@@ -5,48 +5,43 @@ import { MdCancel } from "react-icons/md";
 import PayStack from "@/features/paystack/PayStack";
 import { Button } from "@/components/ui/Button";
 import { type User } from "next-auth";
-import { type CartItem } from "@prisma/client";
-import { useRouter } from "next/navigation";
-import { useLayoutEffect } from "react";
-import { api } from "@/trpc/react";
 import { toast } from "react-toastify";
 import { formatNumberWithCommas } from "./utils/formatNumber";
 import PaypalPayment from "@/features/paypal/PaypalPayment";
+import axios from "@/libs/axios";
+import { useQueryClient } from "@tanstack/react-query";
+import { type CartType } from "@/hooks/cart";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 type Props = {
   user: User | undefined;
-  cartItem: CartItem[] | null;
+  cartItem: CartType[] | undefined;
 };
 
 const CartPage = ({ user, cartItem }: Props) => {
+  const queryClient = useQueryClient();
+  const { data: session } = useSession();
   const router = useRouter();
 
-  useLayoutEffect(() => {
-    if (!cartItem) {
-      router.refresh();
-    }
-  }, [cartItem, router]);
+  useEffect(() => {
+    router.refresh();
+  }, []);
 
-  // Query cart items
-  const cartItems = api.cart.getCartItem.useQuery();
-
-  // Mutation to delete cart item
-  const deleteCartItem = api.cart.deleteCartItem.useMutation({
-    onSuccess: async () => {
-      // Revalidate the cart items
-      await cartItems.refetch();
-      // Redirect to dashboard
-      router.push("/dashboard");
-    },
-    onError: () => {
-      toast.error("Please Try Again", {
-        position: "top-center",
+  async function handleDeleteCartItem(cart_id: string) {
+    try {
+      const res = await axios.delete(`/api/cart/${cart_id}`);
+      if (res.status === 200) {
+        toast.success("Item removed from cart");
+        router.push("/dashboard/subscription");
+      }
+      await queryClient.invalidateQueries({
+        queryKey: ["cart", session?.user.id],
       });
-    },
-  });
-
-  function handleDeleteCartItem(productId: string) {
-    deleteCartItem.mutate({ productId: productId });
+    } catch (error) {
+      toast.error("Failed to delete item from cart");
+    }
   }
 
   return (
@@ -81,9 +76,7 @@ const CartPage = ({ user, cartItem }: Props) => {
                         <button
                           className="flex items-center gap-2 rounded-xl bg-error p-2 text-sm text-white"
                           onClick={() =>
-                            deleteCartItem.mutate({
-                              productId: cartItem?.[0]?.productId ?? "",
-                            })
+                            handleDeleteCartItem(cartItem?.[0]?.id ?? "")
                           }
                         >
                           <MdCancel size={25} />
@@ -113,7 +106,7 @@ const CartPage = ({ user, cartItem }: Props) => {
                         <button
                           className="flex items-center gap-2 rounded-xl bg-error p-2 text-sm text-white"
                           onClick={() =>
-                            handleDeleteCartItem(cartItem?.[0]?.productId ?? "")
+                            handleDeleteCartItem(cartItem?.[0]?.id ?? "")
                           }
                         >
                           <MdCancel size={25} />
@@ -173,28 +166,13 @@ const CartPage = ({ user, cartItem }: Props) => {
           </h3>
           <div className="flex flex-wrap justify-center gap-10 md:flex-row">
             <Link href="/dashboard/music">
-              <Button
-                className="border-2 border-primary bg-white hover:text-white"
-                color="text-black"
-              >
-                New Music Release
-              </Button>
+              <Button>New Music Release</Button>
             </Link>
             <Link href="/dashboard/subscription">
-              <Button
-                className="border-2 border-primary bg-white hover:text-white"
-                color="text-black"
-              >
-                Subscriptions
-              </Button>
+              <Button>Subscriptions</Button>
             </Link>
             <Link href="/dashboard/videos">
-              <Button
-                className="border-2 border-primary bg-white hover:text-white"
-                color="text-black"
-              >
-                New Video Release
-              </Button>
+              <Button>New Video Release</Button>
             </Link>
           </div>
         </section>

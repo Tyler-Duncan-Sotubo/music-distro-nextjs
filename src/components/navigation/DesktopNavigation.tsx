@@ -47,12 +47,7 @@ export const DesktopNavigation = () => {
           ) : (
             <>
               <Link href="/login">
-                <Button
-                  className="border-2 border-primary bg-white hover:text-white"
-                  color="text-black"
-                >
-                  Login
-                </Button>
+                <Button variant="outline">Login</Button>
               </Link>
               <Link href="/register" className="ml-4">
                 <Button>Sign Up</Button>

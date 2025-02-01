@@ -11,18 +11,29 @@ import {
   ArtistDetailsCardContainer,
 } from "./_components/ArtistDetailsCard";
 import Link from "next/link";
-import { type Social, type UserInformation } from "@prisma/client";
 import ProfilePhoto from "@/components/common/ProfilePhoto";
+import { useQuery } from "@tanstack/react-query";
+import { fetchUserInfo } from "@/hooks/user";
+import { Spinner } from "@/components/common/Spinner";
 
-const RenderArtistPage = ({
-  userInfo,
-  userSocialUrls,
-}: {
-  userInfo: UserInformation | null;
-  userSocialUrls: Social | null;
-}) => {
+const RenderArtistPage = () => {
   const { data: session } = useSession();
   const loggedInUser = session?.user;
+
+  const { data: user, isLoading } = useQuery({
+    queryKey: ["UserInfo", loggedInUser?.id],
+    queryFn: () => fetchUserInfo(loggedInUser!.id),
+  });
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (!user) {
+    return <div>Error loading user information</div>;
+  }
+
+  const { userInfo, userSocialUrls } = user;
 
   return (
     <>

@@ -19,7 +19,7 @@ const FormDescription = ({
       <h5>{authQuestion}</h5>
       <Link
         href={path}
-        className="text-blue-800 hover:text-blue-600 text-sm font-bold"
+        className="hover:text-blue-600 text-sm font-bold text-primary"
       >
         <h5>{pathText}</h5>
       </Link>

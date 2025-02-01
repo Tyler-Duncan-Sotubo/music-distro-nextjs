@@ -17,13 +17,12 @@ interface Props {
 
 const PaymentRequest = ({ revenueData }: Props) => {
   const [showModal, setShowModal] = useState(false);
+  console.log(revenueData);
 
   // Fetching data from the API
   const { data: documentData } = useFetchApiData<IDocument>(
     "api/payment/identity",
   );
-
-  console.log(documentData.length);
 
   useEffect(() => {
     if (showModal) {

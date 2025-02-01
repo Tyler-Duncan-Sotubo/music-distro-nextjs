@@ -1,9 +1,9 @@
 import { HydrateClient } from "@/trpc/server";
 import Homepage from "./Homepage";
-import { api } from "@/trpc/server";
+import { fetchSmartLinks } from "@/hooks/fetch-smartlinks";
 
 export default async function Home() {
-  const smartLinks = await api.smartLinks.getAllSmartLinks();
+  const smartLinks = await fetchSmartLinks();
 
   return (
     <HydrateClient>

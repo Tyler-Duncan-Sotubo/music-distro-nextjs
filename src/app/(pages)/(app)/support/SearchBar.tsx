@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import React from "react";
 import { FaSearch } from "react-icons/fa";
 
@@ -9,11 +10,10 @@ const SearchBar = () => {
           <button
             type="submit"
             className="focus:shadow-outline p-1 focus:outline-none"
-          >
-            <FaSearch size={30} />
-          </button>
+          ></button>
+          <FaSearch size={30} className="text-white" />
         </span>
-        <input
+        <Input
           type="search"
           name="q"
           className="w-full rounded-xl border bg-gray py-5 pl-16 text-lg text-black focus:bg-white focus:text-black focus:outline-none"

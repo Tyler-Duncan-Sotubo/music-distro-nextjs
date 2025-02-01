@@ -1,3 +1,4 @@
+import { Progress } from "@/components/ui/progress";
 import React, { useState } from "react";
 import { FaUpload } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
@@ -122,14 +123,7 @@ const ReleaseTrack = ({
           {/* Audio Progress */}
           {uploadProgress > 0 && (
             <div className="flex h-[10px] items-center gap-2 rounded-md bg-zinc-900">
-              <div
-                style={{
-                  width: `${uploadProgress}%`,
-                  height: "10px",
-                  backgroundColor: "green",
-                  borderRadius: "5px",
-                }}
-              />
+              <Progress value={uploadProgress} />
             </div>
           )}
         </div>

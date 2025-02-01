@@ -8,6 +8,9 @@ import { features } from "@/data/data";
 import CurrencySelectorComponent from "@/components/common/CurrencySelector";
 import { toast } from "react-toastify";
 import { type Subscriptions } from "@prisma/client";
+import axios from "@/libs/axios";
+import { useSession } from "next-auth/react";
+import { useQueryClient } from "@tanstack/react-query";
 
 type CartItem = {
   id: string;
@@ -31,54 +34,35 @@ const RenderSubscriptionPage = ({
   userSubscription,
 }: SubscriptionPlanProps) => {
   const [currency, setCurrency] = useState<string | null>("NGN");
-
   const router = useRouter();
-
-  // Fetch cart items
-  const cartItems = api.cart.getCartItem.useQuery();
-
-  // Create cart item
-  const createCartItem = api.cart.createCartItem.useMutation({
-    onSuccess: async () => {
-      await cartItems.refetch();
-      router.push("/dashboard/cart");
-    },
-    onError: (error) => {
-      if (error.data?.code === "BAD_REQUEST") {
-        toast.error("Cart item already exists", {
-          position: "top-right",
-        });
-      } else {
-        toast.error(
-          "Network error occurred while adding item to cart. Please try again",
-          {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            style: { backgroundColor: "#d9534f", color: "#fff" },
-          },
-        );
-      }
-    },
-  });
+  const { data: session } = useSession();
+  const queryClient = useQueryClient();
 
   const handleAddToCart = async (item: CartItem) => {
     if (userSubscription?.status) {
       toast.error("You Have An Existing Subscription", {
         position: "top-right",
       });
-      return router.push("/dashboard");
+      router.push("/dashboard");
     } else {
-      createCartItem.mutate({
-        productId: item.id.toString(),
-        description: item.description,
-        price:
-          currency === "USD"
-            ? Number(item.price_in_usd)
-            : Number(item.price.toString().replace(/,/g, "")),
-        quantity: 1,
-        product: item.product,
+      const res = await axios.post(`api/cart`, {
+        ...item,
+        user_id: session?.user?.id,
       });
+
+      if (res.data) {
+        toast.success("Subscription Added to Cart", {
+          position: "top-right",
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ["cart", session?.user.id],
+        });
+        router.push("/dashboard/cart");
+      } else {
+        toast.error("Failed to Add Subscription to Cart", {
+          position: "top-right",
+        });
+      }
     }
   };
 

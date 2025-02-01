@@ -334,7 +334,7 @@ const RenderMusicReleasePage = ({
 
         {/* Submit Button */}
         <div className="flex justify-start">
-          <Button className="">Submit</Button>
+          <Button className="mt-7 w-1/4">Submit</Button>
         </div>
       </form>
 

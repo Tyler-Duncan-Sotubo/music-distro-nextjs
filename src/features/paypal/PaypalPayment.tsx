@@ -11,10 +11,11 @@ import { useState } from "react";
 import { type User } from "next-auth";
 import { type CartItem } from "@prisma/client";
 import { api } from "@/trpc/react";
+import { type CartType } from "@/hooks/cart";
 
 type cartItem = {
   user: User | undefined;
-  cartItem: CartItem | undefined;
+  cartItem: CartType | undefined;
 };
 
 interface OrderData {

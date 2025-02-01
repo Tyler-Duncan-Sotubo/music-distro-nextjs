@@ -7,15 +7,22 @@ import Image from "next/image";
 import parse from "html-react-parser";
 import RenderBanner from "./RenderBanner";
 import Link from "next/link";
-import { api } from "@/trpc/react";
 import { Spinner } from "@/components/common/Spinner";
+import { useQuery } from "@tanstack/react-query";
+import { fetchPost } from "@/hooks/fetch-posts";
+import { formatDate } from "@/helper/dateFormater";
 
 const SinglePost = () => {
   const { id } = useParams();
-  const getPost = api.post.getPost.useQuery({ postId: id as string });
-  const post = getPost.data;
 
-  if (getPost.isLoading) return <Spinner />;
+  const { data: post, isLoading } = useQuery({
+    queryKey: ["aggregatedData", id],
+    queryFn: () => fetchPost(id as string), // Important to pass as a function reference
+  });
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
@@ -44,7 +51,7 @@ const SinglePost = () => {
                 {post.title}
               </h2>
               <p className="mt-4 text-primaryHover">
-                {post.publishedAt.toLocaleString()}
+                {formatDate(post.publishedAt)}
               </p>
               <p className="mt-4 text-2xl italic">{post.subtitle}</p>
               <div className="blog mt-8">{parse(post.HtmlContent)}</div>

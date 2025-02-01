@@ -1,12 +1,7 @@
 import { registerRouter, passwordRouter, verifyRouter } from "./routers/auth/";
 import { subscriptionRouter } from "./routers/subscriptions/subscriptions";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
-import { smartLinkRouter } from "./routers/smartLinks/smartLinks";
-import { userRouter } from "./routers/user/user";
-import { cartRouter } from "./routers/cart/cart";
-import { photoRouter } from "./routers/user";
 import { ticketRouter, commentRouter } from "./routers/ticket";
-import { postRouter } from "./routers/posts/posts";
 
 /**
  * This is the primary router for your server.
@@ -18,18 +13,10 @@ export const appRouter = createTRPCRouter({
   password: passwordRouter,
   verify: verifyRouter,
   subscriptions: subscriptionRouter,
-  smartLinks: smartLinkRouter,
-  user: userRouter,
-
-  cart: cartRouter,
-  photo: photoRouter,
 
   // ticket
   ticket: ticketRouter,
   comment: commentRouter,
-
-  // posts
-  post: postRouter,
 });
 
 // export type definition of API

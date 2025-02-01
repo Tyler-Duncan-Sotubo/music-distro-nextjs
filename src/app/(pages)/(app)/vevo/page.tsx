@@ -116,7 +116,7 @@ const page = () => {
             </p>
             <p className="text-5xl">₦ 100,000</p>
             <Link href={user ? "/dashboard/videos" : "/login"}>
-              <Button>New Vevo Channel</Button>
+              <Button className="h-16 text-2xl">New Vevo Channel</Button>
             </Link>
           </div>
           <div className="flex h-[400px] flex-col items-center justify-center gap-12 rounded-xl bg-primary md:w-1/2">
@@ -125,10 +125,7 @@ const page = () => {
             </p>
             <p className="text-5xl">₦ 30,000</p>
             <Link href={user ? "/dashboard/videos" : "/login"}>
-              <Button
-                className="border-2 border-primary bg-white hover:text-white"
-                color="text-black"
-              >
+              <Button variant="secondary" className="h-16 text-2xl">
                 New Vevo Video
               </Button>
             </Link>

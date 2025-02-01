@@ -20,11 +20,13 @@ import { type IFormInput } from "../types";
 import { registerSchema } from "../schemas";
 import { ButtonWithIcon } from "@/components/ui/ButtonWithIcon";
 import { signIn, useSession } from "next-auth/react";
+import { FaGoogle } from "react-icons/fa";
 
 const Page = () => {
   const [agreeToTerms, setAgreeToTerms] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<Array<string | undefined>>([]);
   const [error, setErrors] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -41,14 +43,17 @@ const Page = () => {
   const registerUser = api.register.registerUser.useMutation({
     onSuccess: async (data) => {
       if (!data) return;
+      setIsLoading(false);
       router.push("/login");
     },
     onError: (error) => {
+      setIsLoading(false);
       setSubmitError([error.message]);
     },
   });
 
   const onSubmit = async (data: IFormInput) => {
+    setIsLoading(true);
     // Check if the user has agreed to the terms of service
     if (!agreeToTerms) {
       setErrors("You must agree to the terms of service");
@@ -162,7 +167,9 @@ const Page = () => {
 
         {/* Submit Button */}
         <div className="mt-5 flex items-center justify-end">
-          <Button>Sign Up</Button>
+          <Button loading={isLoading} className="w-1/2">
+            Sign Up
+          </Button>
         </div>
       </form>
 
@@ -175,9 +182,9 @@ const Page = () => {
 
       {/* Login With Google*/}
       <div className="my-6 w-full">
-        <ButtonWithIcon onClick={() => googleSignIn()} iconName="google">
-          Login in With Google
-        </ButtonWithIcon>
+        <Button className="w-full" onClick={() => googleSignIn()}>
+          <FaGoogle /> Login with Email
+        </Button>
       </div>
     </>
   );

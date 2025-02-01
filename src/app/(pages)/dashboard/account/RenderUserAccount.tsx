@@ -4,15 +4,17 @@ import { type ArtistDetailsInput } from "../types/artist.type";
 import { type Resolver, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ArtistDetailsSchema } from "../schema/artist.schema";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { type Social, type UserInformation } from "@prisma/client";
-import { api } from "@/trpc/react";
 import { toast } from "react-toastify";
 import { Spinner } from "@/components/common/Spinner";
 import UserInfoForm from "./_components/UserInfoForm";
 import UserSocialForm from "./_components/UserSocialForm";
 import { useRouter } from "next/navigation";
 import ProfilePhoto from "@/components/common/ProfilePhoto";
+import axios from "@/libs/axios";
+import { useSession } from "next-auth/react";
+import { QueryClient } from "@tanstack/react-query";
 
 type Props = {
   userInfo: UserInformation | null;
@@ -23,10 +25,10 @@ const RenderUserAccount = ({ userInfo, userSocialUrls }: Props) => {
   // Router
   const router = useRouter();
 
-  // State to handle submit error
-  const [submitError, setSubmitError] = useState<string>("");
   // loading state
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { data: session } = useSession();
 
   // Form Hook
   const {
@@ -56,49 +58,64 @@ const RenderUserAccount = ({ userInfo, userSocialUrls }: Props) => {
     },
   });
 
-  const createUserInfo = api.user.createUserInfo.useMutation({
-    onSuccess: () => {
-      toast.success("Profile created successfully", {
+  const createUserInfo = async (data: ArtistDetailsInput) => {
+    try {
+      setIsLoading(true);
+      const res = await axios.post("/api/user-info", {
+        ...data,
+        user_id: session?.user.id,
+      });
+
+      if (res.status === 200) {
+        setIsLoading(false);
+        toast.success("Profile created successfully", {
+          position: "top-center",
+        });
+
+        router.push("/dashboard/artist");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Error Updating Profile", {
         position: "top-center",
       });
-      setSubmitError("");
-      router.push("/dashboard/artist");
-    },
-    onError: (error) => {
-      setSubmitError(error.message);
-    },
-  });
-
-  const updateUserInfo = api.user.updateUserInfo.useMutation({
-    onSuccess: () => {
-      toast.success("Profile updated successfully", {
-        position: "top-center",
-      });
-      setSubmitError("");
-      router.push("/dashboard/artist");
-    },
-    onError: (error) => {
-      setSubmitError(error.message);
-    },
-  });
-
-  // On Submit
-  const onSubmit = (data: ArtistDetailsInput) => {
-    if (userInfo) {
-      updateUserInfo.mutate(data);
-    } else {
-      createUserInfo.mutate(data);
     }
   };
 
-  // Set loading state
-  useEffect(() => {
-    if (createUserInfo.isPending || updateUserInfo.isPending) {
+  const updateUserInfo = async (data: ArtistDetailsInput) => {
+    try {
       setIsLoading(true);
-    } else {
+      const res = await axios.put("/api/user-info", {
+        ...data,
+        user_id: session?.user.id,
+      });
+
+      if (res.status === 200) {
+        setIsLoading(false);
+        toast.success("Profile created successfully", {
+          position: "top-center",
+        });
+        await new QueryClient().invalidateQueries({
+          queryKey: ["user-info", session?.user.id],
+        });
+        router.push("/dashboard/artist");
+      }
+    } catch (error) {
       setIsLoading(false);
+      toast.error("Error Updating Profile", {
+        position: "top-center",
+      });
     }
-  }, [createUserInfo.isPending, updateUserInfo.isPending]);
+  };
+
+  // On Submit
+  const onSubmit = async (data: ArtistDetailsInput) => {
+    if (userInfo) {
+      await updateUserInfo(data);
+    } else {
+      await createUserInfo(data);
+    }
+  };
 
   return (
     <>
@@ -123,9 +140,6 @@ const RenderUserAccount = ({ userInfo, userSocialUrls }: Props) => {
               2. Social Media
             </h2>
             <UserSocialForm errors={errors} register={register} />
-
-            {/* submit error */}
-            {submitError && <p className="my-5 text-error">{submitError}</p>}
             {/* Save Changes */}
             <div className="my-10">
               <button className="w-1/4 rounded-md bg-primary py-2 text-white">

@@ -17,12 +17,13 @@ import { type LoginInput } from "../types";
 import { LoginSchema } from "../schemas";
 import TextInput from "@/components/ui/TextInput";
 import { signIn, useSession } from "next-auth/react";
-import { ButtonWithIcon } from "@/components/ui/ButtonWithIcon";
+import { FaGoogle } from "react-icons/fa";
 
 const Login = () => {
   const router = useRouter();
   // Login State Management with Redux
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -33,15 +34,18 @@ const Login = () => {
   });
 
   const onSubmit = async (data: LoginInput) => {
+    setIsLoading(true);
     const signInResponse = await signIn("credentials", {
       email: data.email,
       password: data.password,
       redirect: false,
     });
     if (signInResponse?.error) {
+      setIsLoading(false);
       setSubmitError(signInResponse.error);
     } else {
       setSubmitError("");
+      setIsLoading(false);
       router.push("/dashboard");
     }
   };
@@ -126,7 +130,9 @@ const Login = () => {
 
         {/* Submit Button */}
         <div className="mt-6 flex items-center justify-end">
-          <Button className="ml-3 px-8">Login</Button>
+          <Button loading={isLoading} className="w-1/2">
+            Login
+          </Button>
         </div>
       </form>
 
@@ -137,16 +143,11 @@ const Login = () => {
         <p className="h-[2px] w-1/2 bg-gray"></p>
       </div>
 
-      {/* Warning */}
-      <p className="text-center text-sm text-error">
-        if you signed up with your email and password, please use that to login
-      </p>
-
       {/* Login With Google*/}
-      <div className="mt-6 w-full">
-        <ButtonWithIcon onClick={() => googleSignIn()} iconName="google">
-          Login in With Google
-        </ButtonWithIcon>
+      <div className="mx-auto mt-6 w-full">
+        <Button className="w-full" onClick={() => googleSignIn()}>
+          <FaGoogle /> Login with Email
+        </Button>
       </div>
     </section>
   );

@@ -1,5 +1,3 @@
-"use client";
-
 import DashboardNavigation from "@/components/navigation/DashboardNavigation";
 import Footer from "@/components/layout/Footer";
 

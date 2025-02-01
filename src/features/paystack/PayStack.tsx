@@ -4,12 +4,12 @@ import { PaystackButton } from "react-paystack";
 import { useRouter } from "next/navigation";
 import { type User } from "next-auth";
 import { env } from "@/env";
-import { type CartItem } from "@prisma/client";
+import { type CartType } from "@/hooks/cart";
 import { useState, useEffect } from "react";
 import { api } from "@/trpc/react";
 
 type cartItem = {
-  cartItem: CartItem | undefined;
+  cartItem: CartType | undefined;
   user: User | undefined;
 };
 
