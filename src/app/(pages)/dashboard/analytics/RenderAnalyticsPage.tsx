@@ -6,13 +6,6 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "@/libs/axios";
 import { Spinner } from "@/components/common/Spinner";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 interface StreamData {
   id: string;

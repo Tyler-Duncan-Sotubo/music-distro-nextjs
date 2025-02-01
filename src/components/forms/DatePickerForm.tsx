@@ -7,7 +7,6 @@ import { Controller } from "react-hook-form";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Calendar } from "../ui/calendar";
 
 const DatePickerForm = ({ control, setValue }: any) => {
   const tenDaysFromCurrentDate = new Date();

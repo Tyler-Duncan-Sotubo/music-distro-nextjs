@@ -27,7 +27,7 @@ const CartPage = ({ user, cartItem }: Props) => {
 
   useEffect(() => {
     router.refresh();
-  }, []);
+  }, [router]);
 
   async function handleDeleteCartItem(cart_id: string) {
     try {

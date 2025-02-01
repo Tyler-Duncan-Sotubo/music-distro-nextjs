@@ -18,7 +18,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import TextInput from "@/components/ui/TextInput";
 import { type IFormInput } from "../types";
 import { registerSchema } from "../schemas";
-import { ButtonWithIcon } from "@/components/ui/ButtonWithIcon";
 import { signIn, useSession } from "next-auth/react";
 import { FaGoogle } from "react-icons/fa";
 
