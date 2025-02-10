@@ -41,7 +41,7 @@ const EarningsByCountryMap: React.FC<StreamsByCountryMapProps> = ({
       const tooltipContentHtml = `
       <strong>${countryData?.name}</strong>
       <br/>
-      Royalty: £${countryData?.earnings.toLocaleString()}
+      Royalty: $${countryData?.earnings.toLocaleString()}
       <br/>
       Streams: ${countryData?.streams.toLocaleString()}
       `;

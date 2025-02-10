@@ -11,5 +11,5 @@ export const formatEarnings = (value: number | string): string => {
   const [integerPart, decimalPart] = formattedValue.split(".");
   const withCommas = (integerPart ?? "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  return `£${withCommas}.${decimalPart}`;
+  return `$${withCommas}.${decimalPart}`;
 };

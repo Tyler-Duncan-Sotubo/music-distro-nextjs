@@ -70,7 +70,7 @@ const TotalEarnings: React.FC<PageProps> = ({ earnings }) => {
       <Card
         title="Total Earnings"
         secondaryValue={totalEarnings}
-        sign="£" // Pound sign for earnings
+        sign="$" // Pound sign for earnings
       />
     </section>
   );

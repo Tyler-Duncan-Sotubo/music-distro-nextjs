@@ -35,7 +35,6 @@ const RenderVideoReleasePage = () => {
 
   const onSubmit = async (data: VideoRelease) => {
     try {
-      console.log(data);
     } catch (error) {}
   };
 

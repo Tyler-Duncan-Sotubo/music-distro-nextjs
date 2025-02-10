@@ -6,6 +6,7 @@ import IdentityConfirmationModal from "./_components/payment/IdentityConfirmatio
 import useFetchApiData from "@/hooks/use-fetch-api-data";
 import { BiError } from "react-icons/bi";
 import { type CachedEarnings } from "./_types/sales.types";
+import Modal from "@/components/ui/modal";
 
 interface IDocument {
   id: string;
@@ -17,12 +18,15 @@ interface Props {
 
 const PaymentRequest = ({ revenueData }: Props) => {
   const [showModal, setShowModal] = useState(false);
-  console.log(revenueData);
+  const [isAboveThreshold, setIsAboveThreshold] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // Fetching data from the API
   const { data: documentData } = useFetchApiData<IDocument>(
     "api/payment/identity",
   );
+
+  const { data: payoutData } = useFetchApiData<IDocument>("api/payment/payout");
 
   useEffect(() => {
     if (showModal) {
@@ -31,11 +35,21 @@ const PaymentRequest = ({ revenueData }: Props) => {
       document.body.style.overflow = "";
     }
 
+    if (revenueData.earnings >= 50 && documentData.length > 0 && !payoutData) {
+      setIsAboveThreshold(true);
+    } else {
+      setIsAboveThreshold(false);
+    }
+
     // Clean up when the modal is closed or component unmounts
     return () => {
       document.body.style.overflow = "";
     };
-  }, [showModal]);
+  }, [documentData.length, payoutData, revenueData.earnings, showModal]);
+
+  const PaymentRequestHandler = () => {
+    setShowPaymentModal(true);
+  };
 
   return (
     <>
@@ -64,23 +78,43 @@ const PaymentRequest = ({ revenueData }: Props) => {
         )}
       </section>
       {/* Payment Request */}
-      <section className="my-10 flex items-center justify-between gap-6 border border-secondary bg-warning p-5">
-        <BiError size={100} />
-        <p className="text-lg">
-          You can request a payment once you have reached the minimum threshold
-          of £50.00. Please note that payments are processed on a monthly basis.
-        </p>
-      </section>
+      {isAboveThreshold === false && (
+        <section className="my-10 flex items-center justify-between gap-6 border border-secondary bg-warning p-5">
+          <BiError size={100} />
+          <p className="text-lg">
+            You can request a payment once you have reached the minimum
+            threshold of $50.00. Please note that payments are processed on a
+            monthly basis.
+          </p>
+        </section>
+      )}
 
       <section className="flex items-center justify-between border border-secondary p-5 shadow-xl">
         <p className="text-xl">
           Current Balance:{" "}
           <span className="text-2xl">
-            £{parseFloat(revenueData.earnings.toString()).toFixed(2)}
+            ${parseFloat(revenueData.earnings.toString()).toFixed(2)}
           </span>
         </p>
-        <Button disabled>Request Payment</Button>
+        <Button
+          variant="default"
+          size="lg"
+          disabled={!isAboveThreshold}
+          onClick={() => PaymentRequestHandler()}
+        >
+          Request Payment
+        </Button>
       </section>
+
+      {/* Payment Request Modal */}
+
+      {showPaymentModal && (
+        <Modal
+          showModal={showPaymentModal}
+          closeModal={() => setShowPaymentModal(false)}
+          payoutAmount={revenueData.earnings}
+        />
+      )}
 
       <section className="my-10">
         <h1 className="text-2xl">Monthly Earnings</h1>
@@ -96,7 +130,7 @@ const PaymentRequest = ({ revenueData }: Props) => {
               <tr key={report.month}>
                 <td className="p-4">{`${report.month}/${report.year}`}</td>
                 <td className="p-4">
-                  £{parseFloat(report.earnings.toString()).toFixed(2)}
+                  ${parseFloat(report.earnings.toString()).toFixed(2)}
                 </td>
               </tr>
             ))}

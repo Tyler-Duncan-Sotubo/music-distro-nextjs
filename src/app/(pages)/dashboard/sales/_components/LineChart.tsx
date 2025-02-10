@@ -123,7 +123,7 @@ const SalesReportLineChart = ({ monthlyReports = [] }: Props) => {
     labels: labels,
     datasets: [
       {
-        label: "Total Earnings (£)",
+        label: "Total Earnings ($)",
         data: values,
         fill: false,
         backgroundColor: "rgb(0, 71, 171)",
@@ -156,7 +156,7 @@ const SalesReportLineChart = ({ monthlyReports = [] }: Props) => {
             Monthly Report
           </h3>
           <h2 className="mx-auto font-bold">
-            £
+            $
             {parseFloat((values[values.length - 1] ?? 0).toString()).toFixed(2)}
           </h2>
         </div>
@@ -167,7 +167,7 @@ const SalesReportLineChart = ({ monthlyReports = [] }: Props) => {
         <div>
           <h3 className="">Total Earnings</h3>
           <h2 className="mt-4 text-3xl font-bold">
-            £{parseFloat(totalEarnings.toFixed(2))}
+            ${parseFloat(totalEarnings.toFixed(2))}
           </h2>
         </div>
       </div>
