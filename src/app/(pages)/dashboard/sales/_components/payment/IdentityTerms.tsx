@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/Button";
 import { MdPhotoAlbum } from "react-icons/md";
 
 interface Props {
@@ -17,27 +18,19 @@ const IdentityTerms = ({ setFilterStatus }: Props) => {
         </h3>
       </div>
       <div>
-        <p className="mb-5 text-sm">
+        <p className="text-sm">
           By clicking &quot;Agree and Continue&quot; I consent to WePlug Music
           collecting and processing my uploaded documents, including scans of my
-          ID, for the sole purpose of verifying my identity. I understand that
-          this data will be handled in accordance with WePlug Music&apos;s
-          Privacy Policy. I am aware that I can exercise my privacy rights,
-          including withdrawing my consent, by contacting{" "}
-          <span className="font-bold">privacy@weplugmusic.com.</span>
-        </p>
-        <p className="text-sm">
-          I have read and agree to WePlug Music&apos;s Privacy Policy and the
-          terms outlined above.
+          ID, for the sole purpose of verifying my identity.
         </p>
       </div>
       <form className="overflow-y-auto px-6"></form>
-      <div
-        className="mb-5 mt-5 cursor-pointer text-center"
+      <Button
+        className="cursor-pointer text-center"
         onClick={() => setFilterStatus("upload-document")}
       >
         Agree and Continue
-      </div>
+      </Button>
     </section>
   );
 };

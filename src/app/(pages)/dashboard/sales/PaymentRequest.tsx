@@ -6,7 +6,7 @@ import IdentityConfirmationModal from "./_components/payment/IdentityConfirmatio
 import useFetchApiData from "@/hooks/use-fetch-api-data";
 import { BiError } from "react-icons/bi";
 import { type CachedEarnings } from "./_types/sales.types";
-import Modal from "@/components/ui/modal";
+import Link from "next/link";
 
 interface IDocument {
   id: string;
@@ -19,7 +19,6 @@ interface Props {
 const PaymentRequest = ({ revenueData }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [isAboveThreshold, setIsAboveThreshold] = useState(false);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // Fetching data from the API
   const { data: documentData } = useFetchApiData<IDocument>(
@@ -46,10 +45,6 @@ const PaymentRequest = ({ revenueData }: Props) => {
       document.body.style.overflow = "";
     };
   }, [documentData.length, payoutData, revenueData.earnings, showModal]);
-
-  const PaymentRequestHandler = () => {
-    setShowPaymentModal(true);
-  };
 
   return (
     <>
@@ -78,7 +73,7 @@ const PaymentRequest = ({ revenueData }: Props) => {
         )}
       </section>
       {/* Payment Request */}
-      {isAboveThreshold === false && (
+      {!isAboveThreshold && (
         <section className="my-10 flex items-center justify-between gap-6 border border-secondary bg-warning p-5">
           <BiError size={100} />
           <p className="text-lg">
@@ -96,25 +91,11 @@ const PaymentRequest = ({ revenueData }: Props) => {
             ${parseFloat(revenueData.earnings.toString()).toFixed(2)}
           </span>
         </p>
-        <Button
-          variant="default"
-          size="lg"
-          disabled={!isAboveThreshold}
-          onClick={() => PaymentRequestHandler()}
-        >
-          Request Payment
+
+        <Button variant="default" size="lg" disabled={!isAboveThreshold}>
+          <Link href="/dashboard/sales/payout">Request Payment</Link>
         </Button>
       </section>
-
-      {/* Payment Request Modal */}
-
-      {showPaymentModal && (
-        <Modal
-          showModal={showPaymentModal}
-          closeModal={() => setShowPaymentModal(false)}
-          payoutAmount={revenueData.earnings}
-        />
-      )}
 
       <section className="my-10">
         <h1 className="text-2xl">Monthly Earnings</h1>

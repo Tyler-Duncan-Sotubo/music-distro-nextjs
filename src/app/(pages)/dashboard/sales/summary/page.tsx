@@ -21,12 +21,6 @@ const page = async () => {
         This is the summary of your earnings from the sales of your music
         releases.
       </h3>
-      <section className="mt-10 flex items-center justify-between border border-secondary p-5 shadow-xl">
-        <p className="text-xl">
-          Total Earnings: <span className="text-2xl">$1000</span>
-        </p>
-      </section>
-      <h3 className="font-bold">Recent Payments</h3>
 
       {payouts.length === 0 ? (
         <p>No recent payments</p>
@@ -35,7 +29,6 @@ const page = async () => {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Invoice</TableHead>
-
               <TableHead>Method</TableHead>
               <TableHead>Amount</TableHead>
               <TableHead>Status</TableHead>
