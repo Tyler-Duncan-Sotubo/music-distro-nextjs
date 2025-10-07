@@ -38,7 +38,11 @@ const RenderSubscriptionPage = ({
   const queryClient = useQueryClient();
 
   const handleAddToCart = async (item: CartItem) => {
-    if (userSubscription?.status) {
+    if (
+      userSubscription &&
+      userSubscription?.expiresAt &&
+      userSubscription.expiresAt > new Date()
+    ) {
       toast.error("You Have An Existing Subscription", {
         position: "top-right",
       });

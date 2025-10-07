@@ -1,0 +1,156 @@
+"use client";
+
+import { useLayoutEffect, useState } from "react";
+import { Button } from "@/components/ui/Button";
+import Label from "@/components/ui/Label";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import FormDescription from "@/components/forms/FormDescription";
+import {
+  type FieldValues,
+  type Resolver,
+  useForm,
+  type UseFormRegister,
+} from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { type LoginInput } from "../types";
+import { LoginSchema } from "../schemas";
+import TextInput from "@/components/ui/TextInput";
+import { signIn, useSession } from "next-auth/react";
+import { FaGoogle } from "react-icons/fa";
+
+const Login = () => {
+  const router = useRouter();
+  // Login State Management with Redux
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginInput>({
+    resolver: yupResolver(LoginSchema) as Resolver<LoginInput>,
+  });
+
+  const onSubmit = async (data: LoginInput) => {
+    setIsLoading(true);
+    const signInResponse = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+    if (signInResponse?.error) {
+      setIsLoading(false);
+      setSubmitError(signInResponse.error);
+    } else {
+      setSubmitError("");
+      setIsLoading(false);
+      router.push("/dashboard");
+    }
+  };
+
+  const googleSignIn = async () => {
+    await signIn("google", {
+      callbackUrl: "/dashboard",
+    });
+  };
+
+  // Redirect to dashboard if user is already logged in
+  const { data: session } = useSession();
+  useLayoutEffect(() => {
+    if (session) {
+      router.push("/dashboard");
+    }
+  }, [router, session]);
+
+  return (
+    <section className="py-6">
+      <form onSubmit={handleSubmit(onSubmit)} data-testid="login-form">
+        <FormDescription
+          header="Welcome Back!"
+          path="/register"
+          pathText="Sign Up"
+          authQuestion="New user?"
+        />
+
+        {/* Email Address */}
+        <div>
+          <Label htmlFor="email">Email</Label>
+          <TextInput
+            register={register as unknown as UseFormRegister<FieldValues>}
+            name="email"
+            error={errors.email?.message}
+            id="email"
+            type="email"
+          />
+        </div>
+
+        {/* Password */}
+        <div>
+          <Label htmlFor="password">Password</Label>
+          <TextInput
+            register={register as unknown as UseFormRegister<FieldValues>}
+            name="password"
+            error={errors.password?.message}
+            id="name"
+            type="password"
+          />
+        </div>
+
+        {/* Remember Me */}
+        <div className="mt-4 flex items-center justify-between">
+          <label
+            htmlFor="remember_me"
+            className="inline-flex items-center"
+            data-testid="remember me"
+          >
+            <input
+              id="remember_me"
+              type="checkbox"
+              {...register("shouldRemember")}
+              className="border-gray-300 text-indigo-600 focus:border-indigo-300 focus:ring-indigo-200 rounded shadow-sm focus:ring focus:ring-opacity-50"
+            />
+            <span className="text-gray-600 ml-2 text-sm">Remember me</span>
+          </label>
+          <Link
+            href="/forgot-password"
+            className="text-blue-800 hover:text-gray-900 text-sm hover:underline"
+          >
+            Forgot password?
+          </Link>
+        </div>
+
+        {/* Submit Error */}
+        {submitError && (
+          <p className="mt-7 text-center text-[.9rem] text-error">
+            {submitError}
+          </p>
+        )}
+
+        {/* Submit Button */}
+        <div className="mt-6 flex items-center justify-end">
+          <Button loading={isLoading} className="w-1/2">
+            Login
+          </Button>
+        </div>
+      </form>
+
+      {/* Divider */}
+      <div className="my-6 flex items-center justify-center space-x-4">
+        <p className="h-[2px] w-1/2 bg-gray"></p>
+        <p>or</p>
+        <p className="h-[2px] w-1/2 bg-gray"></p>
+      </div>
+
+      {/* Login With Google*/}
+      <div className="mx-auto mt-6 w-full">
+        <Button className="w-full" onClick={() => googleSignIn()}>
+          <FaGoogle /> Login with Email
+        </Button>
+      </div>
+    </section>
+  );
+};
+
+export default Login;

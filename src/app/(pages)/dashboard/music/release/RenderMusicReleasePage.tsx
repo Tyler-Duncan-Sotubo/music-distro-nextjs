@@ -111,8 +111,14 @@ const RenderMusicReleasePage = ({
   // Check if user is subscribed
   const [showModal, setShowModal] = useState(false);
 
+  console.log(userSubscription);
+
   useLayoutEffect(() => {
-    if (userSubscription?.status === "active") {
+    if (
+      userSubscription?.status === "active" &&
+      userSubscription?.expiresAt &&
+      userSubscription.expiresAt > new Date()
+    ) {
       setShowModal(false);
     } else {
       setShowModal(true);

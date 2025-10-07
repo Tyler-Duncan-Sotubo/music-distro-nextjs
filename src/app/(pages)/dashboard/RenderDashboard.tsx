@@ -72,14 +72,7 @@ const RenderDashboard = ({
             >
               royalties
             </Link>
-            and your request for
-            <Link
-              href="/dashboard/payout"
-              className="mx-1 font-medium text-primary"
-            >
-              payout
-            </Link>
-            .
+            and your request for payout .
           </h4>
         </div>
 
@@ -95,13 +88,21 @@ const RenderDashboard = ({
                   all Pro features.
                 </p>
               </div>
-              <div className="md:w-2/3">
-                <p className="my-4 text-lg tracking-wide">
-                  Your subscription will expire on {""}
+              <div className="flex w-full items-center justify-between">
+                <p className="my-4 w-2/3 text-lg tracking-wide">
+                  {userSubscription?.expiresAt &&
+                  userSubscription.expiresAt > new Date()
+                    ? "Your subscription will expire on "
+                    : "Your subscription expired on "}
                   <span className="my-2 block font-bold">
                     {userSubscription.expiresAt?.toDateString().slice(0, 20)}
                   </span>
                 </p>
+                <Link href="/dashboard/subscription">
+                  <Button className="bg-primary text-white hover:bg-primaryHover">
+                    <p className="text-[14px]">Renew Now</p>
+                  </Button>
+                </Link>
               </div>
             </div>
           ) : userSubscription?.status === "unpaid" ? (
