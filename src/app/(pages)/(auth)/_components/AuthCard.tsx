@@ -15,7 +15,7 @@ const AuthCard = ({ children }: AuthCardProps) => {
 
   return (
     <div
-      className={`bg-[url('/img/hero/vevo.jpg')] bg-cover px-4 ${
+      className={`bg-[url('https://res.cloudinary.com/dw1ltt9iz/image/upload/v1759556253/vevo_i8pcqh.jpg')] bg-cover px-4 ${
         pathname === "/login" || pathname === "/forgot-password"
           ? "py-36 md:py-10"
           : "py-10"
@@ -28,7 +28,7 @@ const AuthCard = ({ children }: AuthCardProps) => {
         <Link href="/" className="flex justify-center">
           <div className="relative h-44 w-1/4">
             <Image
-              src="/img/mobilelogo.png"
+              src="https://res.cloudinary.com/dw1ltt9iz/image/upload/v1759556253/logo_xrjxp2.png"
               alt="Logo"
               fill
               style={{ objectFit: "contain" }}
