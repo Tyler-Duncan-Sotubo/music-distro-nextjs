@@ -41,6 +41,7 @@ const formatDate = (date: string): string => {
   ];
 
   const [year, month, day] = date.split("-").map(Number);
+  console.log({ year, month, day });
   return month ? `${months[month - 1]} ${day}` : "";
 };
 
