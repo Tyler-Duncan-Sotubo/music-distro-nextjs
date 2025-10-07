@@ -12,7 +12,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="from-backgroundTo relative bg-gradient-to-r from-15% via-black via-30% to-black to-90% py-16 text-white">
+    <footer className="relative bg-gradient-to-r from-backgroundTo from-15% via-black via-30% to-black to-90% py-16 text-white">
       <section className="mx-auto w-[90%]">
         <div className="grid w-[80%] grid-cols-1 gap-6 md:grid-cols-3">
           {get_started.map((item, index) => (
@@ -23,7 +23,7 @@ const Footer = () => {
                   <li key={index} className="flex list-none items-center gap-2">
                     <Link
                       href={link.href}
-                      className="hover:text-primary tracking-wider"
+                      className="tracking-wider hover:text-primary"
                     >
                       {link.title}
                     </Link>
@@ -75,11 +75,11 @@ const get_started = [
         title: "Login",
       },
       {
-        href: "/pricing",
+        href: "https://weplugmusic.com/pricing",
         title: "Pricing",
       },
       {
-        href: "/contact",
+        href: "https://weplugmusic.com/contact",
         title: "Contact Us",
       },
     ],
@@ -92,11 +92,11 @@ const get_started = [
         title: "Music Submission",
       },
       {
-        href: "/vevo",
+        href: "https://weplugmusic.com/vevo",
         title: "Vevo Channel",
       },
       {
-        href: "/promo",
+        href: "https://weplugmusic.com/promo",
         title: "Music Promotion",
       },
     ],
@@ -105,19 +105,19 @@ const get_started = [
     title: "Support",
     links: [
       {
-        href: "/support",
+        href: "https://weplugmusic.com/support",
         title: "FAQ",
       },
       {
-        href: "/terms",
+        href: "https://weplugmusic.com/terms",
         title: "Terms & Conditions",
       },
       {
-        href: "/terms",
+        href: "https://weplugmusic.com/privacy",
         title: "Privacy",
       },
       {
-        href: "/blog",
+        href: "https://weplugmusic.com/blog",
         title: "Blog",
       },
     ],

@@ -9,6 +9,7 @@ const config = {
   reactStrictMode: true,
   output: "standalone",
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -18,6 +19,11 @@ const config = {
       {
         protocol: "https",
         hostname: "tooxclusive-artist-profile.s3.amazonaws.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
         pathname: "/**",
       },
     ],

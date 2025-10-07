@@ -3,13 +3,41 @@ import { FaMusic } from "react-icons/fa";
 import { MdLock } from "react-icons/md";
 
 export const distros = [
-  { image: "/img/distros/spotify-auth.svg", name: "Deezer" },
-  { image: "/img/distros/deezer-auth.svg", name: "Spotify" },
-  { image: "/img/distros/apple-music-auth.svg", name: "Apple Music" },
-  { image: "/img/distros/tidal-auth.svg", name: "Tidal" },
-  { image: "/img/distros/youtube-music-auth.svg", name: "YouTube" },
-  { image: "/img/distros/vevo-auth.svg", name: "Vevo" },
-  { image: "/img/distros/tiktok-auth.svg", name: "Tiktok" },
+  {
+    image:
+      "https://res.cloudinary.com/dw1ltt9iz/image/upload/v1759556238/spotify-auth_swh0d9.svg",
+    name: "Deezer",
+  },
+  {
+    image:
+      "https://res.cloudinary.com/dw1ltt9iz/image/upload/v1759556238/deezer-auth_mnpifm.svg",
+    name: "Spotify",
+  },
+  {
+    image:
+      "https://res.cloudinary.com/dw1ltt9iz/image/upload/v1759556247/apple-music-auth_rgx6vv.svg",
+    name: "Apple Music",
+  },
+  {
+    image:
+      "https://res.cloudinary.com/dw1ltt9iz/image/upload/v1759556245/tidal-auth_y6wvrz.svg",
+    name: "Tidal",
+  },
+  {
+    image:
+      "https://res.cloudinary.com/dw1ltt9iz/image/upload/v1759556247/youtube-music-auth_kkw9rg.svg",
+    name: "YouTube",
+  },
+  {
+    image:
+      "https://res.cloudinary.com/dw1ltt9iz/image/upload/v1759556245/vevo-auth_luzz9v.svg",
+    name: "Vevo",
+  },
+  {
+    image:
+      "https://res.cloudinary.com/dw1ltt9iz/image/upload/v1759556245/tiktok-auth_gczmhe.svg",
+    name: "Tiktok",
+  },
 ];
 
 export const navData = [

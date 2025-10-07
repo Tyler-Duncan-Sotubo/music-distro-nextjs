@@ -49,7 +49,7 @@ const RenderVideoReleasePage = () => {
                 <h3 className="text-center text-lg capitalize">
                   You need to subscribe For Vevo Package
                 </h3>
-                <Link href="/promo">
+                <Link href="https://weplugmusic.com/promo">
                   <button className="w-full bg-primary px-3 py-4 text-center text-white">
                     Get Vevo Package
                   </button>
